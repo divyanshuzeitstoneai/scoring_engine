@@ -1,6 +1,6 @@
 # Formula F01: Promotional Margin Leakage — Comprehensive Production Validation & Technical Audit Report
 
-**Document Version:** 2.3.1 (5 Targeted Production Fixes + Documentation Consistency Fixes)  
+**Document Version:** 2.3.2 (Added Total Discount Value & Reconciliation Certification)  
 **Evaluation Date:** 2026-09-21  
 **Canonical Run ID:** `RUN-20260921-F01-CANONICAL-V2.2`  
 **Pipeline Commit Hash:** `f01-canon-v2.3-fixes`  
@@ -29,6 +29,7 @@ Unlike basic P&L or cash-floor formulas (such as Formula F03), F01 strictly isol
 | **Total Target Minimum Profit** | **$2,378,374.74** | Baseline gross profit required to achieve target margin across cohort |
 | **Pre-Promotion Gross Profit (MSRP)** | **$2,971,667.91** | Baseline profit available at full catalog price before discounts |
 | **Total Actual Gross Profit** | **$1,596,984.97** | Actual profit retained after promotional discounts and direct COGS |
+| **Total Discount Value** | **$1,374,682.94** | Total promotional discounts across 17,410 evaluated orders, with 100% reconciliation between line-level markdowns, cart allocations, and `order.total_discounts` (0 mismatches) |
 | **Total Target Profit Shortfall** | **$825,289.42** | Total gross profit gap below target margin floor across cohort |
 | ↳ *Pre-Existing Inherent COGS Deficit* | *$21,574.08 (2.61%)* | *Shortfall existing before discounts (catalog MSRP below target)* |
 | ↳ *Incremental Promotional Leakage* | **$803,715.34 (97.39%)** | **Loss attributable strictly and directly to promotional discounts** |
@@ -58,7 +59,8 @@ Raw Shopify Order Webhook / GraphQL Payload
           ├── 2. Shopify Discount Mechanism Separation (Zero Double Counting)
           │      ├── Product / Line Markdown (compare_at markdown or total_discount)
           │      ├── Order / Cart Discount Allocation (from discountAllocations)
-          │      └── Total Promotional Discount = Line Markdown + Cart Allocation
+          │      ├── Total Promotional Discount = Line Markdown + Cart Allocation
+          │      └── Verified Storewide Total: $1,374,682.94 across 17,410 evaluated orders (100% reconciliation)
           │
           ├── 3. Net Line Revenue & Post-Promotion Gross Profit
           │      Net Line Revenue (R_net) = max(0.00, Baseline Revenue - Total Discount - Refund)
@@ -528,7 +530,7 @@ All 46 automated unit and regression tests passed with 100% compliance:
 - [x] **Observation Threshold Sensitivity:** $N \ge 5$ (511 historical / 124 fallback -> 66.21% score) vs. $N \ge 10$ (389 historical / 246 fallback -> 66.18% score) verified with sensitivity delta of only 0.03%.
 - [x] **Multi-Grain Catalog Proof:** Empirical verification that $1 \text{ product} = 1 \text{ variant}$ across 600 catalog items, proving Variant Grain $\equiv$ Product Grain and explaining why 100% of historical lookups resolve at SKU/variant level.
 - [x] **Storewide Fallback (35%) Robustness:** Sensitivity analysis across 25%–45% proves score varies by **at most 0.08 percentage points** (66.29% at 25% fallback vs. 66.21% at configured 35%) due to low fallback line share (0.46%).
-- [x] **Shopify Discount Conservation:** $\sum (\text{Line Markdown} + \text{Cart Allocation}) == \text{Order.total\_discounts}$ verified across all 17,410 evaluated orders with **0 mismatches**.
+- [x] **Shopify Discount Conservation:** Total Discount Value: **$1,374,682.94** across 17,410 evaluated orders, with 100% reconciliation between line-level markdowns, cart allocations, and `order.total_discounts` ($\sum (\text{Line Markdown} + \text{Cart Allocation}) == \text{Order.total\_discounts}$ verified with **0 mismatches**).
 - [x] **Free Gift Business Policy:** 236 lines of 100% free gifts ($28,172.57 COGS, $20,636.61 target profit) confirmed as promotional leakage and isolated in dedicated taxonomy.
 - [x] **Leakage Classification Conservation:** Four mutually exclusive categories ($20,060 + 1,864 + 4,659 + 236 = 26,819$) achieve 100.00% line conservation.
 - [x] **F01 / F03 Boundary Isolation:** Negative merchandise gross profit (1,111 orders) kept distinct from cash contribution; F03 escalation explicitly marked `unable_to_determine (17,410 orders)` pending courier label and gateway fee ingestion.
@@ -539,6 +541,13 @@ All 46 automated unit and regression tests passed with 100% compliance:
 ---
 
 ## 14. Documentation Change Log
+
+**v2.3.2 — Total Discount Value & Reconciliation Certification (2026-09-21)**  
+*Added explicit Total Discount Value metrics and 100% discount reconciliation certification across the evaluated cohort.*
+
+| # | Section | Change |
+| :---: | :--- | :--- |
+| 12 | §1, §2, §13 — Total Discount Value | Added Total Discount Value: **$1,374,682.94** across 17,410 evaluated orders, with 100% reconciliation between line-level markdowns, cart allocations, and `order.total_discounts` (0 mismatches). |
 
 **v2.3.1 — Documentation Consistency Fixes (2026-09-21)**  
 *No formula, engine, test, or numerical result was altered. Changes are wording/clarity only.*
