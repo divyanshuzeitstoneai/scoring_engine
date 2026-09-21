@@ -1,6 +1,6 @@
 # Formula F01: Promotional Margin Leakage — Comprehensive Production Validation & Technical Audit Report
 
-**Document Version:** 2.3.0 (5 Targeted Production Fixes — MSRP, Discount Reconciliation, Partial Refund, Config Constants, Aggregation Identity)  
+**Document Version:** 2.3.1 (5 Targeted Production Fixes + Documentation Consistency Fixes)  
 **Evaluation Date:** 2026-09-21  
 **Canonical Run ID:** `RUN-20260921-F01-CANONICAL-V2.2`  
 **Pipeline Commit Hash:** `f01-canon-v2.3-fixes`  
@@ -21,8 +21,8 @@ Unlike basic P&L or cash-floor formulas (such as Formula F03), F01 strictly isol
 | Metric | Production Result | Status / Interpretation |
 | :--- | :---: | :--- |
 | **F01 Dollar-Weighted Score** | **66.21%** | **Warning Health Band** (Profit Retention Efficiency) |
-| **Count-Based Attainment Score** | **13.20%** | 2,298 of 17,410 discounted orders had zero promotional leakage |
-| **Healthy Discounted Orders** | **2,298** (13.20%) | Orders where discounts stayed entirely within retail markup headroom |
+| **Count-Based Attainment Score** | **13.20%** | 2,298 of 17,410 discounted orders had zero promotional leakage (`f01_dollar_loss = $0.00`) |
+| **Healthy Discounted Orders** | **2,298** (13.20%) | Orders where `f01_dollar_loss = $0.00`: discount absorbed entirely within retail markup headroom, realized profit ≥ target margin floor |
 | **Leaking Discounted Orders** | **15,112** (86.80%) | Orders where discounts caused realized profit to drop below target margin |
 | ↳ *Negative Gross Profit Subset* | *1,111 (6.38%)* | *Selling below product COGS (merchandise gross loss)* |
 | ↳ *Positive GP Below Target Subset* | *14,001 (80.42%)* | *Positive gross profit, but failed to achieve target margin floor* |
@@ -120,6 +120,7 @@ Raw Shopify Order Webhook / GraphQL Payload
 
 9. **F01 Dollar-Weighted Score ($S_{\text{F01}}$)**:
    $$S_{\text{F01}} = \max\left(0.00, \left(1 - \frac{\sum L_{\text{promo}}}{\sum \Pi_{\text{target}}}\right) \times 100\right) = \left(1 - \frac{\$803,715.34}{\$2,378,374.74}\right) \times 100 = \mathbf{66.21\%}$$
+   *Leakage Rate Definition:* The ratio $\frac{\sum L_{\text{promo}}}{\sum \Pi_{\text{target}}}$ measures promotional leakage as a proportion of the total target profit baseline. Because $\sum L_{\text{promo}}$ is derived from order-level losses that can individually exceed the target profit (e.g. free-gift lines where COGS alone exceeds the target floor), the leakage rate **can exceed 100%** in severe scenarios; the score is floored at 0.00% to prevent a negative display value.
 
 ---
 
@@ -190,8 +191,8 @@ All 5 tiers of the declared target margin hierarchy are explicitly documented an
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
 | **Tier 1: SKU Metafield** | `metafield` | 1,611 | 6.01% | $140,045.64 | $111,260.95 | $0.00 | $31,386.65 | Active custom margin configured in Shopify |
 | **Tier 2: Category Taxonomy**| `taxonomy` | 24,573 | 91.63% | $2,175,310.51 | $1,454,909.09 | $21,572.85 | $740,126.26 | Standard Google taxonomy matched in margin table |
-| **Tier 3: Product Type** | `product_type` | 0 | 0.00% | $0.00 | $0.00 | $0.00 | $0.00 | Superceded by Tier 2 (all items with type have taxonomy) |
-| **Tier 4: 90-Day Historical** | `historical_margin` | 511 | 1.91% | $52,247.96 | $26,198.67 | $1.08 | $26,048.21 | $\ge 5$ prior sales in $[t-90\text{d}, t)$ (margins 25.9% to 55.3%, mean 40.5%) |
+| **Tier 3: Product Type** | `product_type` | 0 | 0.00% | $0.00 | $0.00 | $0.00 | $0.00 | Superseded by Tier 2 in this dataset (all items with a product type also have a taxonomy match); Product Type remains a standalone fallback when taxonomy is absent. |
+| **Tier 4: 90-Day Historical** | `historical_margin` | 511 | 1.91% | $52,247.96 | $26,198.67 | $1.08 | $26,048.21 | $\ge 5$ qualifying prior sales at the **SKU/Variant grain** in $[t-90\text{d}, t)$ (observed margins 25.9% to 55.3%, trimmed mean 40.5%) |
 | **Tier 5: Storewide Default** | `storewide_default`| 124 | 0.46% | $10,770.63 | $4,616.26 | $0.15 | $6,154.22 | Legitimate fallback: $< 5$ historical observations in rolling window |
 | **TOTAL** | **Evaluated Lines** | **26,819** | **100.00%** | **$2,378,374.74** | **$1,596,984.97** | **$21,574.08** | **$803,715.34** | **100% Hierarchy Reconciliation** |
 
@@ -223,14 +224,13 @@ For Tier 4 target margin resolution, Formula F01 implements a statistically boun
    - Outlier filter: Sales with realized margin strictly outside $[-0.50, +0.95]$ are excluded.
    - Trimming: 2.5% trimmed mean discards the lowest 2.5% and highest 2.5% of sorted observations.
 
-### 5.2 Multi-Grain Hierarchy & Catalog Verification
-The target margin fallback methodology specifies a multi-grain traversal:
-$$\text{Variant} \ (\ge 5) \longrightarrow \text{Parent Product} \ (\ge 5) \longrightarrow \text{Category} \ (\ge 15) \longrightarrow \text{Storewide Default (35\%)}$$
+### 5.2 Historical-Margin Calculation Grain & Catalog Verification
+The Tier 4 historical margin is computed at the **SKU/Variant grain** — the engine looks up the $N \ge 5$ qualifying prior transactions for the specific variant being evaluated. This section documents the empirical grain at which historical margin resolves in this dataset; it is distinct from the 5-tier target-margin source hierarchy in §4 and from the 4-tier COGS waterfall in §4 Hierarchy A.
 
 In the audited store dataset (`data/synthetic_catalog.json`), data inspection proves:
-- **Variant Grain $\equiv$ Parent Product Grain:** All 600 catalog products have exactly 1 variant ($1 \text{ product} = 1 \text{ variant}$, 600 products = 600 variants).
+- **Variant Grain $\equiv$ Parent Product Grain:** All 600 catalog products have exactly 1 variant ($1 \text{ product} = 1 \text{ variant}$, 600 products = 600 variants). Consequently there is no meaningful distinction between the variant lookup and the parent-product lookup in this dataset.
 - **Category Grain:** All unmapped products that lack Tier 1-3 definitions have `category: null` and `standardized_product_type: null`.
-- **Empirical Resolution Proof:** Consequently, 100% of historical resolutions (511 lines) resolve at the SKU/Variant grain. When an unmapped SKU has $< 5$ observations, its parent product also has $< 5$ observations and its category is null, making fallback to Tier 5 (35%) the mathematically exact and legitimate outcome for the remaining 124 lines.
+- **Empirical Resolution Proof:** 100% of historical resolutions (511 lines) resolve at the SKU/Variant grain. When an unmapped SKU has $< 5$ observations, its parent product also has $< 5$ observations and its category is null, making fallback to Tier 5 (35%) the mathematically exact and legitimate outcome for the remaining 124 lines.
 
 ### 5.3 Observation Threshold Sensitivity Analysis ($N \ge 5$ vs. $N \ge 10$)
 To verify whether setting the threshold at $N \ge 5$ versus $N \ge 10$ materially changes the business outcome, full pipeline sensitivity re-evaluations were executed:
@@ -244,7 +244,7 @@ To verify whether setting the threshold at $N \ge 5$ versus $N \ge 10$ materiall
 *Conclusion:* Across the entire store, moving from $N \ge 5$ to $N \ge 10$ shifts the F01 score by a negligible **0.03 percentage points** ($0.10 difference in total promotional leakage). $N \ge 5$ is retained as the production standard because it maximizes empirical historical resolution (511 vs 389 lines) while maintaining robust resistance to outliers through 2.5% trimming.
 
 ### 5.4 Storewide Fallback Margin (35%) Business Justification & Sensitivity Analysis
-The 35.0% fallback margin is configured as the merchant's contractual minimum gross margin benchmark across standard merchandise. To confirm that this choice does not distort F01 scoring, sensitivity testing was conducted across a wide $\pm 10\%$ band:
+The 35.0% fallback margin is the merchant's **configured storewide benchmark** — the default gross margin floor applied when no SKU-level, category-level, or sufficient historical data is available. To confirm that this choice does not distort F01 scoring, sensitivity testing was conducted across a wide $\pm 10\%$ band:
 
 | Fallback Margin | Fallback Evaluated Lines | Total Target Profit | Actual Gross Profit | Promotional Leakage | F01 Score | Impact vs. 35% |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -254,7 +254,7 @@ The 35.0% fallback margin is configured as the merchant's contractual minimum gr
 | **40.0%** | 124 lines | $2,379,913.40 | $1,596,984.97 | $803,715.76 | **66.23%** | +0.02% |
 | **45.0%** | 124 lines | $2,381,452.15 | $1,596,984.97 | $803,715.76 | **66.25%** | +0.04% |
 
-*Conclusion:* Because fallback lines account for only **0.46%** (124 of 26,819) of evaluated volume, even a severe 20% swing in the storewide fallback benchmark (from 25% to 45%) causes less than **0.08 percentage points** of movement in the overall F01 score. The score is mathematically resilient.
+*Conclusion:* Because fallback lines account for only **0.46%** (124 of 26,819) of evaluated volume, even a severe 20% swing in the storewide fallback benchmark (from 25% to 45%) causes at most **0.08 percentage points** of movement in the overall F01 score (25% fallback → 66.29% vs. configured 35% → 66.21%). The score is mathematically resilient.
 
 ### 5.5 Empirical Dataset Proof (Real Worked Examples)
 - **Worked Resolution Example (Tier 4 Selected):**  
@@ -332,10 +332,10 @@ Replacing ambiguous descriptors like `below_cogs_negative_profit`, Formula F01 e
 | **TOTAL** | **26,819** | **100.00%** | **$2,378,374.74** | **$1,596,984.97** | **$21,574.08** | **$803,715.34** | **100.00% Line Conservation Reconciled** |
 
 ### Business Rule Rationale: Free Gift Treatment in Formula F01
-A critical policy question is: *Should deliberate 100% free gift promotions count as promotional margin leakage in F01?*
-- **The Business Reality:** Free gift merchandise incurs real, hard cash COGS from suppliers ($28,172.57 direct inventory cost across the 236 lines). When gifted at $0.00 revenue, gross profit is strictly negative ($-28,172.57).
-- **Target Margin Erosion:** The business established a target gross margin benchmark ($20,636.61 required baseline profit) for this merchandise. Giving it away for free constitutes a 100% promotional discount markdown.
-- **F01 Policy Confirmation:** In Formula F01, giving away product at 100% discount is an intentional marketing expenditure that directly erodes merchandise gross margin below the target floor. Therefore, it is strictly classified as promotional margin leakage ($L_{\text{promo}} = \$48,494.20$) and isolated under its own dedicated taxonomy key (`100_percent_free_gift`). Merchants who run free gift campaigns can immediately filter and audit this specific marketing investment separately from coupon leaks.
+A critical policy question is: *Should deliberate 100% promotional-price-override free gifts count as promotional margin leakage in F01?*
+- **The Business Reality:** Free gift merchandise incurs real, hard cash COGS from suppliers ($28,172.57 direct inventory cost across the 236 lines). When given away at $0.00 net revenue, gross profit is strictly negative ($-28,172.57). These are identified by `net_selling_price = $0.00` after all discount allocations — **not** by any separate "gift" product flag.
+- **Target Margin Erosion:** The business established a target gross margin benchmark ($20,636.61 required baseline profit) for this merchandise. Giving it away for free constitutes a 100% promotional discount markdown against the catalog MSRP baseline.
+- **F01 Policy Confirmation:** In Formula F01, giving away product at a 100% effective discount is an intentional marketing expenditure that directly erodes merchandise gross margin below the target floor. Therefore, it is strictly classified as promotional margin leakage ($L_{\text{promo}} = \$48,494.20$) and isolated under the dedicated taxonomy key **`100_percent_free_gift`** (not to be confused with products sold at a partial discount to near-zero). Merchants who run free-gift campaigns can immediately filter and audit this specific marketing investment separately from coupon leaks.
 
 ---
 
@@ -482,7 +482,7 @@ All 46 automated unit and regression tests passed with 100% compliance:
 | `sku` | Line Item | `String` | Shopify `LineItem.sku` | Stock keeping unit |
 | `quantity` | Line Item | `Integer` | Shopify `LineItem.quantity` | Purchased unit quantity |
 | `active_quantity` | Line Item | `Integer` | `LineItem.current_quantity` | Remaining physical quantity post-return |
-| `original_price` | Line Item | `Float ($)` | `variant.compare_at_price` or `price` | Catalog MSRP before any promotional markdowns |
+| `original_price` | Line Item | `Float ($)` | Resolved via explicit 4-tier priority: ① `original_unit_price` (Shopify line-item field, when present) → ② `variant.compare_at_price` (when > selling price, signals a product markdown) → ③ catalog `price` field → ④ line-item `price` as final fallback | Catalog MSRP / pre-promotion baseline price. Used consistently for Baseline Revenue ($R_{\text{base}}$), Baseline Gross Profit ($\Pi_{\text{base}}$), Target Profit ($\Pi_{\text{target}}$), and Promotional Leakage ($L_{\text{promo}}$). |
 | `original_line_value`| Line Item | `Float ($)` | `original_price * active_quantity` | Baseline gross revenue before promotional discounts ($R_{\text{base}}$) |
 | `discounted_unit_price`| Line Item | `Float ($)` | Shopify `discountedUnitPriceSet` | Stated unit selling price after product markdowns |
 | `line_discount_amount`| Line Item | `Float ($)` | Shopify `total_discount` or compare-at | Dollar markdown applied directly to the line item |
@@ -496,7 +496,7 @@ All 46 automated unit and regression tests passed with 100% compliance:
 | `cogs_used` | Line Item | `Float ($)` | Resolved COGS waterfall | Unit supplier product cost |
 | `total_cogs` | Line Item | `Float ($)` | `cogs_used * active_quantity` | Total direct product cost of goods sold |
 | `cogs_source` | Line Item | `String` | Resolved tier | `inventory_item`, `historical`, `category_estimate`, `storewide_default` |
-| `target_margin_used`| Line Item | `Float (%)` | Resolved target margin hierarchy | Threshold margin floor (SKU metafield > Taxonomy > Default 35%) |
+| `target_margin_used`| Line Item | `Float (%)` | Resolved via 5-tier cascade (Hierarchy B) | Threshold margin floor resolved in priority order: **SKU Metafield** → **Category Taxonomy** → **Product Type** → **90-Day Historical Realized Margin** → **Storewide Default (35%)**. Consistent with the full hierarchy defined in §4. |
 | `target_profit` | Line Item | `Float ($)` | `original_line_value * target_margin` | Required baseline gross profit to achieve target margin ($\Pi_{\text{target}}$) |
 | `baseline_gross_profit`| Line Item| `Float ($)` | `original_line_value - total_cogs` | Gross profit available at full MSRP without discount ($\Pi_{\text{base}}$) |
 | `actual_gross_profit`| Line Item | `Float ($)` | `net_revenue - total_cogs` | Realized gross profit post-discount ($\Pi_{\text{actual}}$) |
@@ -527,7 +527,7 @@ All 46 automated unit and regression tests passed with 100% compliance:
 - [x] **COGS vs. Target Margin Disambiguation:** 4-Tier COGS Waterfall (Tier 2 Historical PO = 2,146 lines) and 5-Tier Target Margin Cascade (Tier 4 Historical Realized Margin = 511 lines) documented as separate, non-conflicting business hierarchies.
 - [x] **Observation Threshold Sensitivity:** $N \ge 5$ (511 historical / 124 fallback -> 66.21% score) vs. $N \ge 10$ (389 historical / 246 fallback -> 66.18% score) verified with sensitivity delta of only 0.03%.
 - [x] **Multi-Grain Catalog Proof:** Empirical verification that $1 \text{ product} = 1 \text{ variant}$ across 600 catalog items, proving Variant Grain $\equiv$ Product Grain and explaining why 100% of historical lookups resolve at SKU/variant level.
-- [x] **Storewide Fallback (35%) Robustness:** Sensitivity analysis across 25%–45% proves score varies by $< 0.08\%$ due to low line share (0.46%).
+- [x] **Storewide Fallback (35%) Robustness:** Sensitivity analysis across 25%–45% proves score varies by **at most 0.08 percentage points** (66.29% at 25% fallback vs. 66.21% at configured 35%) due to low fallback line share (0.46%).
 - [x] **Shopify Discount Conservation:** $\sum (\text{Line Markdown} + \text{Cart Allocation}) == \text{Order.total\_discounts}$ verified across all 17,410 evaluated orders with **0 mismatches**.
 - [x] **Free Gift Business Policy:** 236 lines of 100% free gifts ($28,172.57 COGS, $20,636.61 target profit) confirmed as promotional leakage and isolated in dedicated taxonomy.
 - [x] **Leakage Classification Conservation:** Four mutually exclusive categories ($20,060 + 1,864 + 4,659 + 236 = 26,819$) achieve 100.00% line conservation.
@@ -535,3 +535,24 @@ All 46 automated unit and regression tests passed with 100% compliance:
 - [x] **Top 20 Line-Level Integrity:** Order totals strictly equal the sum of displayed line-level incremental leakage ($18,358.61 total).
 
 **Audit Conclusion:** Formula F01 is certified mathematically correct, business-compliant, internally synchronized, and production-ready.
+
+---
+
+## 14. Documentation Change Log
+
+**v2.3.1 — Documentation Consistency Fixes (2026-09-21)**  
+*No formula, engine, test, or numerical result was altered. Changes are wording/clarity only.*
+
+| # | Section | Change |
+| :---: | :--- | :--- |
+| 1 | §4 — Hierarchy B, Tier 3 row | Fixed typo "Superceded" → "Superseded". Clarified that Product Type is superseded by Tier 2 *in this dataset* and remains a standalone fallback when taxonomy is absent. |
+| 2 | §4 — Hierarchy B, Tier 4 row | Added explicit **SKU/Variant grain** label and replaced "mean" with "trimmed mean" to match the implementation description in §5.1. |
+| 3 | §12 — Data Dictionary, `original_price` | Replaced vague `` `variant.compare_at_price` or `price` `` with the explicit 4-tier priority chain (`original_unit_price` → `compare_at_price` → catalog `price` → line-item `price`) matching TC-41. Added note that this field is used consistently for $R_{\text{base}}$, $\Pi_{\text{base}}$, $\Pi_{\text{target}}$, and $L_{\text{promo}}$. |
+| 4 | §5.4 — Storewide Fallback (35%) | Removed unsupported phrase "contractual minimum". Replaced with "configured storewide benchmark — the default gross margin floor applied when no SKU-level, category-level, or sufficient historical data is available." |
+| 5 | §1 — Executive Summary table | Added `f01_dollar_loss = $0.00` to the Count-Based Attainment Score row and the Healthy Discounted Orders definition so the threshold is explicit and auditable. |
+| 6 | §2 — Mathematical Definitions, item 9 | Added a *Leakage Rate Definition* note explaining that the ratio $\frac{\sum L_{\text{promo}}}{\sum \Pi_{\text{target}}}$ is measured against the target profit baseline and **can exceed 100%** in severe scenarios (e.g. free-gift lines); the score is floored at 0.00%. |
+| 7 | §8 — Free Gift Business Rule | Reworded question to clarify "100% promotional-price-override free gifts". Added that identification is based on `net_selling_price = $0.00` after discount allocations — not a product flag. Bolded the taxonomy key **`100_percent_free_gift`** and added a parenthetical distinguishing it from near-zero partial discounts. |
+| 8 | §12 — Data Dictionary, `target_margin_used` | Expanded truncated description "SKU metafield > Taxonomy > Default 35%" to the full 5-tier production hierarchy: SKU Metafield → Category Taxonomy → Product Type → 90-Day Historical → Storewide Default (35%), matching Hierarchy B in §4. |
+| 9 | §5.2 — Historical-Margin Grain | Removed contradictory multi-grain traversal formula. Retitled section to "Historical-Margin Calculation Grain". Clarified that Tier 4 resolves at SKU/Variant grain; noted that variant = parent in this dataset; preserved empirical proof unchanged. |
+| 10 | §5.4 conclusion & §13 checklist | Changed "less than 0.08 percentage points" → "at most 0.08 percentage points" (exact maximum from table: 66.29% − 66.21% = 0.08 pp). Updated checklist to use "percentage points" and cite the bounding values. |
+| 11 | Header — Document Version | Synchronized document version from 2.3.0 → 2.3.1 to match the Documentation Change Log. |
