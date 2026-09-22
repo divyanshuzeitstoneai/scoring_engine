@@ -54,6 +54,7 @@ class LineItemEvaluation:
     input_confidence: InputConfidence
     quarantine_reason: Optional[str] = None
     cash_refund_allocated: float = 0.0
+    product_id: Optional[int] = None
 
 @dataclass
 class OrderEvaluation:

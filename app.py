@@ -1206,7 +1206,7 @@ with tab_sandbox:
 
     for idx, li in enumerate(f01_res.line_items, 1):
         with st.container():
-            st.markdown(f"##### Line Item #{idx}: {li.sku or 'SKU-SIM-101'} (Variant #{li.variant_id} | Product #{li.product_id or 3001})")
+            st.markdown(f"##### Line Item #{idx}: {li.sku or 'SKU-SIM-101'} (Variant #{li.variant_id} | Line ID #{li.line_item_id})")
 
             c_base, c_disc, c_cogs, c_tgt = st.columns(4)
 

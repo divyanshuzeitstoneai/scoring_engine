@@ -47,6 +47,7 @@ def evaluate_line_item(
     line_id = int(line_item.get("id", 0))
     variant_id = line_item.get("variant_id")
     sku = line_item.get("sku")
+    product_id = int(line_item.get("product_id")) if line_item.get("product_id") is not None else None
 
     purchased_qty = int(line_item.get("quantity", 1))
     current_qty = line_item.get("current_quantity")
@@ -304,7 +305,8 @@ def evaluate_line_item(
         leakage_reason=leakage_reason,
         input_confidence=confidence,
         quarantine_reason=quarantine_reason,
-        cash_refund_allocated=allocated_cash_refund
+        cash_refund_allocated=allocated_cash_refund,
+        product_id=product_id
     )
 
 def evaluate_order(
