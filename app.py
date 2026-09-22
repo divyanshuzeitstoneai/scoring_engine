@@ -107,6 +107,17 @@ st.markdown("""
         font-weight: 600;
         display: inline-block;
     }
+
+    .badge-audit {
+        background-color: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        padding: 3px 10px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-block;
+    }
     
     .callout-box {
         background: rgba(15, 23, 42, 0.6);
@@ -681,8 +692,8 @@ with tab_f03:
         <h4 style="margin: 0 0 8px 0; color: #f8fafc;">{sc['id']} — {sc['title']}</h4>
         <p style="margin: 0; color: #cbd5e1; font-size: 0.95rem;">{sc['desc']}</p>
         <div style="margin-top: 10px;">
-            <span class="badge-{'critical' if sc['severity']=='Critical' else 'high' if sc['severity']=='High' else 'medium' if sc['severity']=='Medium' else 'healthy'}">Severity: {sc['severity']}</span>
-            <span class="badge-high" style="margin-left: 8px;">{sc['leak_type']}</span>
+            <span class="badge-{'audit' if sc['severity'] in ['Critical', 'High'] else 'medium' if sc['severity']=='Medium' else 'healthy'}">Severity: {sc['severity']}</span>
+            <span class="badge-audit" style="margin-left: 8px;">Audit Classification: {sc['leak_type']}</span>
             <span style="margin-left: 12px; font-size: 0.85rem; color: #94a3b8;">Driver: <code>{sc['schema_driver']}</code></span>
         </div>
     </div>
