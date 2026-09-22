@@ -33,6 +33,7 @@ def evaluate_line_item(
     product_data: Optional[Dict[str, Any]],
     order_created_at: Optional[datetime],
     allocated_cash_refund: float,
+    product_margin_table: Optional[Dict[Any, float]] = None,
     category_margin_table: Optional[Dict[str, float]] = None,
     product_type_margin_table: Optional[Dict[str, float]] = None,
     historical_lookup_fn: Optional[Callable[[int, datetime], Optional[float]]] = None,
@@ -88,7 +89,7 @@ def evaluate_line_item(
 
     is_free_gift = (unit_selling_price == 0.0 and original_price > 0.0) or (line_item.get("is_free_gift") is True)
 
-    # 2. Resolve Target Margin (5-Tier Cascade)
+    # 2. Resolve Target Margin (6-Tier Cascade)
     metafields = product_data.get("metafields") if product_data else None
     cat_info = product_data.get("category") if product_data else None
     category_name = cat_info.get("name") if isinstance(cat_info, dict) else (cat_info if isinstance(cat_info, str) else None)
@@ -96,10 +97,12 @@ def evaluate_line_item(
 
     target_margin, margin_source, is_margin_estimated = resolve_target_margin(
         metafields=metafields,
+        product_id=line_item.get("product_id"),
         category_name=category_name,
         product_type=product_type,
-        category_margin_table=category_margin_table or CATEGORY_MARGIN_TABLE,
-        product_type_margin_table=product_type_margin_table or PRODUCT_TYPE_MARGIN_TABLE,
+        product_margin_table=product_margin_table,
+        category_margin_table=category_margin_table if category_margin_table is not None else CATEGORY_MARGIN_TABLE,
+        product_type_margin_table=product_type_margin_table if product_type_margin_table is not None else PRODUCT_TYPE_MARGIN_TABLE,
         variant_id=variant_id,
         order_created_at=order_created_at,
         historical_margin_fn=historical_margin_fn
@@ -308,11 +311,13 @@ def evaluate_order(
     order: Dict[str, Any],
     catalog_by_variant_id: Optional[Dict[int, Any]] = None,
     catalog_by_product_id: Optional[Dict[int, Any]] = None,
+    product_margin_table: Optional[Dict[Any, float]] = None,
     category_margin_table: Optional[Dict[str, float]] = None,
     product_type_margin_table: Optional[Dict[str, float]] = None,
     historical_lookup_fn: Optional[Callable[[int, datetime], Optional[float]]] = None,
     historical_margin_fn: Optional[Callable[[int, datetime], Optional[float]]] = None,
-    force_unresolved_cogs: bool = False
+    force_unresolved_cogs: bool = False,
+    skip_cohort_filter: bool = False
 ) -> OrderEvaluation:
     """
     Evaluates an entire Shopify Order against F01 discount leakage criteria.
@@ -328,37 +333,39 @@ def evaluate_order(
     order_id = int(order["id"])
 
     # 1. Cohort Filtering
-    is_included, exclusion_reason = filter_order_cohort(order, catalog_by_variant_id)
     is_disc = is_order_discounted(order, catalog_by_variant_id)
-
-    if not is_included:
-        return OrderEvaluation(
-            order_id=order_id,
-            status="excluded",
-            is_discounted=is_disc,
-            exclusion_reason=exclusion_reason,
-            total_original_value=0.0,
-            total_net_revenue=0.0,
-            total_discounts=0.0,
-            total_cogs=0.0,
-            target_minimum_profit=0.0,
-            baseline_gross_profit=0.0,
-            actual_gross_profit=0.0,
-            inherent_cogs_deficit=0.0,
-            total_target_shortfall=0.0,
-            f01_flagged=False,
-            f01_dollar_loss=0.0,
-            negative_gross_profit=False,
-            shipping_revenue_collected=0.0,
-            carrier_shipping_cost=None,
-            gateway_processing_fee=None,
-            other_f03_costs=0.0,
-            actual_cash_contribution=None,
-            f03_escalation_status="unable_to_determine",
-            f03_escalation_reason="order_excluded_from_cohort",
-            input_confidence="real",
-            line_items=[]
-        )
+    if not skip_cohort_filter:
+        is_included, exclusion_reason = filter_order_cohort(order, catalog_by_variant_id)
+        if not is_included:
+            return OrderEvaluation(
+                order_id=order_id,
+                status="excluded",
+                is_discounted=is_disc,
+                exclusion_reason=exclusion_reason,
+                total_original_value=0.0,
+                total_net_revenue=0.0,
+                total_discounts=0.0,
+                total_cogs=0.0,
+                target_minimum_profit=0.0,
+                baseline_gross_profit=0.0,
+                actual_gross_profit=0.0,
+                inherent_cogs_deficit=0.0,
+                total_target_shortfall=0.0,
+                f01_flagged=False,
+                f01_dollar_loss=0.0,
+                negative_gross_profit=False,
+                shipping_revenue_collected=0.0,
+                carrier_shipping_cost=None,
+                gateway_processing_fee=None,
+                other_f03_costs=0.0,
+                actual_cash_contribution=None,
+                f03_escalation_status="unable_to_determine",
+                f03_escalation_reason="order_excluded_from_cohort",
+                input_confidence="real",
+                line_items=[]
+            )
+    else:
+        exclusion_reason = None
 
     raw_created_at = order.get("created_at")
     order_time = None
@@ -437,6 +444,7 @@ def evaluate_order(
             product_data=product_data,
             order_created_at=order_time,
             allocated_cash_refund=line_cash_alloc,
+            product_margin_table=product_margin_table,
             category_margin_table=category_margin_table,
             product_type_margin_table=product_type_margin_table,
             historical_lookup_fn=historical_lookup_fn,

@@ -101,6 +101,7 @@ def run_f01_pipeline(
     }
     target_margin_source_counts = {
         "metafield": 0,
+        "product_margin": 0,
         "taxonomy": 0,
         "product_type": 0,
         "historical_margin": 0,

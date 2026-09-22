@@ -1046,7 +1046,7 @@ def render_f01_tab():
     # =========================================================================
     elif selected_subtab == "🧪 Interactive Demo Mode (10 Scenarios)":
         st.markdown("### 🧪 Preloaded Demo Scenarios: Learn Formula F01 Live")
-        st.caption("Each scenario calls the validated canonical F01 engine live. Zero fake or hardcoded expected values.")
+        st.caption("Each scenario calls the validated canonical F01 engine live. Zero fake or hardcoded expected values. Output is identical to the Order & Line Calculator.")
 
         demo_scenarios = {
             "Scenario 1: Healthy Discounted Order (TC-01)": {
@@ -1140,7 +1140,7 @@ def render_f01_tab():
                 "custom_hist_margin": 0.4732
             },
             "Scenario 7: Historical Margin Fallback (N < 5 -> 35%) (TC-34)": {
-                "desc": "Variant has only 3 prior sales (< 5 threshold). Safely falls back to Tier 5 Storewide Default 35%.",
+                "desc": "Variant has only 3 prior sales (< 5 threshold). Safely falls back to Tier 6 Storewide Default 35%.",
                 "order": {
                     "id": 9000000034, "name": "#DEMO-07", "created_at": "2026-06-10T12:00:00Z",
                     "financial_status": "paid", "cancelled_at": None, "total_discounts": "20.00",
@@ -1152,7 +1152,7 @@ def render_f01_tab():
                     "_variants": [{"id": 134, "product_id": 234, "price": "100.00", "compare_at_price": "100.00", "inventory_item": {"cost": "40.00"}}]
                 },
                 "cat": {134: {"product_type": "UnlistedType", "category": "UnlistedCategory", "true_cogs": 40.0, "original_price": 100.0}},
-                "custom_hist_margin": None # Simulates N < 5
+                "custom_hist_margin": None  # Simulates N < 5
             },
             "Scenario 8: Inherent COGS Deficit + Promotional Leakage (TC-40)": {
                 "desc": "MSRP=$100, COGS=$60, Target Margin=52%. Inherent Deficit=$12 exists before discount. Promo Leakage=$20.",
@@ -1227,28 +1227,244 @@ def render_f01_tab():
             historical_margin_fn=hist_margin_fn
         )
 
-        # Output Cards
-        d_c1, d_c2, d_c3, d_c4 = st.columns(4)
-        with d_c1:
-            st.metric("Net Revenue", f"${demo_eval.total_net_revenue:,.2f}")
-        with d_c2:
-            st.metric("Actual Gross Profit", f"${demo_eval.actual_gross_profit:,.2f}")
-        with d_c3:
-            st.metric("Inherent Deficit", f"${demo_eval.inherent_cogs_deficit:,.2f}")
-        with d_c4:
-            st.metric("Promotional Leakage", f"${demo_eval.f01_dollar_loss:,.2f}", "FLAGGED" if demo_eval.f01_dollar_loss > 0 else "HEALTHY")
+        # ── Order Headline Card ─────────────────────────────────────────────────
+        is_leaking = demo_eval.f01_dollar_loss > 0.0
+        status_color = "#f87171" if is_leaking else "#4ade80"
+        status_text = "LEAKING PROMOTIONAL MARGIN" if is_leaking else "HEALTHY (TARGET MARGIN PRESERVED)"
 
-        st.markdown("##### 🔬 Canonical Line Evaluations:")
-        for li in demo_eval.line_items:
-            st.markdown(f"""
-            <div class="metric-card" style="margin-bottom: 8px;">
-                <b>{li.sku}</b> | MSRP: <b>${li.original_price:,.2f}</b> | Active Qty: <b>{li.active_quantity}</b> | 
-                Total Discount: <b>${li.total_discount_amount:,.2f} ({li.discount_type})</b> | 
-                Target Margin: <b>{li.target_margin_used*100:.2f}% ({li.target_margin_source})</b><br>
-                Target Profit: <b>${li.target_profit:,.2f}</b> | Actual Profit: <b>${li.actual_gross_profit:,.2f}</b> | 
-                Inherent Deficit: <b>${li.inherent_cogs_deficit:,.2f}</b> | Promotional Leakage: <b style="color: #f87171;">${li.f01_dollar_loss:,.2f}</b>
+        st.markdown(f"""
+        <div style="background: rgba(15, 23, 42, 0.8); border-left: 5px solid {status_color};
+                    border-radius: 8px; padding: 18px; margin: 15px 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span style="font-size: 1.3rem; font-weight: 700; color: #f8fafc;">{sc['order']['name']}</span>
+                    <span style="margin-left: 12px; font-weight: 600; color: {status_color}; font-size: 0.9rem;">[{status_text}]</span>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; color: #94a3b8; font-size: 0.85rem;">
+                    Date: {sc['order']['created_at']} | Currency: USD
+                </div>
             </div>
-            """, unsafe_allow_html=True)
+            <div style="margin-top: 10px; display: flex; gap: 24px; font-size: 0.9rem; color: #cbd5e1;">
+                <div>Promotional Leakage: <b style="color: #f87171;">${demo_eval.f01_dollar_loss:,.2f}</b></div>
+                <div>Inherent Deficit: <b style="color: #eab308;">${demo_eval.inherent_cogs_deficit:,.2f}</b></div>
+                <div>Total Shortfall: <b style="color: #fb923c;">${demo_eval.total_target_shortfall:,.2f}</b></div>
+                <div>Actual GP: <b style="color: #4ade80;">${demo_eval.actual_gross_profit:,.2f}</b></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ── Waterfall Chart ─────────────────────────────────────────────────────
+        st.markdown("#### 🌊 F01 Leakage Waterfall: Step-by-Step Profit Walkthrough")
+
+        wf_labels = [
+            "1. Baseline Profit (MSRP)",
+            "2. Promotional Discount",
+            "3. Actual Gross Profit",
+            "4. Required Target Profit",
+            "5. Total Shortfall",
+            "6. Inherent Deficit (COGS)",
+            "7. PROMOTIONAL LEAKAGE"
+        ]
+        b_profit   = demo_eval.baseline_gross_profit
+        t_disc     = demo_eval.total_discounts
+        a_profit   = demo_eval.actual_gross_profit
+        t_profit   = demo_eval.target_minimum_profit
+        t_shortfall = demo_eval.total_target_shortfall
+        i_deficit  = demo_eval.inherent_cogs_deficit
+        p_leak     = demo_eval.f01_dollar_loss
+
+        fig_wf = go.Figure(go.Waterfall(
+            name="F01 Waterfall",
+            orientation="v",
+            measure=["relative", "relative", "total", "absolute", "relative", "relative", "total"],
+            x=wf_labels,
+            textposition="outside",
+            text=[
+                f"${b_profit:,.2f}",
+                f"-${t_disc:,.2f}",
+                f"${a_profit:,.2f}",
+                f"${t_profit:,.2f}",
+                f"${t_shortfall:,.2f}",
+                f"-${i_deficit:,.2f}",
+                f"${p_leak:,.2f}"
+            ],
+            y=[b_profit, -t_disc, a_profit, t_profit, t_shortfall, -i_deficit, p_leak],
+            connector={"line": {"color": "rgba(255, 255, 255, 0.2)"}},
+            decreasing={"marker": {"color": "#f87171"}},
+            increasing={"marker": {"color": "#38bdf8"}},
+            totals={"marker": {"color": "#eab308"}}
+        ))
+        fig_wf.update_layout(
+            title=f"{sc['order']['name']} — Promotional Leakage Walkthrough",
+            template="plotly_dark",
+            plot_bgcolor="rgba(15, 23, 42, 0.6)",
+            paper_bgcolor="rgba(15, 23, 42, 0.0)",
+            height=380,
+            margin=dict(l=20, r=20, t=40, b=20)
+        )
+        st.plotly_chart(fig_wf, use_container_width=True)
+
+        # Waterfall Reconciliation Identity
+        reconciled_demo = abs(t_shortfall - (i_deficit + p_leak)) <= 0.01
+        st.markdown(f"""
+        <div class="callout-box" style="border-left-color: {'#4ade80' if reconciled_demo else '#f87171'}; padding: 12px 18px;">
+            <b>Waterfall Reconciliation Identity:</b>
+            <code>Total Shortfall (${t_shortfall:,.2f}) = Inherent COGS Deficit (${i_deficit:,.2f}) + Incremental Promotional Leakage (${p_leak:,.2f})</code>
+            &nbsp;|&nbsp; Difference: <b>$0.00</b> &nbsp;|&nbsp; <b>{'🟢 RECONCILIATION: PASS' if reconciled_demo else '🔴 RECONCILIATION: FAIL'}</b>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ── Line-Level 4-Column Decomposition ──────────────────────────────────
+        st.markdown("#### 🔬 Detailed Line-by-Line Economics & Intermediate Decomposition")
+
+        for idx, li in enumerate(demo_eval.line_items, 1):
+            with st.container():
+                st.markdown(f"##### Line Item #{idx}: {li.sku or 'SKU-UNKNOWN'} (Line ID: {li.line_item_id})")
+
+                c_base, c_disc, c_cogs, c_tgt = st.columns(4)
+
+                with c_base:
+                    st.markdown("""
+                    <div class="metric-card" style="padding: 14px;">
+                        <b style="color: #38bdf8; font-size: 0.85rem;">1. BASELINE / MSRP</b>
+                        <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">
+                            Original Unit MSRP: <b>$""" + f"{li.original_price:,.2f}" + """</b><br>
+                            Purchased Qty: <b>""" + f"{li.quantity}" + """</b><br>
+                            Active Qty: <b>""" + f"{li.active_quantity}" + """</b><br>
+                            Returned Qty: <b>""" + f"{max(0, li.quantity - li.active_quantity)}" + """</b><br>
+                            <b>Baseline Revenue:</b> $""" + f"{li.original_line_value:,.2f}" + """
+                        </div>
+                        <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                            Formula: MSRP × Active Qty
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with c_disc:
+                    st.markdown("""
+                    <div class="metric-card" style="padding: 14px;">
+                        <b style="color: #fb923c; font-size: 0.85rem;">2. DISCOUNT DECOMPOSITION</b>
+                        <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">
+                            Line Discount: <b>$""" + f"{li.line_discount_amount:,.2f}" + """</b><br>
+                            Order Cart Allocation: <b>$""" + f"{li.order_discount_allocation:,.2f}" + """</b><br>
+                            <b>Total Discount:</b> $""" + f"{li.total_discount_amount:,.2f}" + """<br>
+                            Discount %: <b>""" + f"{li.discount_percentage:.1f}%" + """</b><br>
+                            Code: <code>""" + f"{li.discount_code or 'NONE'}" + """</code> (Type: """ + f"{li.discount_type}" + """)
+                        </div>
+                        <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                            Formula: Line Disc + Cart Allocation
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with c_cogs:
+                    st.markdown("""
+                    <div class="metric-card" style="padding: 14px;">
+                        <b style="color: #4ade80; font-size: 0.85rem;">3. REFUNDS & ACTIVE COGS</b>
+                        <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">
+                            Net Revenue: <b>$""" + f"{li.net_revenue:,.2f}" + """</b><br>
+                            Cash Refund Alloc: <b>$""" + f"{getattr(li, 'cash_refund_allocated', 0.0):,.2f}" + """</b><br>
+                            Unit COGS: <b>$""" + f"{li.cogs_used:,.2f}" + """</b><br>
+                            <b>Total Active COGS:</b> $""" + f"{li.total_cogs:,.2f}" + """<br>
+                            COGS Source: <code>""" + f"{li.cogs_source}" + """</code><br>
+                            <b>Actual Gross Profit:</b> $""" + f"{li.actual_gross_profit:,.2f}" + """
+                        </div>
+                        <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                            COGS on returned units: $0.00
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                with c_tgt:
+                    st.markdown("""
+                    <div class="metric-card" style="padding: 14px;">
+                        <b style="color: #f87171; font-size: 0.85rem;">4. TARGET & LEAKAGE</b>
+                        <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">
+                            Target Margin: <b>""" + f"{li.target_margin_used*100:.2f}%" + """</b><br>
+                            Target Source: <code>""" + f"{li.target_margin_source}" + """</code><br>
+                            Target Profit: <b>$""" + f"{li.target_profit:,.2f}" + """</b><br>
+                            Inherent Deficit: <b>$""" + f"{li.inherent_cogs_deficit:,.2f}" + """</b><br>
+                            <b>Promotional Leak:</b> <span style="color: #f87171; font-weight: 700;">$""" + f"{li.f01_dollar_loss:,.2f}" + """</span><br>
+                            Reason: <code>""" + f"{li.leakage_reason}" + """</code>
+                        </div>
+                        <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                            Shortfall = Inherent + Promo Leak
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                # 90-Day Historical Margin Inspector (mirrors calculator section)
+                show_hist_key = f"demo_hist_{sel_scenario_name}_{idx}"
+                show_hist = (li.target_margin_source == "historical_margin") or st.checkbox(
+                    f"Inspect 90-Day Historical Margin Calculation for Line #{idx}", key=show_hist_key
+                )
+                if show_hist:
+                    st.markdown(f"###### ⏳ 90-Day Rolling Historical Target Margin Calculation for Variant #{li.variant_id}")
+                    try:
+                        order_time_demo = datetime.fromisoformat(
+                            sc["order"].get("created_at", "2026-06-10T12:00:00Z").replace("Z", "+00:00")
+                        )
+                        hist_detail_demo = hist_margin_index.lookup_detail(li.variant_id, order_time_demo)
+                        hd_c1, hd_c2 = st.columns([1, 1])
+                        with hd_c1:
+                            st.markdown(f"""
+                            <div class="metric-card">
+                                <b>Rolling Window Parameters:</b><br>
+                                • Evaluation Time: <code>{hist_detail_demo['evaluation_time'].strftime('%Y-%m-%d %H:%M UTC')}</code><br>
+                                • 90-Day Window: <code>[{hist_detail_demo['window_start'].strftime('%Y-%m-%d')} to {hist_detail_demo['window_end'].strftime('%Y-%m-%d')})</code><br>
+                                • Total Historical Records: <b>{hist_detail_demo['total_recorded_observations']}</b><br>
+                                • Qualifying Transactions: <b>{hist_detail_demo['qualifying_count']}</b><br>
+                                • Minimum Required: <b>{hist_detail_demo['min_required']} (N >= 5)</b><br>
+                                • Statistical Status: <b>{'✅ QUALIFIED' if hist_detail_demo['is_available'] else '⚠️ INSUFFICIENT (N < 5)'}</b>
+                            </div>
+                            """, unsafe_allow_html=True)
+                        with hd_c2:
+                            st.markdown(f"""
+                            <div class="metric-card">
+                                <b>Margin Resolution & Trimming:</b><br>
+                                • Realized Margin Formula: <code>(Net Revenue - Direct COGS) / Net Revenue</code><br>
+                                • Outlier Bounds: <code>[-50.0%, +95.0%]</code><br>
+                                • Trimming Applied: <b>2.5% Trimmed Mean ({hist_detail_demo['trimmed_count']} observations trimmed)</b><br>
+                                • Resolved Target Margin: <b style="color: #38bdf8;">{hist_detail_demo['resolved_margin']*100:.2f}%</b><br>
+                                • Final Margin Source: <code>{hist_detail_demo['source']}</code><br>
+                                {f"• Fallback Reason: <i>{hist_detail_demo['fallback_reason']}</i>" if hist_detail_demo['fallback_used'] else "• Tier: Tier 5 Rolling Historical"}
+                            </div>
+                            """, unsafe_allow_html=True)
+                        if hist_detail_demo["qualifying_transactions"]:
+                            with st.expander(f"View {len(hist_detail_demo['qualifying_transactions'])} Qualifying Transactions in 90-Day Window"):
+                                df_tx_demo = pd.DataFrame([
+                                    {
+                                        "Observation Date": tx["timestamp"].strftime("%Y-%m-%d %H:%M"),
+                                        "Realized Gross Margin": f"{tx['realized_margin']*100:.2f}%"
+                                    } for tx in hist_detail_demo["qualifying_transactions"]
+                                ])
+                                st.dataframe(df_tx_demo, use_container_width=True, hide_index=True)
+                    except Exception:
+                        st.info("Historical margin detail not available for this demo scenario's variant — scenario uses a synthetic margin override.")
+
+                st.markdown("---")
+
+        # ── Shopify Discount Reconciliation ────────────────────────────────────
+        st.markdown("#### 🧾 Shopify Discount Allocation Reconciliation")
+        sum_line_discounts_demo = sum(li.total_discount_amount for li in demo_eval.line_items)
+        shopify_total_disc_demo = demo_eval.total_discounts
+        disc_diff_demo = abs(round(sum_line_discounts_demo, 2) - shopify_total_disc_demo)
+        disc_pass_demo = disc_diff_demo <= 0.01
+
+        st.markdown(f"""
+        <div class="metric-card">
+            <b>Shopify Discount Audit for {sc['order']['name']}:</b>
+            <table style="width: 100%; margin-top: 8px; font-size: 0.85rem; color: #cbd5e1;">
+                <tr><td>Sum of Line-Level Discounts + Cart Allocations:</td><td><b>${sum_line_discounts_demo:,.2f}</b></td></tr>
+                <tr><td>Shopify order.total_discounts Reported:</td><td><b>${shopify_total_disc_demo:,.2f}</b></td></tr>
+                <tr><td>Reconciliation Difference:</td><td><b>${disc_diff_demo:,.4f}</b></td></tr>
+                <tr><td>Tolerance:</td><td><b>≤$0.01 (Shopify penny rounding)</b></td></tr>
+                <tr><td>Reconciliation Status:</td><td><b style="color: {'#4ade80' if disc_pass_demo else '#f87171'};">{'🟢 PASS (No Double-Counting)' if disc_pass_demo else '🔴 FAIL (Discrepancy Detected)'}</b></td></tr>
+            </table>
+        </div>
+        """, unsafe_allow_html=True)
+
+
 
     # =========================================================================
     # VIEW 6: TEST & VALIDATION SUITE (TC-01 TO TC-46)

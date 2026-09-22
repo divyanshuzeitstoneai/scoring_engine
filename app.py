@@ -825,17 +825,50 @@ with tab_sandbox:
                                    help="🟢 F01: Unit product cost. Multiplied by Active Qty to obtain Total COGS.")
         sim_cogs_src = st.selectbox(
             "COGS Resolution Tier:",
-            ["Direct Catalog (InventoryItem)", "Historical PO Cost (Tier 2)", "Category Imputation (Tier 3)", "Storewide Fallback (Tier 4)", "Unresolved Missing COGS (Quarantine)"],
+            [
+                "Direct Catalog (InventoryItem) [Tier 1]",
+                "Historical PO Cost (Tier 2)",
+                "Category Imputation (Tier 3)",
+                "Storewide Fallback (Tier 4)",
+                "Unresolved Missing COGS (Quarantine)"
+            ],
             help="🟢 F01: Evidentiary confidence tier. Unresolved COGS safely routes order to quarantine."
         )
+        target_src_options = [
+            "SKU Metafield (Tier 1)",
+            "Product-Specific Margin (Tier 2)",
+            "Category Taxonomy (Tier 3)",
+            "Product Type (Tier 4)",
+            "90-Day Historical Margin (Tier 5)",
+            "Storewide Default Fallback 35% (Tier 6)"
+        ]
         sim_target_src = st.selectbox(
             "Target Margin Source:",
-            ["SKU Metafield (Tier 1)", "Category Taxonomy (Tier 2)", "Product Type (Tier 3)", "90-Day Historical Margin (Tier 4)", "Storewide Default Fallback 35% (Tier 5)"],
-            help="🟢 F01: Determines where the required gross margin floor originates in the 5-tier hierarchy."
+            target_src_options,
+            help="🟢 F01: Determines where the required gross margin floor originates in the canonical 6-tier hierarchy."
         )
-        default_target_val = 35.0 if "Storewide" in sim_target_src else (52.0 if "Category" in sim_target_src else (45.0 if "Product Type" in sim_target_src else 47.32))
-        sim_target_margin = st.slider("Target Margin Floor (%):", min_value=0.0, max_value=90.0, value=float(default_target_val), step=0.5,
-                                      help="🟢 F01: Required gross margin percentage floor. Target Profit = Baseline Revenue × Target Margin %.")
+        if "Tier 1" in sim_target_src:
+            tier_default = 48.0
+        elif "Tier 2" in sim_target_src:
+            tier_default = 50.0
+        elif "Tier 3" in sim_target_src:
+            tier_default = 52.0
+        elif "Tier 4" in sim_target_src:
+            tier_default = 45.0
+        elif "Tier 5" in sim_target_src:
+            tier_default = 47.32
+        else:
+            tier_default = 35.0
+
+        sim_target_margin = st.slider(
+            "Target Margin Floor (%):",
+            min_value=0.0,
+            max_value=90.0,
+            value=float(tier_default),
+            step=0.5,
+            key=f"target_margin_slider_{sim_target_src[:6]}",
+            help="🟢 F01: Required gross margin percentage floor. Target Profit = Baseline Revenue × Target Margin %."
+        )
 
     with s_col4:
         st.markdown("##### 🚚 4. Operational Costs")
@@ -856,8 +889,75 @@ with tab_sandbox:
     # -------------------------------------------------------------------------
     # CANONICAL ENGINE COMPUTATION: FORMULA F01
     # -------------------------------------------------------------------------
-    is_quarantined_cogs = (sim_cogs_src == "Unresolved Missing COGS (Quarantine)")
-    
+    is_quarantined_cogs = ("Quarantine" in sim_cogs_src)
+    is_direct_cogs = ("Direct Catalog" in sim_cogs_src)
+    is_hist_cogs = ("Historical PO Cost" in sim_cogs_src)
+    is_cat_impute_cogs = ("Category Imputation" in sim_cogs_src)
+    is_storewide_cogs = ("Storewide Fallback" in sim_cogs_src)
+
+    if is_direct_cogs:
+        variant_inv_item = {"cost": str(sim_cogs)}
+        hist_cogs_fn = None
+        force_unres_cogs = False
+        true_catalog_cost = sim_cogs
+    elif is_hist_cogs:
+        variant_inv_item = {}
+        hist_cogs_fn = lambda vid, dt: float(sim_cogs)
+        force_unres_cogs = False
+        true_catalog_cost = 0.0
+    elif is_cat_impute_cogs:
+        variant_inv_item = {}
+        hist_cogs_fn = None
+        force_unres_cogs = False
+        true_catalog_cost = 0.0
+    elif is_storewide_cogs:
+        variant_inv_item = {}
+        hist_cogs_fn = None
+        force_unres_cogs = False
+        true_catalog_cost = 0.0
+    else:  # Quarantine
+        variant_inv_item = {}
+        hist_cogs_fn = None
+        force_unres_cogs = True
+        true_catalog_cost = 0.0
+
+    # Configure Target Margin 6-Tier Cascade
+    metafield_sim = None
+    product_margin_sim = None
+    cat_table_sim = None
+    pt_table_sim = None
+    hist_margin_fn_sim = None
+    cat_name = "Apparel & Accessories > Clothing"
+    pt_name = "Apparel"
+
+    if "Tier 1" in sim_target_src:
+        metafield_sim = sim_target_margin / 100.0
+        cat_table_sim = {"Apparel & Accessories > Clothing": 0.52}
+        pt_table_sim = {"Apparel": 0.45}
+    elif "Tier 2" in sim_target_src:
+        product_margin_sim = {3001: sim_target_margin / 100.0, "3001": sim_target_margin / 100.0}
+        cat_table_sim = {"Apparel & Accessories > Clothing": 0.52}
+        pt_table_sim = {"Apparel": 0.45}
+    elif "Tier 3" in sim_target_src:
+        cat_table_sim = {"Apparel & Accessories > Clothing": sim_target_margin / 100.0}
+        pt_table_sim = {"Apparel": 0.45}
+    elif "Tier 4" in sim_target_src:
+        cat_table_sim = {}  # Empty dict prevents Category Taxonomy from shadowing Product Type
+        pt_table_sim = {"Apparel": sim_target_margin / 100.0}
+    elif "Tier 5" in sim_target_src:
+        cat_table_sim = {}
+        pt_table_sim = {}
+        hist_margin_fn_sim = lambda vid, dt: sim_target_margin / 100.0
+    elif "Tier 6" in sim_target_src:
+        cat_table_sim = {}
+        pt_table_sim = {}
+        hist_margin_fn_sim = None
+
+    if is_cat_impute_cogs and (cat_table_sim is not None and not cat_table_sim):
+        cat_table_sim = {"Apparel & Accessories > Clothing": sim_target_margin / 100.0}
+    elif is_storewide_cogs:
+        cat_table_sim = {}
+
     sim_order_payload = {
         "id": 9999999999,
         "name": "#SIM-001",
@@ -887,32 +987,31 @@ with tab_sandbox:
             "product_id": 3001,
             "price": str(sim_msrp),
             "compare_at_price": str(sim_msrp),
-            "inventory_item": {"cost": str(sim_cogs)} if not is_quarantined_cogs else {}
+            "inventory_item": variant_inv_item
         }]
     }
 
     catalog_sim = {
         2001: {
-            "product_type": "Apparel",
-            "category": "Apparel & Accessories > Clothing",
-            "true_cogs": sim_cogs if not is_quarantined_cogs else 0.0,
+            "product_type": pt_name,
+            "category": cat_name,
+            "true_cogs": true_catalog_cost,
             "original_price": sim_msrp,
-            "metafield_margin": (sim_target_margin / 100.0) if "Metafield" in sim_target_src else None
+            "metafield_margin": metafield_sim
         }
     }
-
-    cat_table_sim = {"Apparel & Accessories > Clothing": sim_target_margin / 100.0} if "Category" in sim_target_src else None
-    pt_table_sim = {"Apparel": sim_target_margin / 100.0} if "Product Type" in sim_target_src else None
-    hist_margin_fn_sim = (lambda vid, dt: sim_target_margin / 100.0) if "Historical" in sim_target_src else None
 
     # Call canonical F01 evaluation engine live!
     f01_res = evaluate_order(
         order=sim_order_payload,
         catalog_by_variant_id=catalog_sim,
+        product_margin_table=product_margin_sim,
         category_margin_table=cat_table_sim,
         product_type_margin_table=pt_table_sim,
+        historical_lookup_fn=hist_cogs_fn,
         historical_margin_fn=hist_margin_fn_sim,
-        force_unresolved_cogs=is_quarantined_cogs
+        force_unresolved_cogs=force_unres_cogs,
+        skip_cohort_filter=True
     )
 
     # -------------------------------------------------------------------------
@@ -922,6 +1021,10 @@ with tab_sandbox:
     st.markdown("#### 📋 Parameter Audit Matrix: Which Parameters Calculate the F01 Score?")
     st.caption("Demonstrates the exact mathematical role of each parameter and cleanly separates F01 product margin from F03 operational cash.")
 
+    resolved_target_pct = (f01_res.line_items[0].target_margin_used * 100.0) if f01_res.line_items else sim_target_margin
+    resolved_target_tier = f01_res.line_items[0].target_margin_source if f01_res.line_items else sim_target_src
+    resolved_cogs_tier = f01_res.line_items[0].cogs_source if f01_res.line_items else sim_cogs_src
+
     audit_records = [
         {"Parameter": "Unit Baseline MSRP", "Configured Value": f"${sim_msrp:,.2f}", "Used in F01?": "🟢 YES", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "Defines Baseline Revenue floor = MSRP × Active Qty ($" + f"{f01_res.total_original_value:,.2f}" + ")"},
         {"Parameter": "Unit Selling Price", "Configured Value": f"${sim_selling_price:,.2f}", "Used in F01?": "🟢 YES", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "Identifies product markdowns when selling price < MSRP"},
@@ -930,8 +1033,8 @@ with tab_sandbox:
         {"Parameter": "Cart / Coupon Allocation", "Configured Value": f"${sim_cart_disc:,.2f} total", "Used in F01?": "🟢 YES", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "Order-level discount allocation; checked to prevent double counting"},
         {"Parameter": "Post-Purchase Cash Refund", "Configured Value": f"${sim_cash_refund:,.2f}", "Used in F01?": "🟢 YES", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "Deducted from active revenue to obtain Net Revenue ($" + f"{f01_res.total_net_revenue:,.2f}" + ")"},
         {"Parameter": "Unit Baseline COGS", "Configured Value": f"${sim_cogs:,.2f}", "Used in F01?": "🟢 YES", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "Active COGS ($" + f"{f01_res.total_cogs:,.2f}" + ") subtracted from Net Revenue to get Actual GP"},
-        {"Parameter": "COGS Source Tier", "Configured Value": sim_cogs_src, "Used in F01?": "🟢 YES", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "Determines confidence tier. Unresolved COGS triggers quarantine gate"},
-        {"Parameter": "Target Margin % & Source", "Configured Value": f"{sim_target_margin:.1f}% ({sim_target_src})", "Used in F01?": "🟢 YES", "Used in F03?": "❌ NO", "Mathematical Role in Formula F01": "Multiplied by Baseline Revenue to define Target Profit ($" + f"{f01_res.target_minimum_profit:,.2f}" + ")"},
+        {"Parameter": "COGS Source Tier", "Configured Value": f"{sim_cogs_src} -> Resolved: {resolved_cogs_tier}", "Used in F01?": "🟢 YES", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "Determines confidence tier. Unresolved COGS triggers quarantine gate"},
+        {"Parameter": "Target Margin % & Source", "Configured Value": f"{resolved_target_pct:.1f}% (Resolved Tier: {resolved_target_tier})", "Used in F01?": "🟢 YES", "Used in F03?": "❌ NO", "Mathematical Role in Formula F01": "Multiplied by Baseline Revenue to define Target Profit ($" + f"{f01_res.target_minimum_profit:,.2f}" + ")"},
         {"Parameter": "Customer-Paid Shipping", "Configured Value": f"${sim_cust_shipping:,.2f}", "Used in F01?": "❌ NO", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "NOT USED BY F01. Shipping revenue belongs strictly to F03 cash floor"},
         {"Parameter": "Courier Shipping Label Cost", "Configured Value": f"${sim_carrier_cost:,.2f}", "Used in F01?": "❌ NO", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "NOT USED BY F01. Outbound delivery expense belongs to F03"},
         {"Parameter": "Payment Gateway Fee", "Configured Value": sim_gateway, "Used in F01?": "❌ NO", "Used in F03?": "🔵 YES", "Mathematical Role in Formula F01": "NOT USED BY F01. Transaction processing cost belongs to F03"},
@@ -946,118 +1049,245 @@ with tab_sandbox:
     st.markdown("---")
     st.markdown("#### 📉 Formula F01 Results: Promotional Gross Margin Leakage")
 
-    if f01_res.status == "quarantined":
-        st.error(f"🚨 ORDER QUARANTINED: {f01_res.quarantine_reason}. Quarantined orders are safely excluded from the evaluated F01 score.")
+    is_leaking = (f01_res.f01_dollar_loss > 0.0)
+    is_quarantined = (f01_res.status == "quarantined")
+    if is_quarantined:
+        status_color = "#fb923c"
+        status_text = "QUARANTINED (EVIDENTIARY COGS DEFICIT)"
+    elif is_leaking:
+        status_color = "#f87171"
+        status_text = "LEAKING PROMOTIONAL MARGIN"
     else:
-        # F01 Order Score calculation
-        tgt_profit = f01_res.target_minimum_profit
-        promo_leak = f01_res.f01_dollar_loss
-        inh_deficit = f01_res.inherent_cogs_deficit
-        tot_shortfall = f01_res.total_target_shortfall
-        act_profit = f01_res.actual_gross_profit
-        base_profit = f01_res.baseline_gross_profit
+        status_color = "#4ade80"
+        status_text = "HEALTHY (TARGET MARGIN PRESERVED)"
 
-        retention_score = max(0.0, (1.0 - (promo_leak / tgt_profit))) * 100.0 if tgt_profit > 0 else 100.0
-        health_status = "HEALTHY" if retention_score >= 85.0 else ("WARNING" if retention_score >= 65.0 else "CRITICAL")
-        badge_cls = "badge-healthy" if health_status == "HEALTHY" else ("badge-medium" if health_status == "WARNING" else "badge-critical")
-
-        res_col1, res_col2, res_col3, res_col4 = st.columns(4)
-        with res_col1:
-            st.markdown(f"""
-            <div class="metric-card" style="border-left: 4px solid {'#4ade80' if health_status == 'HEALTHY' else ('#fb923c' if health_status == 'WARNING' else '#f87171')};">
-                <div class="metric-title">F01 Order Retention Score</div>
-                <div class="metric-val">{retention_score:.2f}%</div>
-                <div class="metric-sub"><span class="{badge_cls}">{health_status} BAND</span></div>
-                <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
-                    Retained: {retention_score:.2f}% | Leaked: {(100.0 - retention_score):.2f}%
-                </div>
+    # Order Headline Banner (Mirrors Calculator Section in UI Dashboard)
+    st.markdown(f"""
+    <div style="background: rgba(15, 23, 42, 0.8); border-left: 5px solid {status_color};
+                border-radius: 8px; padding: 18px; margin: 15px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <span style="font-size: 1.3rem; font-weight: 700; color: #f8fafc;">SIMULATED ORDER #SIM-001</span>
+                <span style="margin-left: 12px; font-weight: 600; color: {status_color}; font-size: 0.9rem;">[{status_text}]</span>
             </div>
-            """, unsafe_allow_html=True)
-
-        with res_col2:
-            st.markdown(f"""
-            <div class="metric-card" style="border-left: 4px solid #f87171;">
-                <div class="metric-title">Promotional Margin Leakage</div>
-                <div class="metric-val" style="color: #f87171;">${promo_leak:,.2f}</div>
-                <div class="metric-sub">Caused Strictly by Discounts</div>
-                <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
-                    Target Shortfall: ${tot_shortfall:,.2f}
-                </div>
+            <div style="font-family: 'JetBrains Mono', monospace; color: #94a3b8; font-size: 0.85rem;">
+                Status: <b>{f01_res.status.upper()}</b> | Currency: USD
             </div>
-            """, unsafe_allow_html=True)
+        </div>
+        <div style="margin-top: 10px; display: flex; gap: 24px; font-size: 0.9rem; color: #cbd5e1;">
+            <div>Promotional Leakage: <b style="color: #f87171;">${f01_res.f01_dollar_loss:,.2f}</b></div>
+            <div>Inherent Deficit: <b style="color: #eab308;">${f01_res.inherent_cogs_deficit:,.2f}</b></div>
+            <div>Total Shortfall: <b style="color: #fb923c;">${f01_res.total_target_shortfall:,.2f}</b></div>
+            <div>Actual GP: <b style="color: #4ade80;">${f01_res.actual_gross_profit:,.2f}</b></div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-        with res_col3:
-            st.markdown(f"""
-            <div class="metric-card" style="border-left: 4px solid #eab308;">
-                <div class="metric-title">Inherent COGS Deficit</div>
-                <div class="metric-val" style="color: #eab308;">${inh_deficit:,.2f}</div>
-                <div class="metric-sub">Pre-Existing Supplier/MSRP Gap</div>
-                <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
-                    Existed before any discount
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+    if is_quarantined:
+        st.warning(f"🚨 **ORDER QUARANTINED**: {f01_res.quarantine_reason}. Quarantined orders are safely isolated to protect storewide promotional leakage reporting from corrupted/missing COGS inputs.")
 
-        with res_col4:
-            st.markdown(f"""
-            <div class="metric-card" style="border-left: 4px solid #38bdf8;">
-                <div class="metric-title">Actual vs Target Profit</div>
-                <div class="metric-val" style="color: #4ade80;">${act_profit:,.2f}</div>
-                <div class="metric-sub">Required Target: ${tgt_profit:,.2f}</div>
-                <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
-                    Baseline MSRP GP: ${base_profit:,.2f}
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+    # F01 Order Score calculation
+    tgt_profit = f01_res.target_minimum_profit
+    promo_leak = f01_res.f01_dollar_loss
+    inh_deficit = f01_res.inherent_cogs_deficit
+    tot_shortfall = f01_res.total_target_shortfall
+    act_profit = f01_res.actual_gross_profit
+    base_profit = f01_res.baseline_gross_profit
 
-        # Reactive Plotly Waterfall for the Simulated Order
-        fig_sim_wf = go.Figure(go.Waterfall(
-            name="F01 Live Simulation",
-            orientation="v",
-            measure=["relative", "relative", "total", "absolute", "relative", "relative", "total"],
-            x=[
-                "1. Baseline Profit",
-                "2. Promotional Discount",
-                "3. Actual Gross Profit",
-                "4. Target Profit",
-                "5. Total Shortfall",
-                "6. Inherent Deficit",
-                "7. Promotional Leakage"
-            ],
-            textposition="outside",
-            text=[
-                f"${base_profit:,.2f}",
-                f"-${f01_res.total_discounts:,.2f}",
-                f"${act_profit:,.2f}",
-                f"${tgt_profit:,.2f}",
-                f"${tot_shortfall:,.2f}",
-                f"-${inh_deficit:,.2f}",
-                f"${promo_leak:,.2f}"
-            ],
-            y=[base_profit, -f01_res.total_discounts, act_profit, tgt_profit, tot_shortfall, -inh_deficit, promo_leak],
-            connector={"line": {"color": "rgba(255, 255, 255, 0.2)"}},
-            decreasing={"marker": {"color": "#f87171"}},
-            increasing={"marker": {"color": "#38bdf8"}},
-            totals={"marker": {"color": "#eab308"}}
-        ))
+    retention_score = max(0.0, (1.0 - (promo_leak / tgt_profit))) * 100.0 if tgt_profit > 0 else 100.0
+    health_status = "HEALTHY" if retention_score >= 85.0 else ("WARNING" if retention_score >= 65.0 else "CRITICAL")
+    badge_cls = "badge-healthy" if health_status == "HEALTHY" else ("badge-medium" if health_status == "WARNING" else "badge-critical")
 
-        fig_sim_wf.update_layout(
-            title="Reactive Order Waterfall: From Baseline MSRP Profit to Incremental Promotional Leakage",
-            template="plotly_dark",
-            plot_bgcolor="rgba(15, 23, 42, 0.6)",
-            paper_bgcolor="rgba(15, 23, 42, 0.0)",
-            height=340,
-            margin=dict(l=20, r=20, t=40, b=20)
-        )
-        st.plotly_chart(fig_sim_wf, use_container_width=True)
-
-        # Verification Identity Callout
-        reconciled_sim = abs(tot_shortfall - (inh_deficit + promo_leak)) <= 0.01
+    res_col1, res_col2, res_col3, res_col4 = st.columns(4)
+    with res_col1:
         st.markdown(f"""
-        <div class="callout-box" style="border-left-color: {'#4ade80' if reconciled_sim else '#f87171'}; padding: 12px 18px;">
-            <b>Mathematical Reconciliation:</b> 
-            <code>Total Shortfall (${tot_shortfall:,.2f}) = Inherent COGS Deficit (${inh_deficit:,.2f}) + Incremental Promotional Leakage (${promo_leak:,.2f})</code>
-            &nbsp;|&nbsp; Difference: <b>$0.00</b> &nbsp;|&nbsp; <b>{'🟢 PASS' if reconciled_sim else '🔴 FAIL'}</b>
+        <div class="metric-card" style="border-left: 4px solid {'#4ade80' if health_status == 'HEALTHY' else ('#fb923c' if health_status == 'WARNING' else '#f87171')};">
+            <div class="metric-title">F01 Order Retention Score</div>
+            <div class="metric-val">{retention_score:.2f}%</div>
+            <div class="metric-sub"><span class="{badge_cls}">{health_status} BAND</span></div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
+                Retained: {retention_score:.2f}% | Leaked: {(100.0 - retention_score):.2f}%
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with res_col2:
+        st.markdown(f"""
+        <div class="metric-card" style="border-left: 4px solid #f87171;">
+            <div class="metric-title">Promotional Margin Leakage</div>
+            <div class="metric-val" style="color: #f87171;">${promo_leak:,.2f}</div>
+            <div class="metric-sub">Caused Strictly by Discounts</div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
+                Target Shortfall: ${tot_shortfall:,.2f}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with res_col3:
+        st.markdown(f"""
+        <div class="metric-card" style="border-left: 4px solid #eab308;">
+            <div class="metric-title">Inherent COGS Deficit</div>
+            <div class="metric-val" style="color: #eab308;">${inh_deficit:,.2f}</div>
+            <div class="metric-sub">Pre-Existing Supplier/MSRP Gap</div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
+                Existed before any discount
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with res_col4:
+        st.markdown(f"""
+        <div class="metric-card" style="border-left: 4px solid #38bdf8;">
+            <div class="metric-title">Actual vs Target Profit</div>
+            <div class="metric-val" style="color: #4ade80;">${act_profit:,.2f}</div>
+            <div class="metric-sub">Required Target: ${tgt_profit:,.2f}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
+                Baseline MSRP GP: ${base_profit:,.2f}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Reactive Plotly Waterfall for the Simulated Order
+    fig_sim_wf = go.Figure(go.Waterfall(
+        name="F01 Live Simulation",
+        orientation="v",
+        measure=["relative", "relative", "total", "absolute", "relative", "relative", "total"],
+        x=[
+            "1. Baseline Profit",
+            "2. Promotional Discount",
+            "3. Actual Gross Profit",
+            "4. Target Profit",
+            "5. Total Shortfall",
+            "6. Inherent Deficit",
+            "7. Promotional Leakage"
+        ],
+        textposition="outside",
+        text=[
+            f"${base_profit:,.2f}",
+            f"-${f01_res.total_discounts:,.2f}",
+            f"${act_profit:,.2f}",
+            f"${tgt_profit:,.2f}",
+            f"${tot_shortfall:,.2f}",
+            f"-${inh_deficit:,.2f}",
+            f"${promo_leak:,.2f}"
+        ],
+        y=[base_profit, -f01_res.total_discounts, act_profit, tgt_profit, tot_shortfall, -inh_deficit, promo_leak],
+        connector={"line": {"color": "rgba(255, 255, 255, 0.2)"}},
+        decreasing={"marker": {"color": "#f87171"}},
+        increasing={"marker": {"color": "#38bdf8"}},
+        totals={"marker": {"color": "#eab308"}}
+    ))
+
+    fig_sim_wf.update_layout(
+        title="Reactive Order Waterfall: From Baseline MSRP Profit to Incremental Promotional Leakage",
+        template="plotly_dark",
+        plot_bgcolor="rgba(15, 23, 42, 0.6)",
+        paper_bgcolor="rgba(15, 23, 42, 0.0)",
+        height=340,
+        margin=dict(l=20, r=20, t=40, b=20)
+    )
+    st.plotly_chart(fig_sim_wf, use_container_width=True)
+
+    # Verification Identity Callout
+    reconciled_sim = abs(tot_shortfall - (inh_deficit + promo_leak)) <= 0.01
+    st.markdown(f"""
+    <div class="callout-box" style="border-left-color: {'#4ade80' if reconciled_sim else '#f87171'}; padding: 12px 18px;">
+        <b>Mathematical Reconciliation Identity:</b> 
+        <code>Total Shortfall (${tot_shortfall:,.2f}) = Inherent COGS Deficit (${inh_deficit:,.2f}) + Incremental Promotional Leakage (${promo_leak:,.2f})</code>
+        &nbsp;|&nbsp; Difference: <b>$0.00</b> &nbsp;|&nbsp; <b>{'🟢 PASS' if reconciled_sim else '🔴 FAIL'}</b>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # -------------------------------------------------------------------------
+    # DETAILED LINE-BY-LINE DECOMPOSITION (MATCHING CALCULATOR SECTION)
+    # -------------------------------------------------------------------------
+    st.markdown("#### 🔬 Detailed Line-by-Line Economics & Intermediate Decomposition")
+    st.caption("Inspects the exact intermediate arithmetic, discount decomposition, COGS resolution, and target margin derivation.")
+
+    for idx, li in enumerate(f01_res.line_items, 1):
+        with st.container():
+            st.markdown(f"##### Line Item #{idx}: {li.sku or 'SKU-SIM-101'} (Variant #{li.variant_id} | Product #{li.product_id or 3001})")
+
+            c_base, c_disc, c_cogs, c_tgt = st.columns(4)
+
+            with c_base:
+                st.markdown("""
+                <div class="metric-card" style="padding: 14px;">
+                    <b style="color: #38bdf8; font-size: 0.85rem;">1. BASELINE / MSRP</b>
+                    <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">
+                        Original Unit MSRP: <b>$""" + f"{li.original_price:,.2f}" + """</b><br>
+                        Purchased Qty: <b>""" + f"{li.quantity}" + """</b><br>
+                        Active Qty: <b>""" + f"{li.active_quantity}" + """</b><br>
+                        Returned Qty: <b>""" + f"{max(0, li.quantity - li.active_quantity)}" + """</b><br>
+                        <b>Baseline Revenue:</b> $""" + f"{li.original_line_value:,.2f}" + """
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                        Formula: MSRP × Active Qty
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            with c_disc:
+                st.markdown("""
+                <div class="metric-card" style="padding: 14px;">
+                    <b style="color: #fb923c; font-size: 0.85rem;">2. DISCOUNT DECOMPOSITION</b>
+                    <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">
+                        Line Markdown: <b>$""" + f"{li.line_discount_amount:,.2f}" + """</b><br>
+                        Order Cart Allocation: <b>$""" + f"{li.order_discount_allocation:,.2f}" + """</b><br>
+                        <b>Total Discount:</b> $""" + f"{li.total_discount_amount:,.2f}" + """<br>
+                        Discount %: <b>""" + f"{li.discount_percentage:.1f}%" + """</b><br>
+                        Code: <code>""" + f"{li.discount_code or 'NONE'}" + """</code> (Type: """ + f"{li.discount_type}" + """)
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                        Formula: Line Disc + Cart Allocation
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            with c_cogs:
+                st.markdown("""
+                <div class="metric-card" style="padding: 14px;">
+                    <b style="color: #4ade80; font-size: 0.85rem;">3. REFUNDS & ACTIVE COGS</b>
+                    <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">
+                        Net Revenue: <b>$""" + f"{li.net_revenue:,.2f}" + """</b><br>
+                        Cash Refund Alloc: <b>$""" + f"{li.cash_refund_allocated:,.2f}" + """</b><br>
+                        Unit COGS: <b>$""" + f"{li.cogs_used:,.2f}" + """</b><br>
+                        <b>Total Active COGS:</b> $""" + f"{li.total_cogs:,.2f}" + """<br>
+                        COGS Source: <code>""" + f"{li.cogs_source}" + """</code><br>
+                        <b>Actual Gross Profit:</b> $""" + f"{li.actual_gross_profit:,.2f}" + """
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                        COGS on returned units: $0.00
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            with c_tgt:
+                st.markdown("""
+                <div class="metric-card" style="padding: 14px;">
+                    <b style="color: #f87171; font-size: 0.85rem;">4. TARGET & LEAKAGE</b>
+                    <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">
+                        Target Margin: <b>""" + f"{li.target_margin_used*100:.2f}%" + """</b><br>
+                        Target Source: <code>""" + f"{li.target_margin_source}" + """</code><br>
+                        Target Profit: <b>$""" + f"{li.target_profit:,.2f}" + """</b><br>
+                        Inherent Deficit: <b>$""" + f"{li.inherent_cogs_deficit:,.2f}" + """</b><br>
+                        <b>Promotional Leak:</b> <span style="color: #f87171; font-weight: 700;">$""" + f"{li.f01_dollar_loss:,.2f}" + """</span><br>
+                        Reason: <code>""" + f"{li.leakage_reason}" + """</code>
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                        Shortfall = Inherent + Promo Leak
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+    if "Tier 5" in sim_target_src:
+        st.markdown("""
+        <div class="callout-box" style="border-left-color: #38bdf8; margin: 12px 0;">
+            <b>⏳ Tier 5: 90-Day Rolling Historical Margin Calculation Methodology:</b><br>
+            • <b>Window:</b> Strict 90-day lookback <code>[order_time - 90d, order_time)</code>.<br>
+            • <b>Qualifying Observations:</b> Standard completed, non-cancelled, non-refunded transactions.<br>
+            • <b>Statistical Guard:</b> Requires <code>N ≥ 5</code> qualifying transactions. Realized margins outside <code>[-50%, +95%]</code> trimmed as outliers.<br>
+            • <b>Fallback:</b> If <code>N &lt; 5</code>, safely cascades down to Tier 6 Storewide Default (35.0%).
         </div>
         """, unsafe_allow_html=True)
 

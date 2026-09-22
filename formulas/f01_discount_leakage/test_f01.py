@@ -8,7 +8,7 @@ Validates TC-01 through TC-32 unit tests covering:
 - Pricing edge cases (free gifts, zero price, null/corrupted price)
 - Multi-unit quantities
 - 4-Tier COGS waterfall & input sanity guards
-- Target margin hierarchy (metafield, taxonomy, product type, storewide default)
+- Target margin hierarchy (metafield, product_margin, taxonomy, product type, storewide default)
 - Boundary margin conditions
 - Refund and cancellation lifecycle
 - Arithmetic reproducibility and double-counting prevention
@@ -757,28 +757,32 @@ def run_f01_unit_tests() -> List[TestCaseResult]:
         p_36
     ))
 
-    # TC-37: 5-Tier Target Margin Precedence Hierarchy
-    # Verify Tier 1 > Tier 2 > Tier 3 > Tier 4 > Tier 5
+    # TC-37: 6-Tier Target Margin Precedence Hierarchy
+    # Verify Tier 1 > Tier 2 > Tier 3 > Tier 4 > Tier 5 > Tier 6
     m_mf = [{"namespace": "custom", "key": "target_margin", "value": "0.55"}]
     t_hist_fn = lambda vid, dt: 0.42
-    # Tier 1 Metafield beats Tier 2 Taxonomy
-    m_t1, s_t1, _ = resolve_target_margin(metafields=m_mf, category_name="Apparel & Accessories > Clothing", historical_margin_fn=t_hist_fn)
-    # Tier 2 Taxonomy beats Tier 3 Product Type
-    m_t2, s_t2, _ = resolve_target_margin(category_name="Apparel & Accessories > Clothing", product_type="Electronics", historical_margin_fn=t_hist_fn)
-    # Tier 3 Product Type beats Tier 4 Historical Margin
-    m_t3, s_t3, _ = resolve_target_margin(product_type="Apparel", variant_id=123, order_created_at=t_order_33, historical_margin_fn=t_hist_fn)
-    # Tier 4 Historical Margin beats Tier 5 Storewide Default
-    m_t4, s_t4, _ = resolve_target_margin(variant_id=123, order_created_at=t_order_33, historical_margin_fn=t_hist_fn)
+    product_margin_table_37 = {9001: 0.44}  # Product ID 9001 has a product-specific margin
+    # Tier 1 Metafield beats Tier 2 Product
+    m_t1, s_t1, _ = resolve_target_margin(metafields=m_mf, product_id=9001, product_margin_table=product_margin_table_37, category_name="Apparel & Accessories > Clothing", historical_margin_fn=t_hist_fn)
+    # Tier 2 Product margin beats Tier 3 Taxonomy
+    m_t2, s_t2, _ = resolve_target_margin(product_id=9001, product_margin_table=product_margin_table_37, category_name="Apparel & Accessories > Clothing", product_type="Electronics", historical_margin_fn=t_hist_fn)
+    # Tier 3 Taxonomy beats Tier 4 Product Type
+    m_t3, s_t3, _ = resolve_target_margin(category_name="Apparel & Accessories > Clothing", product_type="Electronics", historical_margin_fn=t_hist_fn)
+    # Tier 4 Product Type beats Tier 5 Historical Margin
+    m_t4, s_t4, _ = resolve_target_margin(product_type="Apparel", variant_id=123, order_created_at=t_order_33, historical_margin_fn=t_hist_fn)
+    # Tier 5 Historical Margin beats Tier 6 Storewide Default
+    m_t5, s_t5, _ = resolve_target_margin(variant_id=123, order_created_at=t_order_33, historical_margin_fn=t_hist_fn)
     p_37 = (s_t1 == "metafield" and m_t1 == 0.55 and
-            s_t2 == "taxonomy" and m_t2 == 0.52 and
-            s_t3 == "product_type" and m_t3 == 0.52 and
-            s_t4 == "historical_margin" and m_t4 == 0.42)
+            s_t2 == "product_margin" and m_t2 == 0.44 and
+            s_t3 == "taxonomy" and m_t3 == 0.52 and
+            s_t4 == "product_type" and m_t4 == 0.52 and
+            s_t5 == "historical_margin" and m_t5 == 0.42)
     results.append(TestCaseResult(
-        "TC-37", "5-Tier Target Margin Precedence: Tier 1 > Tier 2 > Tier 3 > Tier 4 > Tier 5",
-        "Combinations of metafield, taxonomy, product type, and historical margin",
+        "TC-37", "6-Tier Target Margin Precedence: Tier 1 > Tier 2 > Tier 3 > Tier 4 > Tier 5 > Tier 6",
+        "Combinations of metafield, product_margin, taxonomy, product type, and historical margin",
         "Higher priority tiers strictly override lower tiers",
-        "T1=metafield (0.55), T2=taxonomy (0.52), T3=product_type (0.52), T4=historical (0.42)",
-        f"T1={s_t1} ({m_t1}), T2={s_t2} ({m_t2}), T3={s_t3} ({m_t3}), T4={s_t4} ({m_t4})",
+        "T1=metafield (0.55), T2=product_margin (0.44), T3=taxonomy (0.52), T4=product_type (0.52), T5=historical (0.42)",
+        f"T1={s_t1} ({m_t1}), T2={s_t2} ({m_t2}), T3={s_t3} ({m_t3}), T4={s_t4} ({m_t4}), T5={s_t5} ({m_t5})",
         p_37
     ))
 

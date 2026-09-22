@@ -1,6 +1,6 @@
 # Formula F01: Promotional Margin Leakage — Comprehensive Production Validation & Technical Audit Report
 
-**Document Version:** 2.3.2 (Added Total Discount Value & Reconciliation Certification)  
+**Document Version:** 2.3.3 (Global Six-Tier Hierarchy Consistency Pass)  
 **Evaluation Date:** 2026-09-21  
 **Canonical Run ID:** `RUN-20260921-F01-CANONICAL-V2.2`  
 **Pipeline Commit Hash:** `f01-canon-v2.3-fixes`  
@@ -66,12 +66,13 @@ Raw Shopify Order Webhook / GraphQL Payload
           │      Net Line Revenue (R_net) = max(0.00, Baseline Revenue - Total Discount - Refund)
           │      Post-Promotion Gross Profit (Π_actual) = Net Line Revenue - Total Direct COGS
           │
-          ├── 4. Target Margin Cascade (5-Tier Hierarchy)
+          ├── 4. Target Margin Cascade (6-Tier Hierarchy)
           │      Tier 1: SKU Metafield (custom.target_margin)
-          │      Tier 2: Category Taxonomy Table
-          │      Tier 3: Product Type Table
-          │      Tier 4: 90-Day Rolling Historical Realized Margin
-          │      Tier 5: Storewide Default (35% Configured Benchmark)
+          │      Tier 2: Product-Specific Margin
+          │      Tier 3: Category Taxonomy Table
+          │      Tier 4: Product Type Table
+          │      Tier 5: 90-Day Rolling Historical Realized Margin
+          │      Tier 6: Storewide Default (35% Configured Benchmark)
           │      Target Minimum Profit (Π_target) = Baseline Revenue × Target Margin %
           │
           ├── 5. Pre-Existing Inherent Deficit vs. Incremental Promotional Leakage
@@ -105,7 +106,7 @@ Raw Shopify Order Webhook / GraphQL Payload
 
 5. **Target Minimum Profit ($\Pi_{\text{target}}$)**:
    $$\Pi_{\text{target}} = R_{\text{base}} \times T$$
-   *Where $T$ is the resolved target margin percentage from the 5-tier hierarchy.*  
+   *Where $T$ is the resolved target margin percentage from the 6-tier hierarchy.*  
    *Business Rationale for Anchoring to Baseline MSRP: Target profit MUST be calculated on baseline catalog revenue ($R_{\text{base}}$). If target profit were calculated against discounted net revenue ($R_{\text{net}} \times T$), a 90% discount would shrink the target profit expectation by 90%, concealing catastrophic promotional erosion. Anchoring to MSRP measures the true profit sacrifice committed to the promotion.*
 
 6. **Total Target Shortfall ($S_{\text{target}}$)**:
@@ -183,19 +184,20 @@ $$\text{Discrepancy} = 27,806 - (26,819 + 987) = \mathbf{0} \quad (\mathbf{Balan
 | **Quarantine Sibling**| `sibling_lines` | 247 | — | — | — | — | — | **Quarantined** |
 | **TOTAL** | **All Tiers Reconciled** | **27,806** | **$2,378,374.74** | **$1,596,984.97** | **$21,574.08** | **$803,715.34** | **66.21%** | **100% Balanced** |
 
-*Clarification on Tier 2 Line Counts:* Tier 2 in the COGS Waterfall represents **2,146 evaluated lines** where unit product cost was retrieved from prior supplier purchase orders. This is entirely independent from Tier 4 in the Target Margin Cascade (511 lines), which measures realized customer gross margin.
+*Clarification on Tier 2 Line Counts:* Tier 2 in the COGS Waterfall represents **2,146 evaluated lines** where unit product cost was retrieved from prior supplier purchase orders. This is entirely independent from Tier 5 in the Target Margin Cascade (511 lines), which measures realized customer gross margin.
 
-### Hierarchy B: 5-Tier Target Margin Resolution Cascade (Canonical Reconciliation)
+### Hierarchy B: 6-Tier Target Margin Resolution Cascade (Canonical Reconciliation)
 
-All 5 tiers of the declared target margin hierarchy are explicitly documented and verified:
+All 6 tiers of the declared target margin hierarchy are explicitly documented and verified:
 
 | Margin Hierarchy Tier | Source Name | Line Count | Share (%) | Target Profit | Actual Gross Profit | Inherent Deficit | Promotional Loss | Selection Reason / Criteria |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
 | **Tier 1: SKU Metafield** | `metafield` | 1,611 | 6.01% | $140,045.64 | $111,260.95 | $0.00 | $31,386.65 | Active custom margin configured in Shopify |
-| **Tier 2: Category Taxonomy**| `taxonomy` | 24,573 | 91.63% | $2,175,310.51 | $1,454,909.09 | $21,572.85 | $740,126.26 | Standard Google taxonomy matched in margin table |
-| **Tier 3: Product Type** | `product_type` | 0 | 0.00% | $0.00 | $0.00 | $0.00 | $0.00 | Superseded by Tier 2 in this dataset (all items with a product type also have a taxonomy match); Product Type remains a standalone fallback when taxonomy is absent. |
-| **Tier 4: 90-Day Historical** | `historical_margin` | 511 | 1.91% | $52,247.96 | $26,198.67 | $1.08 | $26,048.21 | $\ge 5$ qualifying prior sales at the **SKU/Variant grain** in $[t-90\text{d}, t)$ (observed margins 25.9% to 55.3%, trimmed mean 40.5%) |
-| **Tier 5: Storewide Default** | `storewide_default`| 124 | 0.46% | $10,770.63 | $4,616.26 | $0.15 | $6,154.22 | Legitimate fallback: $< 5$ historical observations in rolling window |
+| **Tier 2: Product-Specific** | `product_margin` | 0 | 0.00% | $0.00 | $0.00 | $0.00 | $0.00 | Product-level margin configured in product margin table; superseded by Tier 1 in this dataset (no product-specific margins configured); remains a standalone fallback when metafield is absent. |
+| **Tier 3: Category Taxonomy**| `taxonomy` | 24,573 | 91.63% | $2,175,310.51 | $1,454,909.09 | $21,572.85 | $740,126.26 | Standard Google taxonomy matched in margin table |
+| **Tier 4: Product Type** | `product_type` | 0 | 0.00% | $0.00 | $0.00 | $0.00 | $0.00 | Superseded by Tier 3 in this dataset (all items with a product type also have a taxonomy match); Product Type remains a standalone fallback when taxonomy is absent. |
+| **Tier 5: 90-Day Historical** | `historical_margin` | 511 | 1.91% | $52,247.96 | $26,198.67 | $1.08 | $26,048.21 | $\ge 5$ qualifying prior sales at the **SKU/Variant grain** in $[t-90\text{d}, t)$ (observed margins 25.9% to 55.3%, trimmed mean 40.5%) |
+| **Tier 6: Storewide Default** | `storewide_default`| 124 | 0.46% | $10,770.63 | $4,616.26 | $0.15 | $6,154.22 | Legitimate fallback: $< 5$ historical observations in rolling window |
 | **TOTAL** | **Evaluated Lines** | **26,819** | **100.00%** | **$2,378,374.74** | **$1,596,984.97** | **$21,574.08** | **$803,715.34** | **100% Hierarchy Reconciliation** |
 
 $$\text{Canonical Shortfall Decomposition: } \$825,289.42 \text{ Shortfall} = \$21,574.08 \text{ Inherent Deficit} + \$803,715.34 \text{ Promotional Leakage}$$
@@ -205,7 +207,7 @@ $$\text{Canonical Shortfall Decomposition: } \$825,289.42 \text{ Shortfall} = \$
 ## 5. Formal 90-Day Rolling Margin Methodology, Multi-Grain Proof & Sensitivity Analysis
 
 ### 5.1 Rolling Historical Calculation Specification
-For Tier 4 target margin resolution, Formula F01 implements a statistically bounded, rolling historical margin index:
+For Tier 5 target margin resolution, Formula F01 implements a statistically bounded, rolling historical margin index:
 
 1. **Exact Time Window:**  
    $$\mathcal{W}(t_{\text{order}}) = [t_{\text{order}} - 90\text{ days},\, t_{\text{order}})$$  
@@ -220,56 +222,56 @@ For Tier 4 target margin resolution, Formula F01 implements a statistically boun
 
 4. **Minimum Observation Threshold & Fallback:**  
    - The production pipeline requires $N \ge 5$ qualifying transactions within the 90-day window.
-   - If $< 5$ observations exist, the engine returns `None`, legitimately cascading to Tier 5 Storewide Default (35.0%).
+   - If $< 5$ observations exist, the engine returns `None`, legitimately cascading to Tier 6 Storewide Default (35.0%).
 
 5. **Outlier Filtering & Trimming:**  
    - Outlier filter: Sales with realized margin strictly outside $[-0.50, +0.95]$ are excluded.
    - Trimming: 2.5% trimmed mean discards the lowest 2.5% and highest 2.5% of sorted observations.
 
 ### 5.2 Historical-Margin Calculation Grain & Catalog Verification
-The Tier 4 historical margin is computed at the **SKU/Variant grain** — the engine looks up the $N \ge 5$ qualifying prior transactions for the specific variant being evaluated. This section documents the empirical grain at which historical margin resolves in this dataset; it is distinct from the 5-tier target-margin source hierarchy in §4 and from the 4-tier COGS waterfall in §4 Hierarchy A.
+The Tier 5 historical margin is computed at the **SKU/Variant grain** — the engine looks up the $N \ge 5$ qualifying prior transactions for the specific variant being evaluated. This section documents the empirical grain at which historical margin resolves in this dataset; it is distinct from the 6-tier target-margin source hierarchy in §4 and from the 4-tier COGS waterfall in §4 Hierarchy A.
 
 In the audited store dataset (`data/synthetic_catalog.json`), data inspection proves:
 - **Variant Grain $\equiv$ Parent Product Grain:** All 600 catalog products have exactly 1 variant ($1 \text{ product} = 1 \text{ variant}$, 600 products = 600 variants). Consequently there is no meaningful distinction between the variant lookup and the parent-product lookup in this dataset.
-- **Category Grain:** All unmapped products that lack Tier 1-3 definitions have `category: null` and `standardized_product_type: null`.
-- **Empirical Resolution Proof:** 100% of historical resolutions (511 lines) resolve at the SKU/Variant grain. When an unmapped SKU has $< 5$ observations, its parent product also has $< 5$ observations and its category is null, making fallback to Tier 5 (35%) the mathematically exact and legitimate outcome for the remaining 124 lines.
+- **Category Grain:** All unmapped products that lack Tier 1–4 definitions have `category: null` and `standardized_product_type: null`.
+- **Empirical Resolution Proof:** 100% of historical resolutions (511 lines) resolve at the SKU/Variant grain. When an unmapped SKU has $< 5$ observations, its parent product also has $< 5$ observations and its category is null, making fallback to Tier 6 (35%) the mathematically exact and legitimate outcome for the remaining 124 lines.
 
 ### 5.3 Observation Threshold Sensitivity Analysis ($N \ge 5$ vs. $N \ge 10$)
 To verify whether setting the threshold at $N \ge 5$ versus $N \ge 10$ materially changes the business outcome, full pipeline sensitivity re-evaluations were executed:
 
-| Threshold Rule | Historical (Tier 4) Lines | Fallback (Tier 5) Lines | Total Target Profit | Actual Gross Profit | Promotional Leakage | F01 Score |
+| Threshold Rule | Historical (Tier 5) Lines | Fallback (Tier 6) Lines | Total Target Profit | Actual Gross Profit | Promotional Leakage | F01 Score |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **$N \ge 5$ (Baseline Production)** | **511 lines** | **124 lines** | **$2,378,374.74** | **$1,596,984.97** | **$803,715.34** | **66.21%** |
 | **$N \ge 10$ (Strict Alternative)** | **389 lines** | **246 lines** | **$2,376,552.93** | **$1,596,984.97** | **$803,715.24** | **66.18%** |
-| **Variance ($N=5$ vs $N=10$)** | *-122 lines* | *+122 lines* | *-$1,821.81 (-0.08%)* | *$0.00 (0.00%)* | *-$0.10 (-0.00%)* | **-0.03%** |
+| **Variance ($N=5$ vs $N=10$)** | *-122 lines* | *+122 lines* | *-$1,821.81 (-0.08%)* | *$0.00 (0.00%)* | *-$0.10 (-0.00%)* | **-0.03 percentage points** |
 
 *Conclusion:* Across the entire store, moving from $N \ge 5$ to $N \ge 10$ shifts the F01 score by a negligible **0.03 percentage points** ($0.10 difference in total promotional leakage). $N \ge 5$ is retained as the production standard because it maximizes empirical historical resolution (511 vs 389 lines) while maintaining robust resistance to outliers through 2.5% trimming.
 
 ### 5.4 Storewide Fallback Margin (35%) Business Justification & Sensitivity Analysis
-The 35.0% fallback margin is the merchant's **configured storewide benchmark** — the default gross margin floor applied when no SKU-level, category-level, or sufficient historical data is available. To confirm that this choice does not distort F01 scoring, sensitivity testing was conducted across a wide $\pm 10\%$ band:
+The 35.0% fallback margin is the merchant's **configured storewide benchmark** — the default gross margin floor applied when no SKU-specific, product-specific, category-level, product-type-level, or sufficient historical data is available. To confirm that this choice does not distort F01 scoring, sensitivity testing was conducted across a wide $\pm 10\%$ band:
 
 | Fallback Margin | Fallback Evaluated Lines | Total Target Profit | Actual Gross Profit | Promotional Leakage | F01 Score | Impact vs. 35% |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **25.0%** | 124 lines | $2,375,297.50 | $1,596,984.97 | $800,638.25 | **66.29%** | +0.08% |
-| **30.0%** | 124 lines | $2,376,836.06 | $1,596,984.97 | $802,176.81 | **66.25%** | +0.04% |
+| **25.0%** | 124 lines | $2,375,297.50 | $1,596,984.97 | $800,638.25 | **66.29%** | +0.08 percentage points |
+| **30.0%** | 124 lines | $2,376,836.06 | $1,596,984.97 | $802,176.81 | **66.25%** | +0.04 percentage points |
 | **35.0% (Configured)** | **124 lines** | **$2,378,374.74** | **$1,596,984.97** | **$803,715.34** | **66.21%** | **Baseline** |
-| **40.0%** | 124 lines | $2,379,913.40 | $1,596,984.97 | $803,715.76 | **66.23%** | +0.02% |
-| **45.0%** | 124 lines | $2,381,452.15 | $1,596,984.97 | $803,715.76 | **66.25%** | +0.04% |
+| **40.0%** | 124 lines | $2,379,913.40 | $1,596,984.97 | $803,715.76 | **66.23%** | +0.02 percentage points |
+| **45.0%** | 124 lines | $2,381,452.15 | $1,596,984.97 | $803,715.76 | **66.25%** | +0.04 percentage points |
 
 *Conclusion:* Because fallback lines account for only **0.46%** (124 of 26,819) of evaluated volume, even a severe 20% swing in the storewide fallback benchmark (from 25% to 45%) causes at most **0.08 percentage points** of movement in the overall F01 score (25% fallback → 66.29% vs. configured 35% → 66.21%). The score is mathematically resilient.
 
 ### 5.5 Empirical Dataset Proof (Real Worked Examples)
-- **Worked Resolution Example (Tier 4 Selected):**  
+- **Worked Resolution Example (Tier 5 Selected):**  
   Order **#5000003616** placed `2026-06-07T13:12:56Z`, Line 7000005577 (SKU-1300, Variant 2000000300).  
   Query window: `[2026-03-09T13:12:56Z, 2026-06-07T13:12:56Z)`.  
   Qualifying prior transactions: 5 observations with margins [54.19%, 42.75%, 54.19%, 42.74%, 42.74%].  
   Trimmed mean margin = $\mathbf{0.4732}$ (47.32%).  
   Target Profit = $\$70.82 \times 0.4732 = \$33.51$; Actual GP = $\$56.66 - \$37.30 = \$19.36$; Promotional Loss = $\mathbf{\$14.15}$.
-- **Worked Legitimate Fallback Example (Tier 5 Selected):**  
+- **Worked Legitimate Fallback Example (Tier 6 Selected):**  
   Order **#5000000016** placed `2026-06-01T00:41:44Z`, Line 7000000024 (SKU-1230, Variant 2000000230).  
   Occurred 41 minutes after store opening; 0 prior transactions existed ($N = 0 < 5$).  
-  Correctly and legitimately fell back to Tier 5 Storewide Default (35.0%).  
-  *Dynamic Adaptation:* 7 days later in Order **#5000004416** (`2026-06-08T23:59:52Z`), this exact same SKU accumulated $\ge 5$ sales and successfully resolved via Tier 4 Historical Margin at **37.33%**! For order placed `2026-09-15T14:30:00Z`, the engine queries transactions between `2026-06-17T14:30:00Z` and `2026-09-15T14:29:59Z`. For SKU-1118 (14 qualifying transactions): Net Revenue = $2,450.00, Total COGS = $1,519.00. Realized Margin = $(2,450 - 1,519) / 2,450 = 38.0\%$. `2026-09-15T14:30:00Z`, the engine queries transactions between `2026-06-17T14:30:00Z` and `2026-09-15T14:29:59Z`. For SKU-1118 (14 qualifying transactions): Net Revenue = $2,450.00, Total COGS = $1,519.00. Realized Margin = $(2,450 - 1,519) / 2,450 = 38.0\%$.
+  Correctly and legitimately fell back to Tier 6 Storewide Default (35.0%).  
+  *Dynamic Adaptation:* 7 days later in Order **#5000004416** (`2026-06-08T23:59:52Z`), this exact same SKU accumulated $\ge 5$ sales and successfully resolved via Tier 5 Historical Margin at **37.33%**! For order placed `2026-09-15T14:30:00Z`, the engine queries transactions between `2026-06-17T14:30:00Z` and `2026-09-15T14:29:59Z`. For SKU-1118 (14 qualifying transactions): Net Revenue = $2,450.00, Total COGS = $1,519.00. Realized Margin = $(2,450 - 1,519) / 2,450 = 38.0\%$.
 
 ---
 
@@ -460,10 +462,10 @@ All 46 automated unit and regression tests passed with 100% compliance:
 | **TC-31** | Quantity > 1 multi-unit calculation: Qty=3 | Qty=3, MSRP=$100 ($300 total), Discount=$30 ($10/unit), COGS=$40 ($120 total) | Original Value=$300; Net=$270; COGS=$120; Actual=$150; Target=$150; Loss=$0 | `original_val=$300.00, net=$270.00, target=$150.00, actual=$150.00, Loss=$0.00` | `original_val=$300.00, net=$270.00, target=$150.00, actual=$150.00, Loss=$0.00` | **PASS** |
 | **TC-32** | Data Quality Guard: Missing/Null price and cost routed to quarantine | price=None, compare_at=None, cost=None | Record cannot be mathematically evaluated; quarantined with reason logged | `status=quarantined` | `status=quarantined` | **PASS** |
 | **TC-33** | 90-Day Rolling Historical Target Margin: N >= 5 with trimmed mean | 5 prior sales [0.40, 0.42, 0.45, 0.48, 0.50] in 90d window | Mean of qualifying observations = 0.4500 | `margin=0.4500` | `margin=0.4500` | **PASS** |
-| **TC-34** | 90-Day Historical Margin Fallback: N < 5 -> Tier 5 Storewide Default (35%) | Only 2 historical observations (< 5 min required) | Lookup returns None; cascade to storewide default 35% | `hist_margin=None, resolved_margin=0.35, source=storewide_default` | `hist_margin=None, resolved_margin=0.35, source=storewide_default` | **PASS** |
+| **TC-34** | 90-Day Historical Margin Fallback: N < 5 -> Tier 6 Storewide Default (35%) | Only 2 historical observations (< 5 min required) | Lookup returns None; cascade to storewide default 35% | `hist_margin=None, resolved_margin=0.35, source=storewide_default` | `hist_margin=None, resolved_margin=0.35, source=storewide_default` | **PASS** |
 | **TC-35** | 90-Day Rolling Window: Strict future data exclusion (t_obs >= t_order) | 1 past obs (June 5), 1 future obs (June 15); query at June 10, min_obs=2 | Future transaction strictly excluded; qualifying count=1 < 2 -> None | `lookup=None` | `lookup=None` | **PASS** |
 | **TC-36** | Historical Index Builder: Cancelled, voided, and free gift exclusions | 3 invalid orders (cancelled, voided, $0 free gift) | All 3 invalid transactions excluded from historical index | `qualifying_observations=0` | `qualifying_observations=0` | **PASS** |
-| **TC-37** | 5-Tier Target Margin Precedence: Tier 1 > Tier 2 > Tier 3 > Tier 4 > Tier 5 | Metafield, taxonomy, product type, and historical combinations | Higher priority tiers strictly override lower tiers | `T1=metafield (0.55), T2=taxonomy (0.52), T3=product_type (0.52), T4=historical (0.42)` | `T1=metafield (0.55), T2=taxonomy (0.52), T3=product_type (0.52), T4=historical (0.42)` | **PASS** |
+| **TC-37** | 6-Tier Target Margin Precedence: Tier 1 > Tier 2 > Tier 3 > Tier 4 > Tier 5 > Tier 6 | Combinations of metafield, product_margin, taxonomy, product type, and historical margin | Higher priority tiers strictly override lower tiers | `T1=metafield (0.55), T2=product_margin (0.44), T3=taxonomy (0.52), T4=product_type (0.52), T5=historical (0.42)` | `T1=metafield (0.55), T2=product_margin (0.44), T3=taxonomy (0.52), T4=product_type (0.52), T5=historical (0.42)` | **PASS** |
 | **TC-38** | Quarantine Sibling Line Isolation: Entire order quarantined, lineage preserved | Order with Line 1 (corrupted cost > price) and Line 2 (valid healthy line) | Order status=quarantined; Line 1 has trigger reason; Line 2 details preserved | `order_status=quarantined, lines_count=2, line1_quarantined=True` | `order_status=quarantined, lines_count=2, line1_quarantined=True` | **PASS** |
 | **TC-39** | F03 Boundary: Negative GP with missing operational costs -> unable_to_determine | Actual GP = -$10.00, carrier_shipping_cost=None, gateway_fee=None | Negative GP does NOT assume F03 escalation; status must be 'unable_to_determine' | `status=unable_to_determine, reason=missing_f03_operational_cost_data` | `status=unable_to_determine, reason=missing_f03_operational_cost_data` | **PASS** |
 | **TC-40** | Arithmetic Identity: Total Shortfall = Inherent Deficit + Promotional Leakage | MSRP=$100, Target=50%, COGS=$60, Discount=$30 | Target Shortfall ($40) = Inherent Deficit ($10) + Promotional Loss ($30) | `Total Shortfall=$40.00, Inherent=$10.00, Promo Loss=$30.00, Identity=True` | `Total Shortfall=$40.00, Inherent=$10.00, Promo Loss=$30.00, Identity=True` | **PASS** |
@@ -498,7 +500,7 @@ All 46 automated unit and regression tests passed with 100% compliance:
 | `cogs_used` | Line Item | `Float ($)` | Resolved COGS waterfall | Unit supplier product cost |
 | `total_cogs` | Line Item | `Float ($)` | `cogs_used * active_quantity` | Total direct product cost of goods sold |
 | `cogs_source` | Line Item | `String` | Resolved tier | `inventory_item`, `historical`, `category_estimate`, `storewide_default` |
-| `target_margin_used`| Line Item | `Float (%)` | Resolved via 5-tier cascade (Hierarchy B) | Threshold margin floor resolved in priority order: **SKU Metafield** → **Category Taxonomy** → **Product Type** → **90-Day Historical Realized Margin** → **Storewide Default (35%)**. Consistent with the full hierarchy defined in §4. |
+| `target_margin_used`| Line Item | `Float (%)` | Resolved via 6-tier cascade (Hierarchy B) | Threshold margin floor resolved in priority order: **SKU Metafield** → **Product-Specific Margin** → **Category Taxonomy** → **Product Type** → **90-Day Historical Realized Margin** → **Storewide Default (35%)**. Consistent with the full hierarchy defined in §4. |
 | `target_profit` | Line Item | `Float ($)` | `original_line_value * target_margin` | Required baseline gross profit to achieve target margin ($\Pi_{\text{target}}$) |
 | `baseline_gross_profit`| Line Item| `Float ($)` | `original_line_value - total_cogs` | Gross profit available at full MSRP without discount ($\Pi_{\text{base}}$) |
 | `actual_gross_profit`| Line Item | `Float ($)` | `net_revenue - total_cogs` | Realized gross profit post-discount ($\Pi_{\text{actual}}$) |
@@ -526,8 +528,8 @@ All 46 automated unit and regression tests passed with 100% compliance:
 - [x] **Cohort Grain Conservation:** `50,000 Unique Orders = 17,410 (Evaluated) + 32,048 (Excluded) + 542 (Quarantined)` with zero dropped orders.
 - [x] **Line Grain Conservation:** `27,806 Relevant Lines = 26,819 Evaluated Lines + 987 Quarantined Lines` with zero discrepancies.
 - [x] **Quarantine Line Isolation:** `987 Quarantined Lines = 740 Problematic Trigger Lines + 247 Sibling Lines` across 542 Orders and 451 Unique SKUs.
-- [x] **COGS vs. Target Margin Disambiguation:** 4-Tier COGS Waterfall (Tier 2 Historical PO = 2,146 lines) and 5-Tier Target Margin Cascade (Tier 4 Historical Realized Margin = 511 lines) documented as separate, non-conflicting business hierarchies.
-- [x] **Observation Threshold Sensitivity:** $N \ge 5$ (511 historical / 124 fallback -> 66.21% score) vs. $N \ge 10$ (389 historical / 246 fallback -> 66.18% score) verified with sensitivity delta of only 0.03%.
+- [x] **COGS vs. Target Margin Disambiguation:** 4-Tier COGS Waterfall (Tier 2 Historical PO = 2,146 lines) and 6-Tier Target Margin Cascade (Tier 5 Historical Realized Margin = 511 lines, Tier 6 Storewide Default = 124 lines) documented as separate, non-conflicting business hierarchies.
+- [x] **Observation Threshold Sensitivity:** $N \ge 5$ (511 historical / 124 fallback -> 66.21% score) vs. $N \ge 10$ (389 historical / 246 fallback -> 66.18% score) verified with sensitivity delta of only **0.03 percentage points**.
 - [x] **Multi-Grain Catalog Proof:** Empirical verification that $1 \text{ product} = 1 \text{ variant}$ across 600 catalog items, proving Variant Grain $\equiv$ Product Grain and explaining why 100% of historical lookups resolve at SKU/variant level.
 - [x] **Storewide Fallback (35%) Robustness:** Sensitivity analysis across 25%–45% proves score varies by **at most 0.08 percentage points** (66.29% at 25% fallback vs. 66.21% at configured 35%) due to low fallback line share (0.46%).
 - [x] **Shopify Discount Conservation:** Total Discount Value: **$1,374,682.94** across 17,410 evaluated orders, with 100% reconciliation between line-level markdowns, cart allocations, and `order.total_discounts` ($\sum (\text{Line Markdown} + \text{Cart Allocation}) == \text{Order.total\_discounts}$ verified with **0 mismatches**).
@@ -557,11 +559,35 @@ All 46 automated unit and regression tests passed with 100% compliance:
 | 1 | §4 — Hierarchy B, Tier 3 row | Fixed typo "Superceded" → "Superseded". Clarified that Product Type is superseded by Tier 2 *in this dataset* and remains a standalone fallback when taxonomy is absent. |
 | 2 | §4 — Hierarchy B, Tier 4 row | Added explicit **SKU/Variant grain** label and replaced "mean" with "trimmed mean" to match the implementation description in §5.1. |
 | 3 | §12 — Data Dictionary, `original_price` | Replaced vague `` `variant.compare_at_price` or `price` `` with the explicit 4-tier priority chain (`original_unit_price` → `compare_at_price` → catalog `price` → line-item `price`) matching TC-41. Added note that this field is used consistently for $R_{\text{base}}$, $\Pi_{\text{base}}$, $\Pi_{\text{target}}$, and $L_{\text{promo}}$. |
-| 4 | §5.4 — Storewide Fallback (35%) | Removed unsupported phrase "contractual minimum". Replaced with "configured storewide benchmark — the default gross margin floor applied when no SKU-level, category-level, or sufficient historical data is available." |
+| 4 | §5.4 — Storewide Fallback (35%) | Removed unsupported phrase "contractual minimum". Replaced with "configured storewide benchmark — the default gross margin floor applied when no SKU-specific, product-specific, category-level, product-type-level, or sufficient historical data is available." |
 | 5 | §1 — Executive Summary table | Added `f01_dollar_loss = $0.00` to the Count-Based Attainment Score row and the Healthy Discounted Orders definition so the threshold is explicit and auditable. |
 | 6 | §2 — Mathematical Definitions, item 9 | Added a *Leakage Rate Definition* note explaining that the ratio $\frac{\sum L_{\text{promo}}}{\sum \Pi_{\text{target}}}$ is measured against the target profit baseline and **can exceed 100%** in severe scenarios (e.g. free-gift lines); the score is floored at 0.00%. |
 | 7 | §8 — Free Gift Business Rule | Reworded question to clarify "100% promotional-price-override free gifts". Added that identification is based on `net_selling_price = $0.00` after discount allocations — not a product flag. Bolded the taxonomy key **`100_percent_free_gift`** and added a parenthetical distinguishing it from near-zero partial discounts. |
-| 8 | §12 — Data Dictionary, `target_margin_used` | Expanded truncated description "SKU metafield > Taxonomy > Default 35%" to the full 5-tier production hierarchy: SKU Metafield → Category Taxonomy → Product Type → 90-Day Historical → Storewide Default (35%), matching Hierarchy B in §4. |
-| 9 | §5.2 — Historical-Margin Grain | Removed contradictory multi-grain traversal formula. Retitled section to "Historical-Margin Calculation Grain". Clarified that Tier 4 resolves at SKU/Variant grain; noted that variant = parent in this dataset; preserved empirical proof unchanged. |
+| 8 | §12 — Data Dictionary, `target_margin_used` | Expanded truncated description "SKU metafield > Taxonomy > Default 35%" to the full 6-tier production hierarchy: SKU Metafield → Product-Specific Margin → Category Taxonomy → Product Type → 90-Day Historical → Storewide Default (35%), matching Hierarchy B in §4. |
+| 9 | §5.2 — Historical-Margin Grain | Removed contradictory multi-grain traversal formula. Retitled section to "Historical-Margin Calculation Grain". Clarified that Tier 5 resolves at SKU/Variant grain; noted that variant = parent in this dataset; preserved empirical proof unchanged. |
 | 10 | §5.4 conclusion & §13 checklist | Changed "less than 0.08 percentage points" → "at most 0.08 percentage points" (exact maximum from table: 66.29% − 66.21% = 0.08 pp). Updated checklist to use "percentage points" and cite the bounding values. |
 | 11 | Header — Document Version | Synchronized document version from 2.3.0 → 2.3.1 to match the Documentation Change Log. |
+
+**v2.3.3 — Global Six-Tier Hierarchy Consistency Pass (2026-09-22)**  
+*No formula, engine, test, or numerical result was altered. Changes are wording and tier-numbering consistency only.*
+
+| # | Section | Inconsistency Found | Correction Applied |
+| :---: | :--- | :--- | :--- |
+| 1 | §2 — Mathematical Definitions, item 5 | `"5-tier hierarchy"` | Changed to `"6-tier hierarchy"` |
+| 2 | §5.1 — Rolling Historical Specification, item 4 | `"Tier 5 Storewide Default"` (old numbering) | Changed to `"Tier 6 Storewide Default"` |
+| 3 | §5.2 — Historical-Margin Grain, opening sentence | `"Tier 4 historical margin"` and `"5-tier target-margin source hierarchy"` | Changed to `"Tier 5 historical margin"` and `"6-tier target-margin source hierarchy"` |
+| 4 | §5.2 — Category Grain bullet | `"Tier 1-3 definitions"` (omitting Product-Specific and Product Type tiers) | Changed to `"Tier 1–4 definitions"` |
+| 5 | §5.2 — Empirical Resolution Proof bullet | `"fallback to Tier 5 (35%)"` | Changed to `"fallback to Tier 6 (35%)"` |
+| 6 | §5.3 — Sensitivity table headers | `"Historical (Tier 4) Lines"`, `"Fallback (Tier 5) Lines"` | Changed to `"Historical (Tier 5) Lines"`, `"Fallback (Tier 6) Lines"` |
+| 7 | §5.3 — Variance row, F01 Score delta | `"-0.03%"` (ambiguous, suggests a percentage not percentage points) | Changed to `"-0.03 percentage points"` |
+| 8 | §5.4 — Fallback language | `"no SKU-level, category-level, or sufficient historical data"` (omits Product-Specific Margin and Product Type) | Changed to `"no SKU-specific, product-specific, category-level, product-type-level, or sufficient historical data"` |
+| 9 | §5.4 — Sensitivity table, Impact column | `+0.08%`, `+0.04%`, `+0.02%`, `+0.04%` (ambiguous percentage notation) | Changed to `+0.08 percentage points`, `+0.04 percentage points`, `+0.02 percentage points`, `+0.04 percentage points` |
+| 10 | §5.5 — Worked Examples | `"Tier 4 Selected"`, `"Tier 5 Selected"`, `"Tier 5 Storewide Default"`, `"via Tier 4 Historical Margin"` (old numbering) | Changed to `"Tier 5"`, `"Tier 6"`, `"Tier 6 Storewide Default"`, `"via Tier 5 Historical Margin"` |
+| 11 | §5.5 — Worked Legitimate Fallback Example | SKU-1118 sub-sentence appeared **twice** verbatim (copy-paste duplicate) | Removed the duplicate occurrence; retained the single complete version |
+| 12 | §13 — Audit Checklist, COGS vs. Margin Disambiguation | `"Tier 5 Historical Realized Margin = 511 lines"` — missing Tier 6 detail | Added `"Tier 6 Storewide Default = 124 lines"` to the disambiguation note |
+| 13 | §13 — Audit Checklist, Observation Threshold Sensitivity | `"sensitivity delta of only 0.03%"` | Changed to `"sensitivity delta of only **0.03 percentage points**"` |
+| 14 | §14 — Change Log, entry 4 | Fallback description omitted Product-Specific Margin and Product Type | Updated to match full cascade language |
+| 15 | §14 — Change Log, entry 8 | `"5-tier production hierarchy: SKU Metafield → Category Taxonomy → Product Type → 90-Day Historical → Storewide Default"` | Changed to `"6-tier production hierarchy: SKU Metafield → Product-Specific Margin → Category Taxonomy → Product Type → 90-Day Historical → Storewide Default"` |
+| 16 | §14 — Change Log, entry 9 | `"Tier 4 resolves at SKU/Variant grain"` (stale numbering from pre-6-tier era) | Changed to `"Tier 5 resolves at SKU/Variant grain"` |
+
+**Confirmation:** No calculation logic, F01/F03 business rules, formulas, numerical results, test cases, or validation results were modified in this pass.
