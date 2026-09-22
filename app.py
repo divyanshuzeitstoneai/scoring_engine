@@ -640,24 +640,24 @@ with tab_f03:
     with col2:
         st.markdown("""
         <div class="metric-card">
-            <div class="metric-title">Formula Leaks Isolated</div>
-            <div class="metric-val" style="color: #f87171;">6 Leaks</div>
-            <div class="metric-sub">V1 Flawed Assumptions Caught</div>
+            <div class="metric-title">Formula Flaws Audited</div>
+            <div class="metric-val" style="color: #38bdf8;">6 Scenarios</div>
+            <div class="metric-sub">V1 Flawed Assumptions Benchmarked</div>
         </div>
         """, unsafe_allow_html=True)
     with col3:
         st.markdown("""
         <div class="metric-card">
-            <div class="metric-title">Data Leaks Isolated</div>
-            <div class="metric-val" style="color: #fb923c;">5 Leaks</div>
-            <div class="metric-sub">Shopify GraphQL Missing Fields</div>
+            <div class="metric-title">Data Ingestion Vectors</div>
+            <div class="metric-val" style="color: #a78bfa;">5 Scenarios</div>
+            <div class="metric-sub">Shopify Schema Handling Validated</div>
         </div>
         """, unsafe_allow_html=True)
     with col4:
         st.markdown("""
         <div class="metric-card">
-            <div class="metric-title">Max Order Error Prevented</div>
-            <div class="metric-val" style="color: #38bdf8;">$14,900.00</div>
+            <div class="metric-title">Max Variance Corrected</div>
+            <div class="metric-val" style="color: #4ade80;">$14,900.00</div>
             <div class="metric-sub">TC-06 Multi-Currency Phantom Profit</div>
         </div>
         """, unsafe_allow_html=True)
@@ -699,7 +699,13 @@ with tab_f03:
         * **F03 Breach Detected:** **{sc['v1_math']['breach']}**
         * **F03 Dollar Loss:** `{sc['v1_math']['loss']}`
         """)
-        st.error(f"V1 Stated Contribution: **{f'${sc['v1_res']:,.2f}' if sc['v1_res'] is not None else 'NULL'}**")
+        v1_display = f"${sc['v1_res']:,.2f}" if sc['v1_res'] is not None else "NULL"
+        st.markdown(f"""
+        <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 4px solid #94a3b8; border-radius: 8px; padding: 12px 16px; margin-top: 12px;">
+            <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Formula V1 Stated Contribution</div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #f8fafc; font-family: 'JetBrains Mono', monospace;">{v1_display}</div>
+        </div>
+        """, unsafe_allow_html=True)
         
     with col_v2:
         st.markdown("#### ✅ Formula V2 (Production Rebuild)")
@@ -710,7 +716,15 @@ with tab_f03:
         * **Evaluability Status:** `[{sc['v2_status']}]`
         * **F03 Breach Detected:** **{sc['v2_math']['breach']}**
         """)
-        st.success(f"V2 Realized Contribution: **{f'${sc['v2_res']:,.2f}' if sc['v2_res'] is not None else 'NOT EVALUABLE'}** (Discrepancy: **${sc['delta']:,.2f}**)")
+        v2_display = f"${sc['v2_res']:,.2f}" if sc['v2_res'] is not None else "NOT EVALUABLE"
+        st.markdown(f"""
+        <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 4px solid #4ade80; border-radius: 8px; padding: 12px 16px; margin-top: 12px;">
+            <div style="font-size: 0.8rem; color: #4ade80; text-transform: uppercase;">Formula V2 Realized Contribution</div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #4ade80; font-family: 'JetBrains Mono', monospace;">
+                {v2_display} <span style="font-size: 0.85rem; font-weight: 500; color: #94a3b8;">(Discrepancy: ${sc['delta']:,.2f})</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
     # Merchant Impact Alert
     st.info(f"💡 **Merchant-Facing Takeaway:** {sc['takeaway']}")
@@ -1113,10 +1127,10 @@ with tab_sandbox:
 
     with res_col2:
         st.markdown(f"""
-        <div class="metric-card" style="border-left: 4px solid #f87171;">
+        <div class="metric-card" style="border-left: 4px solid {'#f87171' if promo_leak > 0 else '#4ade80'};">
             <div class="metric-title">Promotional Margin Leakage</div>
-            <div class="metric-val" style="color: #f87171;">${promo_leak:,.2f}</div>
-            <div class="metric-sub">Caused Strictly by Discounts</div>
+            <div class="metric-val" style="color: {'#f87171' if promo_leak > 0 else '#4ade80'};">${promo_leak:,.2f}</div>
+            <div class="metric-sub">{'Caused Strictly by Discounts' if promo_leak > 0 else 'Zero Margin Erosion from Discounts'}</div>
             <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
                 Target Shortfall: ${tot_shortfall:,.2f}
             </div>
@@ -1125,12 +1139,12 @@ with tab_sandbox:
 
     with res_col3:
         st.markdown(f"""
-        <div class="metric-card" style="border-left: 4px solid #eab308;">
+        <div class="metric-card" style="border-left: 4px solid {'#eab308' if inh_deficit > 0 else '#4ade80'};">
             <div class="metric-title">Inherent COGS Deficit</div>
-            <div class="metric-val" style="color: #eab308;">${inh_deficit:,.2f}</div>
-            <div class="metric-sub">Pre-Existing Supplier/MSRP Gap</div>
+            <div class="metric-val" style="color: {'#eab308' if inh_deficit > 0 else '#4ade80'};">${inh_deficit:,.2f}</div>
+            <div class="metric-sub">{'Pre-Existing Supplier/MSRP Gap' if inh_deficit > 0 else 'Zero Baseline Deficit'}</div>
             <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">
-                Existed before any discount
+                {'Existed before any discount' if inh_deficit > 0 else 'Catalog MSRP achieves target floor'}
             </div>
         </div>
         """, unsafe_allow_html=True)
