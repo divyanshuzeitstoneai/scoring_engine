@@ -4,15 +4,18 @@ Supports running individual formulas or batch runs across all registered formula
 
 Usage:
     python run.py --formula f01
+    python run.py --formula f03
     python run.py --formula all
 """
 
 import argparse
 import sys
-from formulas.f01_discount_leakage.runner import main as run_f01_main
+from f01.code.runner import main as run_f01_main
+from f03.code.test_f03 import run_f03_test_suite as run_f03_main
 
 FORMULA_REGISTRY = {
     "f01": run_f01_main,
+    "f03": run_f03_main,
 }
 
 def main():
@@ -20,9 +23,9 @@ def main():
     parser.add_argument(
         "--formula",
         type=str,
-        default="f01",
-        choices=["f01", "all"],
-        help="The scoring formula to evaluate (default: f01)"
+        default="all",
+        choices=["f01", "f03", "all"],
+        help="The scoring formula to evaluate (default: all)"
     )
 
     args = parser.parse_args()
@@ -32,7 +35,7 @@ def main():
         FORMULA_REGISTRY[args.formula]()
     elif args.formula == "all":
         for fid, fn in FORMULA_REGISTRY.items():
-            print(f"\nRunning formula: {fid.upper()}...")
+            print(f"\n{'='*60}\nRunning formula: {fid.upper()}...\n{'='*60}")
             fn()
     else:
         print(f"Unknown formula: {args.formula}")

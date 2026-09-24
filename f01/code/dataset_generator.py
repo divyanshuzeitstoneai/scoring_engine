@@ -594,8 +594,8 @@ def generate_orders_and_sidecar(
     }
 
 def save_all_dataset_files(catalog_products: List[Dict[str, Any]], result: Dict[str, Any]) -> None:
-    """Saves generated dataset files both to workspace root and data/ directory."""
-    target_dirs = [".", "data"]
+    """Saves generated dataset files to f01/data directory."""
+    target_dirs = [os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))]
     for d in target_dirs:
         os.makedirs(d, exist_ok=True)
 

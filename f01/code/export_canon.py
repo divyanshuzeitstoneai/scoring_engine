@@ -1,13 +1,20 @@
 import json
-from formulas.f01_discount_leakage.runner import run_f01_pipeline
+import os
+import sys
+
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if repo_root not in sys.path:
+    sys.path.insert(0, repo_root)
+
+from f01.code.runner import run_f01_pipeline, _find_data_file
 from core.historical_index import HistoricalCogsIndex
 
 print("Loading data...")
-with open("data/synthetic_orders.json", "r", encoding="utf-8") as f:
+with open(_find_data_file("synthetic_orders.json"), "r", encoding="utf-8") as f:
     orders = json.load(f)
-with open("data/synthetic_catalog.json", "r", encoding="utf-8") as f:
+with open(_find_data_file("synthetic_catalog.json"), "r", encoding="utf-8") as f:
     catalog = json.load(f)
-with open("data/historical_cost_index.json", "r", encoding="utf-8") as f:
+with open(_find_data_file("historical_cost_index.json"), "r", encoding="utf-8") as f:
     hist = json.load(f)
 
 print("Running pipeline...")
@@ -197,12 +204,15 @@ summary_dict = {
     "sample_orders": sample_orders_json
 }
 
-with open("data/f01_evaluation_summary.json", "w", encoding="utf-8") as f:
+data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
+os.makedirs(data_dir, exist_ok=True)
+
+with open(os.path.join(data_dir, "f01_evaluation_summary.json"), "w", encoding="utf-8") as f:
     json.dump(summary_dict, f)
-print("Saved data/f01_evaluation_summary.json successfully!")
+print("Saved f01/data/f01_evaluation_summary.json successfully!")
 
 # Load test cases
-from formulas.f01_discount_leakage.test_f01 import run_f01_unit_tests
+from f01.code.test_f01 import run_f01_unit_tests
 tc_results = run_f01_unit_tests()
 tc_data = [
     {
@@ -222,6 +232,6 @@ extra_dict = {
     "test_cases": tc_data
 }
 
-with open("data/f01_dashboard_extra.json", "w", encoding="utf-8") as f:
+with open(os.path.join(data_dir, "f01_dashboard_extra.json"), "w", encoding="utf-8") as f:
     json.dump(extra_dict, f, indent=2)
-print("Saved data/f01_dashboard_extra.json successfully!")
+print("Saved f01/data/f01_dashboard_extra.json successfully!")

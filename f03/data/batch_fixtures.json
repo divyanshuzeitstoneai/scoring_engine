@@ -1,0 +1,54 @@
+[
+  {
+    "test_case_id": "BATCH-TC-25-denominator-modes",
+    "description": "10-order batch testing EXCLUDE mode (2/7 = 28.57%) vs INCLUDE mode (2/10 = 20.00%).",
+    "order_ids": [
+      "TC-25-01-batch-null-cogs",
+      "TC-25-02-batch-null-cogs",
+      "TC-25-03-batch-null-cogs",
+      "TC-25-04-batch-breach-1",
+      "TC-25-05-batch-breach-2",
+      "TC-25-06-batch-healthy-1",
+      "TC-25-07-batch-healthy-2",
+      "TC-25-08-batch-healthy-3",
+      "TC-25-09-batch-healthy-4",
+      "TC-25-10-batch-healthy-5"
+    ],
+    "total_orders": 10,
+    "quarantined_orders": 3,
+    "evaluable_orders": 7,
+    "breaching_orders": 2,
+    "expected_exclude_rate_pct": 28.57,
+    "expected_include_rate_pct": 20.0
+  },
+  {
+    "test_case_id": "BATCH-TC-26-empty-cohort-zero-division",
+    "description": "Zero orders in evaluation window: breach rate 0.00%, loss $0.00 without ZeroDivisionError.",
+    "order_ids": [],
+    "total_orders": 0,
+    "quarantined_orders": 0,
+    "evaluable_orders": 0,
+    "breaching_orders": 0,
+    "expected_exclude_rate_pct": 0.0,
+    "expected_include_rate_pct": 0.0
+  },
+  {
+    "test_case_id": "BATCH-TC-27-repeated-loss-leader-aggregation",
+    "description": "5 repeated loss-leader orders of $3.74 loss each yielding $18.70 cumulative loss.",
+    "order_ids": [
+      "TC-27-01-loss-leader-repeated",
+      "TC-27-02-loss-leader-repeated",
+      "TC-27-03-loss-leader-repeated",
+      "TC-27-04-loss-leader-repeated",
+      "TC-27-05-loss-leader-repeated"
+    ],
+    "total_orders": 5,
+    "quarantined_orders": 0,
+    "evaluable_orders": 5,
+    "breaching_orders": 5,
+    "loss_per_order": 3.74,
+    "cumulative_loss": 18.7,
+    "expected_exclude_rate_pct": 100.0,
+    "expected_include_rate_pct": 100.0
+  }
+]

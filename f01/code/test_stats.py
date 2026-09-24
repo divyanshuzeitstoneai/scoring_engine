@@ -1,15 +1,21 @@
 import json
+import os
 import statistics
+import sys
 
-with open("data/synthetic_orders.json", "r", encoding="utf-8") as f:
-    orders = json.load(f)
-with open("data/synthetic_catalog.json", "r", encoding="utf-8") as f:
-    catalog = json.load(f)
-with open("data/historical_cost_index.json", "r", encoding="utf-8") as f:
-    hist = json.load(f)
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if repo_root not in sys.path:
+    sys.path.insert(0, repo_root)
 
-from formulas.f01_discount_leakage.runner import run_f01_pipeline
+from f01.code.runner import run_f01_pipeline, _find_data_file
 from core.historical_index import HistoricalCogsIndex
+
+with open(_find_data_file("synthetic_orders.json"), "r", encoding="utf-8") as f:
+    orders = json.load(f)
+with open(_find_data_file("synthetic_catalog.json"), "r", encoding="utf-8") as f:
+    catalog = json.load(f)
+with open(_find_data_file("historical_cost_index.json"), "r", encoding="utf-8") as f:
+    hist = json.load(f)
 
 res = run_f01_pipeline(orders, catalog, HistoricalCogsIndex(hist))
 eval_orders = [o for o in res.order_evaluations if o.status == "evaluated"]
