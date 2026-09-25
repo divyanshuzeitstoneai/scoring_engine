@@ -1124,7 +1124,7 @@ def render_f03_view(data: Dict[str, Any]):
                 </div>
                 <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px; margin-top: 4px;">
                     <span class="health-pill" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); font-size: 0.78rem; padding: 2px 10px;">
-                        ● Confidence: High (91.1%)
+                        ● Confidence: High
                     </span>
                 </div>
                 <div style="font-size: 0.72rem; color: #64748b; margin-top: 3px;">
