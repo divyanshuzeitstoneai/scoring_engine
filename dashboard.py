@@ -1697,165 +1697,6 @@ def render_f03_view(data: Dict[str, Any]):
 
 
 # =============================================================================
-# V1 VS V2 FORMULA AUDIT BENCHMARK VIEW (RESUME SECTION 6 & 13)
-# =============================================================================
-
-def render_v1_v2_view():
-    """Renders the V1 vs V2 Flaws Benchmark and GraphQL Schema Audit view."""
-    render_html("""
-    <div class="app-header">
-        <div>
-            <h1 class="app-title">
-                ⚖️ F03 Architectural Benchmark: V1 (Flawed) vs V2 (Rebuild)
-            </h1>
-            <p class="app-subtitle">
-                Side-by-side mathematical audit of 11 architectural flaws, schema omissions, and monetary discrepancies
-            </p>
-        </div>
-        <div>
-            <span class="health-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);">
-                ✅ All 11 Flaws Resolved
-            </span>
-        </div>
-    </div>
-    """)
-
-    render_html("""
-    <div class="kpi-grid">
-        <div class="kpi-card danger">
-            <div class="kpi-tag">V1 Formula Flaws</div>
-            <div class="kpi-val" style="color: #f87171;">6 Leaks</div>
-            <div class="kpi-desc">Omitted shipping revenue, tax liabilities, order-level discounts, and restocked returns</div>
-        </div>
-        <div class="kpi-card warning">
-            <div class="kpi-tag">V1 Ingestion Flaws</div>
-            <div class="kpi-val" style="color: #fbbf24;">5 Leaks</div>
-            <div class="kpi-desc">Assumed carrier shipping is free, ignored multi-currency, and treated live cost as frozen</div>
-        </div>
-        <div class="kpi-card info">
-            <div class="kpi-tag">Max Variance Corrected</div>
-            <div class="kpi-val" style="color: #38bdf8;">$14,900.00</div>
-            <div class="kpi-desc">Phantom profit eliminated in multi-currency orders without currency conversion</div>
-        </div>
-        <div class="kpi-card purple">
-            <div class="kpi-tag">Test Suite Parity</div>
-            <div class="kpi-val" style="color: #c084fc;">100% Pass</div>
-            <div class="kpi-desc">Verified across commercial test suite in exact Decimal arithmetic (Bug A-F resolved)</div>
-        </div>
-    </div>
-    """)
-
-    flaws_data = [
-        {"Flaw ID": "Flaw 1", "Vector": "Customer-Paid Shipping", "V1 Flawed Assumption": "Omitted shipping revenue; gross merchandise profit only", "V2 Canonical Correction": "Includes currentShippingPriceSet (CashIn = Items + Shipping)", "Impact": "Eliminates false alarms where shipping subsidized courier costs ($10.00)"},
-        {"Flaw ID": "Flaw 2", "Vector": "Tax-Inclusive Pricing", "V1 Flawed Assumption": "Treats gross sticker price including VAT/GST as merchant revenue", "V2 Canonical Correction": "Deducts currentTotalTaxSet liabilities to reflect tax-exclusive cash", "Impact": "Prevents catastrophic blindspot (e.g. £20.00 VAT remitted to HMRC)"},
-        {"Flaw ID": "Flaw 3", "Vector": "Multi-Currency Orders", "V1 Flawed Assumption": "Calculates profit in presentment money without store currency conversion", "V2 Canonical Correction": "Normalizes all lines to shopMoney or converts via explicit spot FX rate", "Impact": "Corrects massive phantom profit or loss (e.g. INR 1,500 treated as $1,500)"},
-        {"Flaw ID": "Flaw 4", "Vector": "External Courier Fees", "V1 Flawed Assumption": "Missing shipping cost defaults to $0.00 free shipping", "V2 Canonical Correction": "Deterministic rate table fallback (DOMESTIC, EU, ROW) with estimation tag", "Impact": "Prevents treating nationwide deliveries as zero-cost ($8.50-$28.00)"},
-        {"Flaw ID": "Flaw 5", "Vector": "3rd-Party Gateway Fees", "V1 Flawed Assumption": "Empty transactions.fees on external gateways treated as $0.00 fee", "V2 Canonical Correction": "Imputes processor fees (e.g. Razorpay 2.36%) or pulls settlement feed", "Impact": "Prevents omitting retained transaction costs ($1.25-$3.50)"},
-        {"Flaw ID": "Flaw 6", "Vector": "Cart-Wide Coupon Codes", "V1 Flawed Assumption": "Uses discountedUnitPriceSet, ignoring cart-level promo codes", "V2 Canonical Correction": "Aggregates discountAllocations across line items and order scope", "Impact": "Prevents reporting fictitious profit on 40% cart discount ($80.00)"},
-        {"Flaw ID": "Flaw 7", "Vector": "Historical Cost Drift", "V1 Flawed Assumption": "Queries live mutable InventoryItem.unitCost at audit time", "V2 Canonical Correction": "Requires frozen point-in-time snapshot table; flags drift if mutable", "Impact": "Eliminates false breaches on historic orders when supplier costs rise"},
-        {"Flaw ID": "Flaw 8", "Vector": "Restocked Item Returns", "V1 Flawed Assumption": "Treats all returned units as written-off dead cash expense", "V2 Canonical Correction": "Sets unrecovered COGS to $0.00 if restocked: true; charges dead freight only", "Impact": "Recovers $40.00 inventory value on returned sellable jackets"},
-        {"Flaw ID": "Flaw 9", "Vector": "PR / Sample Gifting", "V1 Flawed Assumption": "Flags $0 influencer orders as commercial cash-floor breaches", "V2 Canonical Correction": "Identifies promotional gifting via tags; reallocates to Marketing CAC", "Impact": "Prevents polluting commercial retail margins with intentional marketing"},
-        {"Flaw ID": "Flaw 10", "Vector": "Null Product Cost", "V1 Flawed Assumption": "Assumes $0 COGS or crashes when inventoryItem.unitCost is null", "V2 Canonical Correction": "Evaluability gate isolates order to NOT_EVALUABLE queue", "Impact": "Protects score integrity against unpriced catalog items"}
-    ]
-
-    df_flaws = pd.DataFrame(flaws_data)
-    st.dataframe(df_flaws, use_container_width=True, hide_index=True)
-
-
-# =============================================================================
-# 25-STEP CANONICAL ARCHITECTURE GUIDE VIEW (RESUME SECTION 2)
-# =============================================================================
-
-def render_architecture_view():
-    """Renders the comprehensive 25-step mathematical specification."""
-    render_html("""
-    <div class="app-header">
-        <div>
-            <h1 class="app-title">
-                🌊 Canonical 25-Step Mathematical Specification
-            </h1>
-            <p class="app-subtitle">
-                Authoritative pipeline blueprint executed line-by-line in exact Python Decimal precision
-            </p>
-        </div>
-        <div>
-            <span class="health-pill" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">
-                Strict Conservation Guaranteed
-            </span>
-        </div>
-    </div>
-    """)
-
-    p1, p2 = st.columns(2)
-    with p1:
-        render_html("""
-        <div class="workspace-panel" style="margin-top: 0;">
-            <div style="font-size: 0.95rem; font-weight: 700; color: #38bdf8; margin-bottom: 8px;">
-                Phase 1: Line Item Revenue Decomposition (Steps 1–9)
-            </div>
-            <div style="font-size: 0.8rem; line-height: 1.6; color: #cbd5e1; font-family: 'JetBrains Mono', monospace;">
-                &bull; <b>Step 1: OriginalPrice</b> = originalUnitPriceSet &times; quantity<br>
-                &bull; <b>Step 2: LineDiscount</b> = Sum(discountAllocations [LINE_ITEM])<br>
-                &bull; <b>Step 3: CartDiscount</b> = Sum(discountAllocations [ORDER_WIDE])<br>
-                &bull; <b>Step 4: TotalDiscount</b> = LineDiscount + CartDiscount<br>
-                &bull; <b>Step 5: DiscountedPrice</b> = OriginalPrice - TotalDiscount<br>
-                &bull; <b>Step 6: TaxAdjustment</b> = Embedded Statutory Tax (VAT/GST)<br>
-                &bull; <b>Step 7: NetSellingPrice</b> = DiscountedPrice - TaxAdjustment<br>
-                &bull; <b>Step 8: NetRefund</b> = RefundedGrossAmount - RefundedTax<br>
-                &bull; <b>Step 9: NetRevenue</b> = max(0.00, NetSellingPrice - NetRefund)
-            </div>
-        </div>
-        """)
-
-        render_html("""
-        <div class="workspace-panel">
-            <div style="font-size: 0.95rem; font-weight: 700; color: #a855f7; margin-bottom: 8px;">
-                Phase 3: Shipping Revenue Decomposition (Steps 15–18)
-            </div>
-            <div style="font-size: 0.8rem; line-height: 1.6; color: #cbd5e1; font-family: 'JetBrains Mono', monospace;">
-                &bull; <b>Step 15: GrossShippingRevenue</b> = Sum(ShippingLine.discountedPriceSet)<br>
-                &bull; <b>Step 16: ShippingTaxAdjustment</b> = Embedded tax on shipping lines<br>
-                &bull; <b>Step 17: NetShippingRefund</b> = RefundedShippingGross - RefundedShippingTax<br>
-                &bull; <b>Step 18: NetShippingRevenue</b> = max(0.00, Gross - Tax - Refund)
-            </div>
-        </div>
-        """)
-
-    with p2:
-        render_html("""
-        <div class="workspace-panel" style="margin-top: 0;">
-            <div style="font-size: 0.95rem; font-weight: 700; color: #fb923c; margin-bottom: 8px;">
-                Phase 2: Inventory COGS & Line Gross Profit (Steps 10–14)
-            </div>
-            <div style="font-size: 0.8rem; line-height: 1.6; color: #cbd5e1; font-family: 'JetBrains Mono', monospace;">
-                &bull; <b>Step 10: COGS Resolution</b> = 4 Auditable Tiers (Snapshot &rarr; Admin &rarr; BOM &rarr; Quarantine)<br>
-                &bull; <b>Step 11: UnrecoveredQty</b> = OrderedQty - RestockedQty (Restocked = 0)<br>
-                &bull; <b>Step 12: UnrecoveredCOGS</b> = UnrecoveredQty &times; UnitCOGS<br>
-                &bull; <b>Step 13: GrossProfit</b> = NetRevenue - UnrecoveredCOGS<br>
-                &bull; <b>Step 14: OrderGrossProfit</b> = Sum(GrossProfit_i)
-            </div>
-        </div>
-        """)
-
-        render_html("""
-        <div class="workspace-panel">
-            <div style="font-size: 0.95rem; font-weight: 700; color: #ef4444; margin-bottom: 8px;">
-                Phase 4: Order Margin Floor Breach & Loss (Steps 19–25)
-            </div>
-            <div style="font-size: 0.8rem; line-height: 1.6; color: #cbd5e1; font-family: 'JetBrains Mono', monospace;">
-                &bull; <b>Step 19: CashIn</b> = Sum(NetRevenue_i) + NetShippingRevenue<br>
-                &bull; <b>Step 20: OutboundShippingCost</b> = Actual 3PL Invoice (or fallback table; $0 on POS)<br>
-                &bull; <b>Step 21: GatewayFee</b> = OrderTransaction.fees (or settlement feed; $0 on COD)<br>
-                &bull; <b>Step 22: OperationalCosts</b> = OutboundShippingCost + GatewayFee<br>
-                &bull; <b>Step 23: NetMarginCash (NMC)</b> = CashIn - UnrecoveredCOGS - OperationalCosts<br>
-                &bull; <b>Step 24: F03 Breach</b> = (NetMarginCash &lt; 0.00) [Strict Inequality]<br>
-                &bull; <b>Step 25: F03 Loss</b> = abs(NetMarginCash) if Breach else 0.00
-            </div>
-        </div>
-        """)
-
-
-# =============================================================================
 # MAIN APP FLOW (UNIFIED TOP NAVIGATION TABS)
 # =============================================================================
 
@@ -1863,12 +1704,9 @@ def main():
     f03_data = load_f03_data()
     f01_data = load_f01_data()
 
-    # Top Navigation Tabs (Guaranteeing all sections are accessible without being hidden)
-    tab_f03, tab_f01, tab_v1_v2, tab_architecture = st.tabs([
+    tab_f03, tab_f01 = st.tabs([
         "🛑 Formula F03: Margin Floor Breach",
-        "📉 Formula F01: Promotional Margin Leakage",
-        "⚖️ V1 vs V2 Audit Benchmark",
-        "🌊 25-Step Pipeline Architecture"
+        "📉 Formula F01: Promotional Margin Leakage"
     ])
 
     with tab_f03:
@@ -1876,12 +1714,6 @@ def main():
 
     with tab_f01:
         render_f01_view(f01_data)
-
-    with tab_v1_v2:
-        render_v1_v2_view()
-
-    with tab_architecture:
-        render_architecture_view()
 
 
 if __name__ == "__main__":
