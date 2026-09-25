@@ -91,3 +91,4 @@ temp/
 /ground_truth_sidecar.json
 /historical_cost_index.json
 /synthetic_catalog.json
+*.pkl
