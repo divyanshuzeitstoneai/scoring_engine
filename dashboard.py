@@ -29,7 +29,7 @@ import plotly.express as px
 
 # Streamlit Page Setup
 st.set_page_config(
-    page_title="Margin & Loss Intelligence Platform | F01 & F03",
+    page_title="Margin & Loss Intelligence Platform",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -490,7 +490,7 @@ render_html("""
 # DATA LOADERS & CACHING
 # =============================================================================
 
-@st.cache_resource(show_spinner="⚡ Loading Formula F01 dataset...")
+@st.cache_resource(show_spinner="⚡ Loading Promotional Margin Leakage dataset...")
 def load_f01_data() -> Dict[str, Any]:
     """Loads precomputed F01 evaluation summary and lineage reports."""
     base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -555,7 +555,7 @@ def load_f01_data() -> Dict[str, Any]:
     }
 
 
-@st.cache_resource(show_spinner="⚡ Loading Formula F03 dataset...")
+@st.cache_resource(show_spinner="⚡ Loading Margin Floor Breach dataset...")
 def load_f03_data() -> Dict[str, Any]:
     """Loads authoritative F03 canonical results table, fixtures, and large-scale summary."""
     base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -615,7 +615,7 @@ def render_f01_view(data: Dict[str, Any]):
     <div class="app-header">
         <div>
             <h1 class="app-title">
-                📉 Promotional Margin Leakage (F01)
+                📉 Promotional Margin Leakage
             </h1>
             <p class="app-subtitle">
                 Target Profit Shortfall Decomposition & Product-Level Loss Investigation Platform
@@ -1099,7 +1099,7 @@ def render_f03_view(data: Dict[str, Any]):
     <div class="app-header">
         <div>
             <h1 class="app-title">
-                🛑 Margin Floor Breach (F03)
+                🛑 Margin Floor Breach
             </h1>
             <p class="app-subtitle">
                 Direct Net Cash Margin Floor (NMC &lt; $0.00) Violation & Direct Cash Bleed Investigation Platform
@@ -1246,7 +1246,7 @@ def render_f03_view(data: Dict[str, Any]):
                 </div>
             </div>
             <div style="text-align: right;">
-                <div class="decomp-total-label">Total Cash Bleed (F03 Loss)</div>
+                <div class="decomp-total-label">Total Cash Bleed</div>
                 <div class="decomp-total-val" style="color: #f87171;">{decomp_tot_display}</div>
             </div>
         </div>
@@ -1452,7 +1452,7 @@ def render_f03_view(data: Dict[str, Any]):
             "Shipping Cost": f"${r.get('outbound_shipping_cost', 0.0) * r.get('usd_fx_rate', 1.0):.2f}",
             "Gateway Fee": f"${r.get('gateway_retained_fee', 0.0) * r.get('usd_fx_rate', 1.0):.2f}",
             "Net Margin Cash": f"${r.get('net_margin_cash_usd', 0.0):.2f}",
-            "F03 Loss ($)": f"${r.get('f03_loss_usd', 0.0):.2f}",
+            "Cash Loss ($)": f"${r.get('f03_loss_usd', 0.0):.2f}",
             "Driver": driver_str,
             "Description": r.get("description")
         })
@@ -1461,12 +1461,12 @@ def render_f03_view(data: Dict[str, Any]):
 
     if not df_table.empty:
         # Sort breaches to the top by loss USD descending
-        if "F03 Loss ($)" in df_table.columns:
-            df_table["_sort_loss"] = df_table["F03 Loss ($)"].apply(lambda s: float(str(s).replace("$", "").replace(",", "")))
+        if "Cash Loss ($)" in df_table.columns:
+            df_table["_sort_loss"] = df_table["Cash Loss ($)"].apply(lambda s: float(str(s).replace("$", "").replace(",", "")))
             df_table = df_table.sort_values("_sort_loss", ascending=False).drop(columns=["_sort_loss"])
 
         st.dataframe(
-            df_table[["Order Name", "Test Case ID", "Category", "Currency", "Status", "Net Cash In", "COGS", "Shipping Cost", "Gateway Fee", "Net Margin Cash", "F03 Loss ($)", "Driver", "Description"]],
+            df_table[["Order Name", "Test Case ID", "Category", "Currency", "Status", "Net Cash In", "COGS", "Shipping Cost", "Gateway Fee", "Net Margin Cash", "Cash Loss ($)", "Driver", "Description"]],
             use_container_width=True,
             hide_index=True
         )
@@ -1476,7 +1476,7 @@ def render_f03_view(data: Dict[str, Any]):
         # Build dropdown options
         order_options = []
         for idx, r in df_table.iterrows():
-            order_options.append(f"{r['Order Name']} • {r['Test Case ID']} (Loss: {r['F03 Loss ($)']} | {r['Driver']} | {r['Currency']})")
+            order_options.append(f"{r['Order Name']} • {r['Test Case ID']} (Loss: {r['Cash Loss ($)']} | {r['Driver']} | {r['Currency']})")
 
         selected_order_option = st.selectbox(
             "Select Order for Financial Lineage Trace",
@@ -1525,7 +1525,7 @@ def render_f03_view(data: Dict[str, Any]):
                     </div>
                 </div>
                 <div class="leakage-badge" style="border-color: {'rgba(239, 68, 68, 0.4)' if is_breach else 'rgba(34, 197, 94, 0.4)'}; background: {'rgba(239, 68, 68, 0.15)' if is_breach else 'rgba(34, 197, 94, 0.15)'};">
-                    <div class="leakage-badge-title" style="color: {loss_badge_color};">{'F03 CASH LOSS' if is_breach else 'NET CASH CONTRIBUTION'}</div>
+                    <div class="leakage-badge-title" style="color: {loss_badge_color};">{'DIRECT CASH LOSS' if is_breach else 'NET CASH CONTRIBUTION'}</div>
                     <div class="leakage-badge-val" style="color: {loss_badge_color};">{loss_badge_text}</div>
                 </div>
             </div>
@@ -1705,8 +1705,8 @@ def main():
     f01_data = load_f01_data()
 
     tab_f03, tab_f01 = st.tabs([
-        "🛑 Formula F03: Margin Floor Breach",
-        "📉 Formula F01: Promotional Margin Leakage"
+        "🛑 Margin Floor Breach",
+        "📉 Promotional Margin Leakage"
     ])
 
     with tab_f03:
