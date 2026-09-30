@@ -2615,99 +2615,127 @@ def render_f11_view(data: Dict[str, Any]):
                 filtered_df["variant_id"].astype(str).str.lower().str.contains(q, na=False)
             ]
 
-    # Aggregates from filtered variants
-    tot_gross = filtered_df["gross_sales"].sum() if not filtered_df.empty else 4917632.74
-    tot_net_sales = filtered_df["net_sales"].sum() if not filtered_df.empty else 4352000.00
-    tot_ship_coll = filtered_df["shipping_collected"].sum() if not filtered_df.empty else 75600.00
-    tot_cogs = filtered_df["cogs_incurred"].sum() if not filtered_df.empty else 2065000.00
-    tot_freight = filtered_df["outbound_freight"].sum() if not filtered_df.empty else 165000.00
-    tot_fees = filtered_df["gateway_fees"].sum() if not filtered_df.empty else 126000.00
-    tot_refunds = filtered_df["refund_deductions"].sum() if not filtered_df.empty else 122000.00
-    tot_drag = filtered_df["operating_drag"].sum() if not filtered_df.empty else 32000.00
-    tot_profit = filtered_df["net_profit"].sum() if not filtered_df.empty else net_realized_profit
+    # Aggregates and Leakage Calculation from filtered variants
+    tot_gross = float(filtered_df["gross_sales"].sum()) if not filtered_df.empty else 4917632.74
+    tot_net_sales = float(filtered_df["net_sales"].sum()) if not filtered_df.empty else 4352000.00
+    tot_ship_coll = float(filtered_df["shipping_collected"].sum()) if not filtered_df.empty else 75600.00
+    tot_cogs = float(filtered_df["cogs_incurred"].sum()) if not filtered_df.empty else 2065000.00
+    tot_freight = float(filtered_df["outbound_freight"].sum()) if not filtered_df.empty else 165000.00
+    tot_fees = float(filtered_df["gateway_fees"].sum()) if not filtered_df.empty else 126000.00
+    tot_refunds = float(filtered_df["refund_deductions"].sum()) if not filtered_df.empty else 122000.00
+    tot_drag = float(filtered_df["operating_drag"].sum()) if not filtered_df.empty else 32000.00
 
-    # 3. HERO KPI CARDS
-    kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
-    with kpi_col1:
-        render_html(f"""
-        <div class="kpi-card">
-            <div class="kpi-tag">Total Production Orders</div>
-            <div class="kpi-val">{total_orders:,.0f}</div>
-            <div class="kpi-desc">
-                50,000 orders evaluated across 5 global stores (USD, GBP, CAD, INR, JPY).
-            </div>
-        </div>
-        """)
+    tot_retained = tot_net_sales + tot_ship_coll
+    tot_costs = tot_cogs + tot_freight + tot_fees + tot_refunds + tot_drag
+    tot_profit = tot_retained - tot_costs
 
-    with kpi_col2:
-        render_html(f"""
-        <div class="kpi-card">
-            <div class="kpi-tag">Net Realized Cash Profit</div>
+    # Operational margin leakage: shipping subsidies + fees + refund write-offs + drag
+    shipping_subsidy = max(0.0, tot_freight - tot_ship_coll)
+    tot_leakage = shipping_subsidy + tot_fees + tot_refunds + tot_drag
+    naive_profit = tot_net_sales - tot_cogs
+
+    cogs_pct = (tot_cogs / tot_retained * 100.0) if tot_retained > 0 else 0.0
+    freight_pct = (tot_freight / tot_retained * 100.0) if tot_retained > 0 else 0.0
+    fees_pct = (tot_fees / tot_retained * 100.0) if tot_retained > 0 else 0.0
+    refunds_pct = ((tot_refunds + tot_drag) / tot_retained * 100.0) if tot_retained > 0 else 0.0
+    contrib_pct = (tot_profit / tot_retained * 100.0) if tot_retained > 0 else 0.0
+    leakage_pct = (tot_leakage / tot_retained * 100.0) if tot_retained > 0 else 0.0
+
+    # 3. HERO KPI CARDS (Financial Leakage & Contribution Focus - Symmetrical to F01, F03, F10)
+    render_html(f"""
+    <div class="kpi-grid">
+        <div class="kpi-card success">
+            <div class="kpi-tag">Net Order Contribution</div>
             <div class="kpi-val" style="color: #4ade80;">${tot_profit:,.2f}</div>
-            <div class="kpi-desc">
-                Sum of Measured + Estimated + Confirmed Loss evaluated order cash contribution.
-            </div>
+            <div class="kpi-desc">{contrib_pct:.2f}% realized net margin across {len(filtered_df)} variants ({time_filter})</div>
         </div>
-        """)
-
-    with kpi_col3:
-        render_html(f"""
-        <div class="kpi-card">
-            <div class="kpi-tag">COGS Coverage Ratio</div>
-            <div class="kpi-val" style="color: #38bdf8;">{cogs_cov:.2f}%</div>
-            <div class="kpi-desc">
-                Production Gate G1 passed (Target &ge; 90.00%). Exact unit cost resolved.
-            </div>
+        <div class="kpi-card danger">
+            <div class="kpi-tag">Operational Margin Leakage</div>
+            <div class="kpi-val" style="color: #f87171;">${tot_leakage:,.2f}</div>
+            <div class="kpi-desc">{leakage_pct:.2f}% of retained cash eroded by dead freight shipping subsidies, processor fees & returns</div>
         </div>
-        """)
-
-    with kpi_col4:
-        render_html(f"""
-        <div class="kpi-card">
-            <div class="kpi-tag">Confirmed Loss Orders</div>
-            <div class="kpi-val" style="color: #ef4444;">{loss_orders:,} Orders</div>
-            <div class="kpi-desc">
-                P_upper &lt; 0 proven cash losses quarantined without guesswork (${abs(loss_profit):,.2f}).
-            </div>
+        <div class="kpi-card purple">
+            <div class="kpi-tag">Retained Net Cash (R + Sc)</div>
+            <div class="kpi-val" style="color: #c084fc;">${tot_retained:,.2f}</div>
+            <div class="kpi-desc">Net merchandise sales (${tot_net_sales:,.2f}) + shipping collected (${tot_ship_coll:,.2f})</div>
         </div>
-        """)
+        <div class="kpi-card warning">
+            <div class="kpi-tag">Incurred Supplier COGS</div>
+            <div class="kpi-val" style="color: #fbbf24;">${tot_cogs:,.2f}</div>
+            <div class="kpi-desc">{cogs_pct:.2f}% of retained revenue; unitCost resolved on sold-unit basis</div>
+        </div>
+    </div>
+    """)
 
-    render_html("<div style='margin-bottom: 24px;'></div>")
-
-    # 4. SUBCARD BREAKDOWN (F10 Symmetric Layout)
+    # 4. ORDER MARGIN & COST WATERFALL DECOMPOSITION PANEL
     render_html(f"""
     <div class="decomp-panel">
         <div class="decomp-header">
-            <div class="decomp-title">Financial Flow & Cost Allocation Summary</div>
-            <div class="decomp-sub">Sold-unit basis revenue, direct inventory COGS, 3PL logistics, and gateway settlements</div>
+            <div>
+                <div class="section-title">
+                    🔍 Where did the order margin go?
+                </div>
+                <div class="section-subtitle">
+                    Root-cause decomposition of direct cash retention: Incurred inventory write-offs vs operational logistics & gateway drag
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div class="decomp-total-label">Total Direct Costs</div>
+                <div class="decomp-total-val" style="color: #f87171;">${tot_costs:,.2f}</div>
+            </div>
         </div>
+        
+        <div class="decomp-bar-frame">
+            <div class="decomp-segment-f10-cogs" style="width: {cogs_pct:.2f}%;" title="Incurred COGS: {cogs_pct:.2f}% (${tot_cogs:,.2f})"></div>
+            <div class="decomp-segment-f10-outbound" style="width: {freight_pct:.2f}%;" title="Courier Logistics: {freight_pct:.2f}% (${tot_freight:,.2f})"></div>
+            <div class="decomp-segment-f10-fees" style="width: {fees_pct:.2f}%;" title="Payment Gateway Fees: {fees_pct:.2f}% (${tot_fees:,.2f})"></div>
+            <div class="decomp-segment-f10-returns" style="width: {refunds_pct:.2f}%;" title="Refund Deductions & Drag: {refunds_pct:.2f}% (${tot_refunds + tot_drag:,.2f})"></div>
+            <div class="decomp-segment-f10-contrib" style="width: {max(0.0, contrib_pct):.2f}%;" title="Net Order Profit: {contrib_pct:.2f}% (${tot_profit:,.2f})"></div>
+        </div>
+
         <div class="decomp-cards-grid">
-            <div class="decomp-subcard" style="border-left: 3px solid #38bdf8;">
-                <div class="decomp-subcard-title" style="color: #38bdf8;">GROSS SALES & REVENUE (R + Sc)</div>
-                <div class="decomp-subcard-val" style="color: #38bdf8;">${tot_net_sales + tot_ship_coll:,.2f}</div>
+            <div class="decomp-subcard cogs-f10">
+                <div class="decomp-subcard-title" style="color: #fb923c;">
+                    INCURRED INVENTORY COGS
+                </div>
+                <div class="decomp-subcard-val" style="color: #fb923c;">
+                    ${tot_cogs:,.2f} <span style="font-size: 0.9rem; font-weight: 500; color: #fdba74;">· {cogs_pct:.2f}% of retained cash</span>
+                </div>
                 <div class="decomp-subcard-text">
-                    Net sold merchandise sales (${tot_net_sales:,.2f}) plus customer shipping collected (${tot_ship_coll:,.2f}) across evaluated orders.
+                    Supplier unit cost absorbed on sold goods on sold basis (qs &times; u) backed 96.89% by verified Shopify inventory unit costs.
                 </div>
             </div>
-            <div class="decomp-subcard" style="border-left: 3px solid #fb923c;">
-                <div class="decomp-subcard-title" style="color: #fb923c;">DIRECT INVENTORY COGS (C)</div>
-                <div class="decomp-subcard-val" style="color: #fb923c;">${tot_cogs:,.2f}</div>
+            <div class="decomp-subcard fulf">
+                <div class="decomp-subcard-title" style="color: #ef4444;">
+                    OUTBOUND FREIGHT & SHIPPING SUBSIDY
+                </div>
+                <div class="decomp-subcard-val" style="color: #ef4444;">
+                    ${tot_freight:,.2f} <span style="font-size: 0.9rem; font-weight: 500; color: #fca5a5;">· {freight_pct:.2f}% of retained cash</span>
+                </div>
                 <div class="decomp-subcard-text">
-                    Sold-unit basis unitCost resolution (qs &times; u) backed 96.89% by verified Shopify inventory items.
+                    Actual 3PL courier delivery freight (${tot_freight:,.2f}) minus customer-paid shipping (${tot_ship_coll:,.2f}) creating <b>${shipping_subsidy:,.2f}</b> in shipping subsidy drag.
                 </div>
             </div>
-            <div class="decomp-subcard" style="border-left: 3px solid #ef4444;">
-                <div class="decomp-subcard-title" style="color: #ef4444;">OUTBOUND FREIGHT & GATEWAY FEES (S + G)</div>
-                <div class="decomp-subcard-val" style="color: #ef4444;">${tot_freight + tot_fees:,.2f}</div>
+            <div class="decomp-subcard overhead">
+                <div class="decomp-subcard-title" style="color: #38bdf8;">
+                    GATEWAY PAYMENT PROCESSOR FEES
+                </div>
+                <div class="decomp-subcard-val" style="color: #38bdf8;">
+                    ${tot_fees:,.2f} <span style="font-size: 0.9rem; font-weight: 500; color: #7dd3fc;">· {fees_pct:.2f}% of retained cash</span>
+                </div>
                 <div class="decomp-subcard-text">
-                    Courier outbound delivery freight (${tot_freight:,.2f}) plus credit card processor settlement fees (${tot_fees:,.2f}).
+                    Non-refundable credit card and payment gateway transaction processing settlement fees across all evaluated payment gateways.
                 </div>
             </div>
-            <div class="decomp-subcard" style="border-left: 3px solid #22c55e;">
-                <div class="decomp-subcard-title" style="color: #22c55e;">NET REALIZED PROFIT (P)</div>
-                <div class="decomp-subcard-val" style="color: #22c55e;">${tot_profit:,.2f}</div>
+            <div class="decomp-subcard reverse">
+                <div class="decomp-subcard-title" style="color: #c084fc;">
+                    REFUND WRITE-OFFS & OPERATIONAL DRAG
+                </div>
+                <div class="decomp-subcard-val" style="color: #c084fc;">
+                    ${tot_refunds + tot_drag:,.2f} <span style="font-size: 0.9rem; font-weight: 500; color: #d8b4fe;">· {refunds_pct:.2f}% of retained cash</span>
+                </div>
                 <div class="decomp-subcard-text">
-                    Net cash retained after deducting supplier COGS, courier freight, gateway fees, and refund adjustments.
+                    Customer refund concessions (${tot_refunds:,.2f}) plus warehouse return handling and restocking drag (${tot_drag:,.2f}) booked exclusively in E to avoid double-counting.
                 </div>
             </div>
         </div>
@@ -2717,37 +2745,35 @@ def render_f11_view(data: Dict[str, Any]):
     # 5. DIAGNOSTIC CHARTS
     diag_col1, diag_col2 = st.columns(2)
     with diag_col1:
-        render_html("<div style='font-size: 0.85rem; font-weight: 600; color: #cbd5e1; margin-bottom: 8px;'>Order Volume by Lane Classification</div>")
-        df_lanes = pd.DataFrame([
-            {"Lane": "MEASURED", "Orders": meas_orders},
-            {"Lane": "ESTIMATED", "Orders": est_orders},
-            {"Lane": "CONFIRMED_LOSS", "Orders": loss_orders},
-            {"Lane": "UNDETERMINED", "Orders": undet_orders},
-            {"Lane": "EXCLUDED", "Orders": excl_orders}
-        ])
-        fig_donut = px.pie(
-            df_lanes,
-            names="Lane",
-            values="Orders",
-            color="Lane",
-            color_discrete_map={
-                "MEASURED": "#22c55e",
-                "ESTIMATED": "#38bdf8",
-                "CONFIRMED_LOSS": "#ef4444",
-                "UNDETERMINED": "#f59e0b",
-                "EXCLUDED": "#64748b"
-            },
-            hole=0.55
+        render_html("<div style='font-size: 0.85rem; font-weight: 600; color: #cbd5e1; margin-bottom: 8px;'>Operational Drag by Cost Component</div>")
+        cost_drag_dict = {
+            "Incurred COGS": tot_cogs,
+            "Courier Freight": tot_freight,
+            "Gateway Processor Fees": tot_fees,
+            "Refund Concessions": tot_refunds,
+            "Warehouse Handling Drag": tot_drag
+        }
+        df_cd = pd.DataFrame(list(cost_drag_dict.items()), columns=["Component", "Amount ($)"])
+        fig_cd = px.bar(
+            df_cd,
+            x="Amount ($)",
+            y="Component",
+            orientation='h',
+            text_auto='.2s',
+            color="Amount ($)",
+            color_continuous_scale=["#38bdf8", "#ef4444"]
         )
-        fig_donut.update_layout(
+        fig_cd.update_layout(
             template="plotly_dark",
             height=260,
-            margin=dict(l=10, r=10, t=10, b=10),
+            margin=dict(l=10, r=20, t=10, b=10),
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5)
+            coloraxis_showscale=False,
+            xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)', title=""),
+            yaxis=dict(autorange="reversed", title="")
         )
-        st.plotly_chart(fig_donut, use_container_width=True)
+        st.plotly_chart(fig_cd, use_container_width=True)
 
     with diag_col2:
         render_html("<div style='font-size: 0.85rem; font-weight: 600; color: #cbd5e1; margin-bottom: 8px;'>Net Profit Contribution by Product Category</div>")
@@ -2879,6 +2905,8 @@ def render_f11_view(data: Dict[str, Any]):
         v_e = float(v_selected.get("refund_deductions", 0.0))
         v_o = float(v_selected.get("operating_drag", 0.0))
         v_p = float(v_selected.get("net_profit", 0.0))
+        v_naive = v_r - v_c
+        v_drag = (v_s - v_sc) + v_g + v_e + v_o
         v_status = str(v_selected.get("status", "HEALTHY"))
         v_driver = str(v_selected.get("top_loss_driver", "None"))
         is_val_dest = (v_p < 0)
@@ -2979,149 +3007,28 @@ def render_f11_view(data: Dict[str, Any]):
                     <div class="calc-step-num" style="color: {loss_badge_color};">{loss_badge_text}</div>
                 </div>
             </div>
-        </div>
-        """)
 
-    render_html("<hr style='border: none; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0;'>")
-
-    # 7. GOLDEN FIXTURE INSPECTOR
-    render_html("""
-    <div class="section-header-box">
-        <div class="section-title">🔍 Hand-Computed Golden Fixture Audit & Lineage Trace</div>
-        <div class="section-subtitle">Comparing real Shopify GraphQL order responses against sealed analytical truth specifications</div>
-    </div>
-    """)
-
-    fixture_options = {
-        "B0.yaml": "Case B0 — Healthy High Margin Order ($55.22 Net Profit, Tier 1)",
-        "B1.yaml": "Case B1 — Confirmed Loss Drain (-$5.28 Loss, Heavy Shipping Subsidy)",
-        "DOC2.yaml": "Case DOC2 — Partial Refund Double-Count Protection (-$4.50 Loss)"
-    }
-    selected_fix_key = st.selectbox(
-        "Select Golden Fixture for Analytical Deep-Dive:",
-        list(fixture_options.keys()),
-        format_func=lambda k: fixture_options.get(k, k)
-    )
-
-    fix_data = fixtures.get(selected_fix_key, {})
-    if fix_data:
-        f_exp = fix_data.get("expected", {})
-        f_in = fix_data.get("input", {})
-        f_name = f_in.get("name", selected_fix_key)
-        f_curr = f_in.get("currencyCode", "USD")
-
-        r_cents = f_exp.get("R", 0)
-        sc_cents = f_exp.get("Sc", 0)
-        cogs_cents = f_exp.get("COGS", 0)
-        s_cents = f_exp.get("S", 0)
-        g_cents = f_exp.get("G", 0)
-        e_cents = f_exp.get("E", 0)
-        p_cents = f_exp.get("P", 0)
-        f_lane = f_exp.get("lane", "MEASURED")
-        f_band = f_exp.get("band", "moderate")
-        f_driver = f_exp.get("top_loss_driver") or "None (Healthy Contribution)"
-
-        is_loss = (p_cents < 0)
-        loss_color = "#ef4444" if is_loss else "#4ade80"
-        loss_title = "CONFIRMED CASH LOSS" if is_loss else "NET CASH CONTRIBUTION"
-        loss_val_str = f"-${abs(p_cents)/100:,.2f}" if is_loss else f"+${p_cents/100:,.2f}"
-
-        render_html(f"""
-        <div class="workspace-panel">
-            <div class="workspace-header">
-                <div>
-                    <div class="workspace-sku">
-                        <span>Fixture Evaluation &mdash; {f_name} ({selected_fix_key})</span>
-                    </div>
-                    <div class="workspace-meta">
-                        Lane: <b>{f_lane}</b> &bull; Band: <b>{f_band}</b> &bull; Top Driver: <b>{f_driver}</b> &bull; Currency: <b>{f_curr}</b>
-                    </div>
-                </div>
-                <div class="leakage-badge" style="border-color: {'rgba(239, 68, 68, 0.4)' if is_loss else 'rgba(34, 197, 94, 0.4)'}; background: {'rgba(239, 68, 68, 0.15)' if is_loss else 'rgba(34, 197, 94, 0.15)'};">
-                    <div class="leakage-badge-title" style="color: {loss_color};">{loss_title}</div>
-                    <div class="leakage-badge-val" style="color: {loss_color}; font-size: 1.35rem; font-weight: 800;">{loss_val_str}</div>
-                </div>
-            </div>
-
-            <div class="lineage-grid">
-                <!-- Node 1: Gross Sales -->
-                <div class="lineage-node highlight-target">
-                    <div class="lineage-step" style="color: #38bdf8;">01. Gross Sales (R)</div>
-                    <div class="lineage-primary" style="color: #38bdf8;">${r_cents/100:,.2f}</div>
-                    <div class="lineage-sub">Sold items post-discount (qs &times; p_net)</div>
-                </div>
-
-                <!-- Node 2: Shipping Coll -->
-                <div class="lineage-node">
-                    <div class="lineage-step">02. Shipping Coll (Sc)</div>
-                    <div class="lineage-primary">${sc_cents/100:,.2f}</div>
-                    <div class="lineage-sub">Customer-paid shipping fees</div>
-                </div>
-
-                <!-- Node 3: Inventory COGS -->
-                <div class="lineage-node highlight-loss">
-                    <div class="lineage-step" style="color: #f87171;">03. Inventory COGS (C)</div>
-                    <div class="lineage-primary" style="color: #f87171;">${cogs_cents/100:,.2f}</div>
-                    <div class="lineage-sub">Sold-unit basis unitCost</div>
-                </div>
-
-                <!-- Node 4: Courier Outbound -->
-                <div class="lineage-node">
-                    <div class="lineage-step">04. Outbound Freight (S)</div>
-                    <div class="lineage-primary">${s_cents/100:,.2f}</div>
-                    <div class="lineage-sub">Actual 3PL freight label invoice</div>
-                </div>
-
-                <!-- Node 5: Gateway Fee -->
-                <div class="lineage-node">
-                    <div class="lineage-step">05. Payment Fee (G)</div>
-                    <div class="lineage-primary">${g_cents/100:,.2f}</div>
-                    <div class="lineage-sub">Processor settlement fees</div>
-                </div>
-
-                <!-- Node 6: Net Margin Profit -->
-                <div class="lineage-node highlight-loss">
-                    <div class="lineage-step" style="color: {loss_color};">06. Realized Profit (P)</div>
-                    <div class="lineage-primary" style="color: {loss_color};">{loss_val_str}</div>
-                    <div class="lineage-sub">Exact Integer Minor Units</div>
-                </div>
-            </div>
-
-            <div class="calc-trace-box">
+            <div class="calc-trace-box" style="margin-top: 10px; background: rgba(15, 23, 42, 0.4);">
                 <div class="calc-step">
-                    <div class="calc-step-label">Gross Net Sales (R)</div>
-                    <div class="calc-step-num" style="color: #38bdf8;">${r_cents/100:,.2f}</div>
-                </div>
-                <div class="calc-operator">&plus;</div>
-                <div class="calc-step">
-                    <div class="calc-step-label">Shipping Coll (Sc)</div>
-                    <div class="calc-step-num" style="color: #38bdf8;">${sc_cents/100:,.2f}</div>
+                    <div class="calc-step-label">Net Order Contribution</div>
+                    <div class="calc-step-num" style="color: {loss_badge_color};">${v_p:,.2f}</div>
                 </div>
                 <div class="calc-operator">&minus;</div>
                 <div class="calc-step">
-                    <div class="calc-step-label">COGS (C)</div>
-                    <div class="calc-step-num" style="color: #f87171;">${cogs_cents/100:,.2f}</div>
-                </div>
-                <div class="calc-operator">&minus;</div>
-                <div class="calc-step">
-                    <div class="calc-step-label">Courier Freight (S)</div>
-                    <div class="calc-step-num" style="color: #fb923c;">${s_cents/100:,.2f}</div>
-                </div>
-                <div class="calc-operator">&minus;</div>
-                <div class="calc-step">
-                    <div class="calc-step-label">Gateway (G) + Ret (E)</div>
-                    <div class="calc-step-num" style="color: #94a3b8;">${(g_cents + e_cents)/100:,.2f}</div>
+                    <div class="calc-step-label">Naive Accounting Profit (R - C)</div>
+                    <div class="calc-step-num" style="color: #94a3b8;">${v_naive:,.2f}</div>
                 </div>
                 <div class="calc-operator">&equals;</div>
                 <div class="calc-step">
-                    <div class="calc-step-label">Order Profit (P)</div>
-                    <div class="calc-step-num" style="color: {loss_color};">{loss_val_str}</div>
+                    <div class="calc-step-label">Hidden Operational Drag</div>
+                    <div class="calc-step-num" style="color: #ef4444;">-${v_drag:,.2f}</div>
                 </div>
             </div>
         </div>
         """)
 
     render_html("<hr style='border: none; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0;'>")
+
 
     # 8. DATA CONFIDENCE & PIPELINE GOVERNANCE (Exact Symmetrical Layout to F10 with Real Calculation)
     render_html("""
