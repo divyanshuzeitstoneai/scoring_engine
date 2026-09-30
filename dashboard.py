@@ -537,7 +537,7 @@ render_html("""
 # DATA LOADERS & CACHING
 # =============================================================================
 
-@st.cache_resource(show_spinner="⚡ Loading Promotional Margin Leakage dataset...")
+@st.cache_data(show_spinner="⚡ Loading Promotional Margin Leakage dataset...")
 def load_f01_data() -> Dict[str, Any]:
     """Loads precomputed F01 evaluation summary and lineage reports."""
     base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -602,7 +602,7 @@ def load_f01_data() -> Dict[str, Any]:
     }
 
 
-@st.cache_resource(show_spinner="⚡ Loading Margin Floor Breach dataset...")
+@st.cache_data(show_spinner="⚡ Loading Margin Floor Breach dataset...")
 def load_f03_data() -> Dict[str, Any]:
     """Loads authoritative F03 canonical results table, fixtures, and large-scale summary."""
     base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -645,7 +645,7 @@ def load_f03_data() -> Dict[str, Any]:
     }
 
 
-@st.cache_resource(show_spinner="⚡ Loading Product Contribution dataset...")
+@st.cache_data(show_spinner="⚡ Loading Product Contribution dataset...")
 def load_f10_data() -> Dict[str, Any]:
     """Loads authoritative Formula F10 product contribution dataset, manifest, and DQ gates."""
     base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -682,7 +682,7 @@ def load_f10_data() -> Dict[str, Any]:
     }
 
 
-@st.cache_resource(show_spinner="⚡ Loading Order Profitability (F11) dataset...")
+@st.cache_data(show_spinner="⚡ Loading Order Profitability (F11) dataset...")
 def load_f11_data() -> Dict[str, Any]:
     """Loads authoritative Formula F11 Order Profitability run manifest, fixtures, and audit reports."""
     base_dir = os.path.abspath(os.path.dirname(__file__))
