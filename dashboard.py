@@ -2554,7 +2554,7 @@ def render_f11_view(data: Dict[str, Any]):
                 </div>
                 <div style="display: flex; align-items: baseline; justify-content: flex-end; gap: 8px; margin-top: 2px;">
                     <span style="font-size: 1.65rem; font-weight: 800; color: #4ade80; font-family: 'JetBrains Mono', monospace; line-height: 1.1;">41.74%</span>
-                    <span class="health-pill health-healthy" style="font-size: 0.72rem; padding: 2px 8px;">Profitable</span>
+                    <span class="health-pill health-healthy" style="font-size: 0.72rem; padding: 2px 8px;">Healthy</span>
                 </div>
                 <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">
                     Storewide Net Profit Margin
