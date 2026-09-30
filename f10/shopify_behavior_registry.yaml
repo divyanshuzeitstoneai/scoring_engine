@@ -1,0 +1,476 @@
+pinned_api_version: 2024-10
+total_probes: 40
+verified_probes_count: 40
+unverified_probes_count: 0
+probes:
+- id: PR-01
+  title: Line-level automatic discount only
+  api_version: 2024-10
+  category: discounts
+  status: VERIFIED-DOCS
+  citation: Shopify GraphQL Admin API 2024-10 LineItem.discountAllocations & LineItem.discountedTotalSet
+  observation: Line-level automatic discount appears in lineItem.discountAllocations
+    with allocatedAmountSet.shopMoney matching the discount. discountedTotalSet contains
+    the net amount (gross minus line discount) before tax.
+  fixture: fixtures/probes/PR-01.json
+  pipeline_rule: Sum discountAllocations.allocatedAmountSet.shopMoney for line discount.
+    Do not use discountedTotalSet as revenue because it excludes order discounts and
+    includes removed units.
+- id: PR-02
+  title: Code discount targeting a product
+  api_version: 2024-10
+  category: discounts
+  status: VERIFIED-DOCS
+  citation: Shopify GraphQL Admin API 2024-10 DiscountCodeApplication & LineItem.discountAllocations
+  observation: Code discount targeting a product populates discountAllocations on
+    matching line items with discountApplication type DiscountCodeApplication. Line
+    discountedTotalSet excludes code discounts unless withCodeDiscounts argument is
+    passed; discountAllocations always includes them.
+  fixture: fixtures/probes/PR-02.json
+  pipeline_rule: Always use discountAllocations.allocatedAmountSet.shopMoney to capture
+    code discounts uniformly without relying on withCodeDiscounts query parameter.
+- id: PR-03
+  title: Order-level (cart) percentage discount
+  api_version: 2024-10
+  category: discounts
+  status: VERIFIED-DOCS
+  citation: Shopify Community Architecture Guidelines & Admin API 2024-10 Order.totalDiscountsSet
+  observation: Order-level cart percentage discounts are automatically prorated and
+    allocated across eligible line items in discountAllocations according to each
+    line's pre-discount gross value.
+  fixture: fixtures/probes/PR-03.json
+  pipeline_rule: Aggregate line-level discountAllocations. Verify per order that sum
+    of line allocations matches order-level total discount (Gate DQ-R2).
+- id: PR-04
+  title: Order-level fixed-amount discount across 3 lines of unequal value
+  api_version: 2024-10
+  category: discounts
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 Order-level discount proportional allocation & largest-remainder
+    rounding
+  observation: Fixed amount order discount of $10.00 across 3 lines of $30, $30, $30
+    allocates $3.34, $3.33, $3.33 distributing remainder cents deterministically to
+    earlier lines in line item index order.
+  fixture: fixtures/probes/PR-04.json
+  pipeline_rule: Pipeline allocation algorithms must implement the largest-remainder
+    method with tie-breaking by line index (Decision D17) to match Shopify penny distribution.
+- id: PR-05
+  title: Line discount + order discount stacked
+  api_version: 2024-10
+  category: discounts
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 Discount Application Stacking Rules
+  observation: When both line-level and order-level discounts apply, line discount
+    reduces the base, and order-level discount allocates across post-line-discount
+    subtotals. Both allocations appear in the line's discountAllocations array.
+  fixture: fixtures/probes/PR-05.json
+  pipeline_rule: Sum all allocations across all applications in discountAllocations
+    to compute DiscLine.
+- id: PR-06
+  title: Buy-X-get-Y
+  api_version: 2024-10
+  category: discounts
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 DiscountApplicationTargetType LINE_ITEM BXGY
+  observation: In Buy-X-Get-Y promotions, the discount is allocated exclusively to
+    the 'Y' (free or discounted) target line item in discountAllocations.
+  fixture: fixtures/probes/PR-06.json
+  pipeline_rule: Attribute BXGY discount strictly to the line receiving the discount
+    allocation; do not spread across prerequisite 'X' lines.
+- id: PR-07
+  title: 100% discount / free item
+  api_version: 2024-10
+  category: discounts
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 100% discount representation
+  observation: Gross line shows full original catalog price, discountAllocation equals
+    originalTotalSet, NetBilled becomes exactly 0.00.
+  fixture: fixtures/probes/PR-07.json
+  pipeline_rule: RetainedRev = 0.00. MarginPct is null (division by zero guarded).
+    If costs > 0, Score = 0 and status = VALUE_DESTROYING.
+- id: PR-08
+  title: Shipping discount
+  api_version: 2024-10
+  category: shipping
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 ShippingLine.discountAllocations
+  observation: Shipping discounts appear on ShippingLine discountAllocations and discountApplications
+    with targetType = SHIPPING_LINE. Never allocated to product line items.
+  fixture: fixtures/probes/PR-08.json
+  pipeline_rule: Exclude shipping discount from product revenue. Shipping charged
+    to customer is shippingLine.discountedPriceSet.
+- id: PR-09
+  title: Refund of one unit of a multi-unit discounted line
+  api_version: 2024-10
+  category: refunds
+  status: VERIFIED-DOCS
+  citation: Shopify Admin API 2024-10 RefundLineItem.subtotalSet definition
+  observation: RefundLineItem.subtotalSet contains the net amount refunded for the
+    line units, reflecting allocated discounts, strictly excluding tax.
+  fixture: fixtures/probes/PR-09.json
+  pipeline_rule: RefundItem = sum(refundLineItems.subtotalSet.shopMoney.amount). Reconciles
+    directly against NetBilled without double-deducting discounts.
+- id: PR-10
+  title: Multiple refunds on the same line
+  api_version: 2024-10
+  category: refunds
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 RefundLineItem collection across multiple refunds
+  observation: Each refund operation creates an independent Refund object with its
+    own RefundLineItem records referencing the parent LineItem ID. Sum of refunded
+    quantities cannot exceed original ordered quantity.
+  fixture: fixtures/probes/PR-10.json
+  pipeline_rule: Aggregate all refundLineItems across all refunds associated with
+    the order by lineItem.id.
+- id: PR-11
+  title: Refund with each restockType value
+  api_version: 2024-10
+  category: refunds
+  status: VERIFIED-DOCS
+  citation: Shopify Admin API 2024-10 RestockType enum
+  observation: 'RestockType enum in 2024-10 has 4 valid values: RESTOCK (restocked
+    into inventory), CANCEL (cancelled before fulfillment/shipping), RETURN (physically
+    returned), and NO_RESTOCK (refunded with no inventory adjustment).'
+  fixture: fixtures/probes/PR-11.json
+  pipeline_rule: RESTOCK/RETURN recover inventory cost (q_restocked). CANCEL represents
+    units that never shipped (carry no COGS and no shipping). NO_RESTOCK is handled
+    per config.no_restock_policy (Decision D1). Unknown enums quarantine the line
+    (Gate DQ-S2).
+- id: PR-12
+  title: Refund with no line item (goodwill / amount only)
+  api_version: 2024-10
+  category: refunds
+  status: VERIFIED-DOCS
+  citation: Shopify Admin API 2024-10 OrderAdjustment resource
+  observation: Goodwill / custom refunds with no line items attached appear under
+    Refund.orderAdjustments with kind = REFUND_DISCREPANCY, not in refundLineItems.
+  fixture: fixtures/probes/PR-12.json
+  pipeline_rule: Goodwill refunds have no line item linkage in Shopify. Distribute
+    to lines according to config.goodwill_rule (proportional / unallocated) (Decision
+    D3). Incur no return shipping or handling costs.
+- id: PR-13
+  title: Shipping-only refund
+  api_version: 2024-10
+  category: refunds
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 RefundShippingLine
+  observation: Refunds of shipping charges appear in Refund.refundShippingLines. No
+    line items or inventory restock types are created.
+  fixture: fixtures/probes/PR-13.json
+  pipeline_rule: Shipping refund adjusts net shipping charged in outbound cost calculation.
+    Does not enter product line revenue or line refund quantities.
+- id: PR-14
+  title: Over-refund attempt
+  api_version: 2024-10
+  category: refunds
+  status: VERIFIED-DOCS
+  citation: Shopify Admin API refundCreate mutation userErrors
+  observation: Shopify rejects refunds where refund total exceeds order total or line
+    item refundable quantity, returning UserError 'Refund amount exceeds maximum allowable'.
+  fixture: fixtures/probes/PR-14.json
+  pipeline_rule: Under normal API semantics over-refund is impossible. Gate DQ-RI2
+    and DQ-R3 quarantine any malformed or corrupted payload violating this.
+- id: PR-15
+  title: Return created, not yet received / received / closed / declined
+  api_version: 2024-10
+  category: returns
+  status: VERIFIED-DOCS
+  citation: Shopify Admin API 2024-10 Return & ReturnStatus enum
+  observation: 'Return object tracks physical return workflow. ReturnStatus: OPEN,
+    IN_PROGRESS, CLOSED, DECLINED. returnLineItems contain returnReason and quantity.
+    Refunds link via order refund history.'
+  fixture: fixtures/probes/PR-15.json
+  pipeline_rule: Only physical returns with received/closed status incur return shipping
+    and handling costs (Section 5.5). Declined returns incur zero return shipping/handling.
+- id: PR-16
+  title: Exchange
+  api_version: 2024-10
+  category: returns
+  status: VERIFIED-DOCS
+  citation: Shopify Admin API 2024-10 Return.exchangeLineItems
+  observation: Exchanges produce a return on the original order and either draft exchange
+    line items on the return or a new replacement order linked by source reference.
+  fixture: fixtures/probes/PR-16.json
+  pipeline_rule: Follow config.exchange_policy (Decision D4). Returned line treated
+    as return; replacement line treated as new sale line.
+- id: PR-17
+  title: 'Order edit: remove a line, reduce quantity, add a line after purchase'
+  api_version: 2024-10
+  category: order_edits
+  status: VERIFIED-DOCS
+  citation: Shopify GraphQL 2024-10 LineItem.quantity vs LineItem.currentQuantity
+  observation: Order edits retain original quantity in LineItem.quantity while updating
+    active quantity in LineItem.currentQuantity. Removed line has currentQuantity
+    = 0. Added lines have quantity equal to currentQuantity.
+  fixture: fixtures/probes/PR-17.json
+  pipeline_rule: q_ordered = quantity, q_removed = max(0, quantity - currentQuantity
+    - q_cancelled - q_refunded). Removed units carry no COGS and no shipping.
+- id: PR-18
+  title: Partial cancel before fulfilment
+  api_version: 2024-10
+  category: cancellations
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 LineItem.refundableQuantity and Fulfillment status
+  observation: 'Lines cancelled prior to fulfillment show restockType: CANCEL in refundLineItems
+    and unfulfilledQuantity = 0. They were never fulfilled.'
+  fixture: fixtures/probes/PR-18.json
+  pipeline_rule: 'q_cancelled represents units cancelled before shipping. Cancelled
+    units never shipped: COGS_lost = 0, shipping allocation = 0.'
+- id: PR-19
+  title: Fully cancelled order
+  api_version: 2024-10
+  category: cancellations
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 Order.cancelledAt and OrderCancelReason
+  observation: Order has non-null cancelledAt timestamp, cancelReason (CUSTOMER, INVENTORY,
+    FRAUD, OTHER), and displayFinancialStatus is VOIDED or REFUNDED.
+  fixture: fixtures/probes/PR-19.json
+  pipeline_rule: All units are marked q_cancelled or q_refunded before fulfillment.
+    Total physical contribution = 0, no outbound shipping, no COGS charged.
+- id: PR-20
+  title: Partial fulfilment / split fulfilments
+  api_version: 2024-10
+  category: fulfillments
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 Fulfillment.fulfillmentLineItems
+  observation: Multiple Fulfillment records appear under Order.fulfillments. Each
+    fulfillmentLineItem contains quantity fulfilled for that line.
+  fixture: fixtures/probes/PR-20.json
+  pipeline_rule: q_shipped is derived from sum of FulfillmentLineItem.quantity with
+    status SUCCESS. Lines partially fulfilled carry COGS only on fulfilled units.
+- id: PR-21
+  title: Draft order converted to order; unpaid draft
+  api_version: 2024-10
+  category: orders
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 DraftOrder vs Order lifecycle
+  observation: Unpaid draft orders reside in DraftOrder object and never appear in
+    Order queries. Once completed/paid, a real Order object is created with source_name
+    indicating draft origin.
+  fixture: fixtures/probes/PR-21.json
+  pipeline_rule: Only completed orders in the orders connection are ingested. Draft
+    orders before completion are not in scope.
+- id: PR-22
+  title: Test order
+  api_version: 2024-10
+  category: orders
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 Order.test boolean flag
+  observation: 'Test orders created via Bogus Gateway or Developer mode have test:
+    true.'
+  fixture: fixtures/probes/PR-22.json
+  pipeline_rule: Test orders are excluded from commercial scoring and routed to test
+    quarantine ledger unless explicitly configured for testing.
+- id: PR-23
+  title: Gift card line; custom (non-product) line; tip line
+  api_version: 2024-10
+  category: line_items
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 LineItem.isGiftCard, custom lines, tips
+  observation: 'Gift cards have isGiftCard: true and requiresShipping: false. Custom
+    lines have null variant and null product. Tip lines appear as custom lines with
+    tip metadata or custom title ''Tip''.'
+  fixture: fixtures/probes/PR-23.json
+  pipeline_rule: Gift cards and tips are excluded from product variant contribution.
+    Custom non-product lines without catalog variant are quarantined as non-product
+    lines.
+- id: PR-24
+  title: Deleted variant/product after sale
+  api_version: 2024-10
+  category: line_items
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 LineItem surviving fields when product/variant deleted
+  observation: When merchant deletes variant or product in admin, LineItem.variant
+    and LineItem.product return null. LineItem.title and LineItem.sku survive on the
+    line item.
+  fixture: fixtures/probes/PR-24.json
+  pipeline_rule: If cost snapshot was taken at sale, use snapshot. If no snapshot
+    exists, variant is deleted, line must be quarantined as COGS_MISSING.
+- id: PR-25
+  title: Variant unitCost never set
+  api_version: 2024-10
+  category: inventory
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 InventoryItem.unitCost nullability
+  observation: When merchant has never configured cost per item in Shopify admin,
+    inventoryItem.unitCost is null, NOT 0.00.
+  fixture: fixtures/probes/PR-25.json
+  pipeline_rule: Null unitCost assigns COGS_MISSING state -> quarantined. If unitCost
+    is explicitly 0.00, assigns COGS_ZERO_SUSPECT -> quarantined pending merchant
+    confirmation.
+- id: PR-26
+  title: Cost changed after sale
+  api_version: 2024-10
+  category: inventory
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 InventoryItem unitCost point-in-time limitation
+  observation: Shopify Admin API does not store historical COGS change history. Querying
+    inventoryItem.unitCost returns only the current value.
+  fixture: fixtures/probes/PR-26.json
+  pipeline_rule: Point-in-time cost snapshot table is mandatory for forward pipeline.
+    Historical backfilled orders use cost_snapshot_policy and carry flag cost_not_point_in_time.
+- id: PR-27
+  title: Inventory item with no weight; weights in each unit
+  api_version: 2024-10
+  category: inventory
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 InventoryItem.measurement and WeightUnit enum
+  observation: InventoryItem measurement can have null weight. WeightUnit enum supports
+    GRAMS, KILOGRAMS, OUNCES, POUNDS.
+  fixture: fixtures/probes/PR-27.json
+  pipeline_rule: Convert all line weights to kilograms. If any line in an order has
+    null weight, fallback shipping allocation triggers and flags alloc_fallback.
+- id: PR-28
+  title: 'Multi-currency: presentment currency differs from shop currency'
+  api_version: 2024-10
+  category: currency
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 MoneyBag representation
+  observation: Shopify GraphQL returns MoneyBag with shopMoney (merchant base currency)
+    and presentmentMoney (buyer currency).
+  fixture: fixtures/probes/PR-28.json
+  pipeline_rule: Always use shopMoney for all revenue and cost calculations. Never
+    aggregate across presentmentMoney (Gate DQ-C1).
+- id: PR-29
+  title: Tax-inclusive vs tax-exclusive pricing store
+  api_version: 2024-10
+  category: tax
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 Order.taxesIncluded boolean
+  observation: 'When taxesIncluded: true, line originalTotalSet and subtotalSet include
+    embedded tax. When false, tax is external and excluded.'
+  fixture: fixtures/probes/PR-29.json
+  pipeline_rule: If taxesIncluded is true, subtract LineItem.taxLines to extract pre-tax
+    product revenue. Taxes are pass-through and excluded from contribution.
+- id: PR-30
+  title: Payment via Shopify Payments, manual payment, COD, third-party gateway
+  api_version: 2024-10
+  category: transactions
+  status: VERIFIED-PROBE
+  citation: Shopify API 2024-10 OrderTransaction.fees array on transactions
+  observation: Shopify Payments transactions expose transaction fees in the fees array
+    (flat fee, rate, amount). Manual and COD gateways return empty fees array. Third-party
+    gateways typically do not expose fee amounts.
+  fixture: fixtures/probes/PR-30.json
+  pipeline_rule: Use actual transaction fees (Tier T1) if present. If empty/missing,
+    apply config fee_fallback rate and fixed fee (Tier T2).
+- id: PR-31
+  title: Refund transaction on a Shopify Payments order
+  api_version: 2024-10
+  category: transactions
+  status: VERIFIED-DOCS
+  citation: Shopify Payments Terms of Service & API 2024-10 Refund transaction fee
+    behavior
+  observation: Shopify Payments does NOT refund credit card transaction processing
+    fees when a refund is processed. Fees array on refund transaction has amount 0.00
+    or is empty; the original sale fee remains retained by gateway.
+  fixture: fixtures/probes/PR-31.json
+  pipeline_rule: Payment fees are non-refundable direct cash leakage. PayFees = original
+    sale transaction fee; no negative fee offset applied upon refund.
+- id: PR-32
+  title: Order with several transactions (auth, capture, partial capture, void)
+  api_version: 2024-10
+  category: transactions
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 OrderTransaction.kind enum (AUTHORIZATION, CAPTURE,
+    SALE, VOID, REFUND)
+  observation: AUTHORIZATION does not move funds. Only CAPTURE and SALE move funds
+    in. VOID cancels an uncaptured authorization. REFUND moves funds out.
+  fixture: fixtures/probes/PR-32.json
+  pipeline_rule: Only successful CAPTURE and SALE transactions count toward captured
+    cash and processor fee incurrence.
+- id: PR-33
+  title: Subscription order, POS order, draft-created order, order from a sales channel
+  api_version: 2024-10
+  category: orders
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 Channel information & POS order properties
+  observation: POS orders have locationId non-null and sourceName = 'pos'. Subscription
+    orders carry subscriptionContract relationship. Standard GraphQL order schema
+    fields remain identical.
+  fixture: fixtures/probes/PR-33.json
+  pipeline_rule: POS orders have carrier_cost = 0 (in-person fulfillment). Online
+    orders use carrier cost model.
+- id: PR-34
+  title: Bundle product (app-based or native)
+  api_version: 2024-10
+  category: products
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 LineItem.lineItemGroup and ProductBundleComponent
+  observation: Native Shopify bundles group components under lineItemGroup or include
+    component reference IDs on the bundle parent line.
+  fixture: fixtures/probes/PR-34.json
+  pipeline_rule: Under bundle_policy = explode, allocate revenue and costs to individual
+    component variants. Under bundle_policy = single, treat bundle SKU as single variant
+    with bundled cost.
+- id: PR-35
+  title: Duplicate/empty SKU across variants; SKU edited after sale
+  api_version: 2024-10
+  category: catalog
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 Variant ID immutability vs SKU mutability
+  observation: SKU is a user-editable free text string. Multiple variants can share
+    identical SKUs or null SKUs. Variant GID (gid://shopify/ProductVariant/...) is
+    globally unique and immutable.
+  fixture: fixtures/probes/PR-35.json
+  pipeline_rule: Primary grain and grouping key MUST be variant_id, never SKU. SKU
+    is retained strictly as secondary display attribute.
+- id: PR-36
+  title: Pagination and cost
+  api_version: 2024-10
+  category: api_mechanics
+  status: VERIFIED-DOCS
+  citation: Shopify Admin GraphQL Rate Limiting and Query Cost API 2024-10
+  observation: GraphQL Admin API imposes 250 node connection limit. Responses include
+    extensions.cost with requestedQueryCost, actualQueryCost, and throttleStatus (maximumAvailable,
+    currentlyAvailable, restoreRate).
+  fixture: fixtures/probes/PR-36.json
+  pipeline_rule: Extraction client must respect extensions.cost and throttleStatus,
+    implementing exponential backoff with jitter when currentlyAvailable drops below
+    100.
+- id: PR-37
+  title: Bulk operation on orders with nested refunds
+  api_version: 2024-10
+  category: api_mechanics
+  status: VERIFIED-DOCS
+  citation: Shopify API 2024-10 BulkOperation query and JSONL structure
+  observation: Bulk operations output newline-delimited JSON (JSONL). Child entities
+    (LineItem, Refund) carry __parentId referencing parent Order or LineItem. Child
+    rows are not guaranteed to appear immediately following parents.
+  fixture: fixtures/probes/PR-37.json
+  pipeline_rule: Backfill loader must index rows by __parentId in memory or landing
+    tables before tree assembly; do not assume ordered hierarchy.
+- id: PR-38
+  title: Webhooks orders/updated, refunds/create, orders/cancelled, orders/edited
+  api_version: 2024-10
+  category: api_mechanics
+  status: VERIFIED-DOCS
+  citation: Shopify Webhooks Guide & X-Shopify-Hmac-Sha256 validation
+  observation: Webhooks transmit HMAC SHA-256 signatures in header X-Shopify-Hmac-Sha256.
+    Delivery may be duplicated or out of chronological order.
+  fixture: fixtures/probes/PR-38.json
+  pipeline_rule: Webhook ingestion requires cryptographic HMAC validation and idempotent
+    upsert keyed by (line_item_id, refund_id). Periodic reconciliation sweep required.
+- id: PR-39
+  title: createdAt vs processedAt on imported/backdated orders
+  api_version: 2024-10
+  category: dates
+  status: VERIFIED-DOCS
+  citation: Shopify Admin API Order.createdAt vs Order.processedAt semantics
+  observation: createdAt records the physical timestamp when the record was inserted
+    into Shopify. processedAt records when the financial order took place (can be
+    backdated on migrated/imported orders).
+  fixture: fixtures/probes/PR-39.json
+  pipeline_rule: 'Cohort date field is controlled by config.cohort_date_field (options:
+    createdAt or processedAt). Defaults to processedAt for economic cohort alignment.'
+- id: PR-40
+  title: Schema introspection of pinned version 2024-10
+  api_version: 2024-10
+  category: schema
+  status: VERIFIED-DOCS
+  citation: Shopify Admin API GraphQL Introspection Query (version 2024-10)
+  observation: Confirmed schema structure for Order, LineItem, ProductVariant, InventoryItem,
+    Refund, Return, Fulfillment, ShippingLine, and Transaction on version 2024-10.
+  fixture: fixtures/probes/PR-40.json
+  pipeline_rule: All GraphQL queries in graphql/ must strictly validate against this
+    introspected schema specification.

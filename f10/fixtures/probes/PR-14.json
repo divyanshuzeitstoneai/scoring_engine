@@ -1,0 +1,16 @@
+{
+  "data": {
+    "refundCreate": {
+      "refund": null,
+      "userErrors": [
+        {
+          "field": [
+            "refund",
+            "amount"
+          ],
+          "message": "Refund amount cannot exceed remaining order balance"
+        }
+      ]
+    }
+  }
+}

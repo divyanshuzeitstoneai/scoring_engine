@@ -1,0 +1,9 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000022",
+      "test": true,
+      "name": "#TEST-1001"
+    }
+  }
+}

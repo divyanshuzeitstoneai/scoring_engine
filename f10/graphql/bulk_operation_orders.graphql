@@ -1,0 +1,233 @@
+# Bulk Operation Extraction Query for Shopify Admin GraphQL API 2024-10
+# Fetches historical order cohort with all nested connections for F10 Product Contribution analysis.
+
+mutation StartOrderBulkOperation {
+  bulkOperationRunQuery(
+    query: """
+    {
+      orders {
+        edges {
+          node {
+            id
+            name
+            createdAt
+            processedAt
+            cancelledAt
+            cancelReason
+            test
+            displayFinancialStatus
+            displayFulfillmentStatus
+            taxesIncluded
+            currencyCode
+            totalPriceSet {
+              shopMoney { amount currencyCode }
+              presentmentMoney { amount currencyCode }
+            }
+            totalDiscountsSet {
+              shopMoney { amount currencyCode }
+            }
+            totalShippingPriceSet {
+              shopMoney { amount currencyCode }
+            }
+            originalTotalPriceSet {
+              shopMoney { amount currencyCode }
+            }
+            currentTotalPriceSet {
+              shopMoney { amount currencyCode }
+            }
+            sourceName
+            
+            lineItems {
+              edges {
+                node {
+                  id
+                  title
+                  sku
+                  quantity
+                  currentQuantity
+                  unfulfilledQuantity
+                  nonFulfillableQuantity
+                  refundableQuantity
+                  restockable
+                  isGiftCard
+                  requiresShipping
+                  originalTotalSet {
+                    shopMoney { amount currencyCode }
+                  }
+                  discountedTotalSet {
+                    shopMoney { amount currencyCode }
+                  }
+                  discountAllocations {
+                    allocatedAmountSet {
+                      shopMoney { amount currencyCode }
+                    }
+                    discountApplication {
+                      targetType
+                      targetSelection
+                      allocationMethod
+                    }
+                  }
+                  variant {
+                    id
+                    title
+                    sku
+                    price
+                    inventoryItem {
+                      id
+                      unitCost {
+                        amount
+                        currencyCode
+                      }
+                      tracked
+                      measurement {
+                        weight {
+                          value
+                          unit
+                        }
+                      }
+                    }
+                    product {
+                      id
+                      title
+                      productType
+                    }
+                  }
+                }
+              }
+            }
+            
+            shippingLines {
+              edges {
+                node {
+                  id
+                  title
+                  originalPriceSet {
+                    shopMoney { amount currencyCode }
+                  }
+                  discountedPriceSet {
+                    shopMoney { amount currencyCode }
+                  }
+                }
+              }
+            }
+            
+            transactions {
+              id
+              kind
+              status
+              gateway
+              amountSet {
+                shopMoney { amount currencyCode }
+              }
+              fees {
+                amount {
+                  amount
+                  currencyCode
+                }
+                rate
+                flatFee {
+                  amount
+                  currencyCode
+                }
+                type
+              }
+            }
+            
+            refunds {
+              id
+              createdAt
+              note
+              refundLineItems {
+                edges {
+                  node {
+                    id
+                    quantity
+                    restockType
+                    subtotalSet {
+                      shopMoney { amount currencyCode }
+                    }
+                    totalTaxSet {
+                      shopMoney { amount currencyCode }
+                    }
+                    lineItem {
+                      id
+                    }
+                  }
+                }
+              }
+              refundShippingLines {
+                edges {
+                  node {
+                    subtotalAmountSet {
+                      shopMoney { amount currencyCode }
+                    }
+                  }
+                }
+              }
+              orderAdjustments {
+                edges {
+                  node {
+                    id
+                    kind
+                    amountSet {
+                      shopMoney { amount currencyCode }
+                    }
+                    reason
+                  }
+                }
+              }
+            }
+            
+            returns {
+              edges {
+                node {
+                  id
+                  status
+                  returnLineItems {
+                    edges {
+                      node {
+                        id
+                        quantity
+                        returnReason
+                        returnReasonNote
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            
+            fulfillments {
+              id
+              status
+              fulfillmentLineItems {
+                edges {
+                  node {
+                    id
+                    quantity
+                    lineItem {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+  ) {
+    bulkOperation {
+      id
+      status
+      errorCode
+      createdAt
+      url
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

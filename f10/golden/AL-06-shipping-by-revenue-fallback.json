@@ -1,0 +1,16 @@
+{
+  "id": "AL-06-shipping-by-revenue-fallback",
+  "category": "allocation",
+  "description": "AL-06: Shipping 12.00 by revenue fallback: 60 / 30 / 10.",
+  "shares": [
+    "60.00",
+    "30.00",
+    "10.00"
+  ],
+  "total_to_allocate": "12.00",
+  "expected_allocations": [
+    "7.20",
+    "3.60",
+    "1.20"
+  ]
+}

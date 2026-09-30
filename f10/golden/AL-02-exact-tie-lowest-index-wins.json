@@ -1,0 +1,16 @@
+{
+  "id": "AL-02-exact-tie-lowest-index-wins",
+  "category": "allocation",
+  "description": "AL-02: 10.00 across three equal lines. Tie-break: lowest index wins.",
+  "shares": [
+    "30.00",
+    "30.00",
+    "30.00"
+  ],
+  "total_to_allocate": "10.00",
+  "expected_allocations": [
+    "3.34",
+    "3.33",
+    "3.33"
+  ]
+}

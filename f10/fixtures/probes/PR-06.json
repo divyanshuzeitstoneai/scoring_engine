@@ -1,0 +1,43 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000006",
+      "name": "#PR-06",
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000009",
+            "title": "Buy X Item",
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "50.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": []
+          },
+          {
+            "id": "gid://shopify/LineItem/9000000010",
+            "title": "Get Y Item Free",
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": [
+              {
+                "allocatedAmountSet": {
+                  "shopMoney": {
+                    "amount": "30.00",
+                    "currencyCode": "USD"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

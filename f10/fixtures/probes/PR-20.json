@@ -1,0 +1,37 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000020",
+      "fulfillments": [
+        {
+          "id": "gid://shopify/Fulfillment/2000000001",
+          "status": "SUCCESS",
+          "fulfillmentLineItems": {
+            "nodes": [
+              {
+                "lineItem": {
+                  "id": "gid://shopify/LineItem/9000000022"
+                },
+                "quantity": 1
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/Fulfillment/2000000002",
+          "status": "SUCCESS",
+          "fulfillmentLineItems": {
+            "nodes": [
+              {
+                "lineItem": {
+                  "id": "gid://shopify/LineItem/9000000022"
+                },
+                "quantity": 1
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

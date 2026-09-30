@@ -1,0 +1,19 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000019",
+      "cancelledAt": "2024-10-02T14:00:00Z",
+      "cancelReason": "CUSTOMER",
+      "displayFinancialStatus": "VOIDED",
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000021",
+            "quantity": 1,
+            "currentQuantity": 0
+          }
+        ]
+      }
+    }
+  }
+}

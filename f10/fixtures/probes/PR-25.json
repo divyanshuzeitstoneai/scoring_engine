@@ -1,0 +1,9 @@
+{
+  "data": {
+    "inventoryItem": {
+      "id": "gid://shopify/InventoryItem/5000000001",
+      "unitCost": null,
+      "tracked": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "AL-03-zero-minor-units-jpy",
+  "category": "allocation",
+  "description": "AL-03: JPY 1000 across three equal lines (0 minor units).",
+  "shares": [
+    "1000",
+    "1000",
+    "1000"
+  ],
+  "total_to_allocate": "1000",
+  "minor_units": 0,
+  "expected_allocations": [
+    "334",
+    "333",
+    "333"
+  ]
+}

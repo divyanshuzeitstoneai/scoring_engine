@@ -1,0 +1,29 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000017",
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000017",
+            "quantity": 2,
+            "currentQuantity": 1,
+            "title": "Reduced Line"
+          },
+          {
+            "id": "gid://shopify/LineItem/9000000018",
+            "quantity": 1,
+            "currentQuantity": 0,
+            "title": "Removed Line"
+          },
+          {
+            "id": "gid://shopify/LineItem/9000000019",
+            "quantity": 1,
+            "currentQuantity": 1,
+            "title": "Added Line Post-Purchase"
+          }
+        ]
+      }
+    }
+  }
+}

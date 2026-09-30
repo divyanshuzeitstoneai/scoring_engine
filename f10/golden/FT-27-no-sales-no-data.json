@@ -1,0 +1,51 @@
+{
+  "id": "FT-27-no-sales-no-data",
+  "category": "formula_canonical",
+  "description": "FT-27: No sales. Status NO_DATA is null, not 0.",
+  "config": {
+    "api_version": "2024-10",
+    "as_of": "2026-09-30",
+    "shop_currency": "USD",
+    "currency_minor_units": 2,
+    "rounding_mode": "ROUND_HALF_UP",
+    "cohort_date_field": "processedAt",
+    "return_window_days": 30,
+    "processing_days": 5,
+    "carrier_cost_model": "flat",
+    "carrier_flat_rate": 6.5,
+    "return_ship_cost": 6.5,
+    "handling_cost": 5.0,
+    "pick_pack_cost": 0.0,
+    "fee_fallback": {
+      "rate": 0.029,
+      "fixed": 0.3
+    },
+    "shipping_alloc_fallback": "net_billed_share",
+    "no_restock_policy": "lost",
+    "goodwill_rule": "proportional",
+    "max_unknown_cost_share": 0.15,
+    "min_units_for_confidence": 30,
+    "healthy_margin_by_category": {
+      "Apparel": 0.25,
+      "UNMAPPED": 0.25
+    },
+    "category_map": {
+      "Clothing": "Apparel"
+    },
+    "return_rate_baseline_by_category": {
+      "Apparel": 0.22,
+      "UNMAPPED": 0.15
+    },
+    "bundle_policy": "explode",
+    "cost_snapshot_policy": "current_with_flag",
+    "exchange_policy": "netting",
+    "reconcile_tolerance": 0.01
+  },
+  "lines": [],
+  "expected": {
+    "status": "NO_DATA",
+    "contribution": null,
+    "margin_pct": null,
+    "score": null
+  }
+}

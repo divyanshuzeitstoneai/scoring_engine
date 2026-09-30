@@ -1,0 +1,5040 @@
+{
+  "data": {
+    "orders": {
+      "pageInfo": {
+        "hasNextPage": true,
+        "endCursor": "cursor-100"
+      },
+      "edges": [
+        {
+          "cursor": "cursor-1",
+          "node": {
+            "id": "gid://shopify/Order/7000000001",
+            "name": "#ORD-1",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000001",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-2",
+          "node": {
+            "id": "gid://shopify/Order/7000000002",
+            "name": "#ORD-2",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000002",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-3",
+          "node": {
+            "id": "gid://shopify/Order/7000000003",
+            "name": "#ORD-3",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000003",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-4",
+          "node": {
+            "id": "gid://shopify/Order/7000000004",
+            "name": "#ORD-4",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000004",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-5",
+          "node": {
+            "id": "gid://shopify/Order/7000000005",
+            "name": "#ORD-5",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000005",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-6",
+          "node": {
+            "id": "gid://shopify/Order/7000000006",
+            "name": "#ORD-6",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000006",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000001",
+                  "line_item_id": "gid://shopify/LineItem/8000000006",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-7",
+          "node": {
+            "id": "gid://shopify/Order/7000000007",
+            "name": "#ORD-7",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "42.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "9.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000007",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "9.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-8",
+          "node": {
+            "id": "gid://shopify/Order/7000000008",
+            "name": "#ORD-8",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "45.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000008",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-9",
+          "node": {
+            "id": "gid://shopify/Order/7000000009",
+            "name": "#ORD-9",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000009",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-10",
+          "node": {
+            "id": "gid://shopify/Order/7000000010",
+            "name": "#ORD-10",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000010",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-11",
+          "node": {
+            "id": "gid://shopify/Order/7000000011",
+            "name": "#ORD-11",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "16.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "5.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000011",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "5.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-12",
+          "node": {
+            "id": "gid://shopify/Order/7000000012",
+            "name": "#ORD-12",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000012",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000002",
+                  "line_item_id": "gid://shopify/LineItem/8000000012",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-13",
+          "node": {
+            "id": "gid://shopify/Order/7000000013",
+            "name": "#ORD-13",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "44.75",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "6.75",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000013",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "6.75",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-14",
+          "node": {
+            "id": "gid://shopify/Order/7000000014",
+            "name": "#ORD-14",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "42.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "9.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000014",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "9.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-15",
+          "node": {
+            "id": "gid://shopify/Order/7000000015",
+            "name": "#ORD-15",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000015",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-16",
+          "node": {
+            "id": "gid://shopify/Order/7000000016",
+            "name": "#ORD-16",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "45.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000016",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-17",
+          "node": {
+            "id": "gid://shopify/Order/7000000017",
+            "name": "#ORD-17",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000017",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-18",
+          "node": {
+            "id": "gid://shopify/Order/7000000018",
+            "name": "#ORD-18",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000018",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000003",
+                  "line_item_id": "gid://shopify/LineItem/8000000018",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-19",
+          "node": {
+            "id": "gid://shopify/Order/7000000019",
+            "name": "#ORD-19",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000019",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-20",
+          "node": {
+            "id": "gid://shopify/Order/7000000020",
+            "name": "#ORD-20",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000020",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-21",
+          "node": {
+            "id": "gid://shopify/Order/7000000021",
+            "name": "#ORD-21",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "6.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000021",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "6.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-22",
+          "node": {
+            "id": "gid://shopify/Order/7000000022",
+            "name": "#ORD-22",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "16.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "5.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000022",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "5.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-23",
+          "node": {
+            "id": "gid://shopify/Order/7000000023",
+            "name": "#ORD-23",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000023",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-24",
+          "node": {
+            "id": "gid://shopify/Order/7000000024",
+            "name": "#ORD-24",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000024",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000004",
+                  "line_item_id": "gid://shopify/LineItem/8000000024",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-25",
+          "node": {
+            "id": "gid://shopify/Order/7000000025",
+            "name": "#ORD-25",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000025",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-26",
+          "node": {
+            "id": "gid://shopify/Order/7000000026",
+            "name": "#ORD-26",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "19.25",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "2.25",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000026",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "2.25",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-27",
+          "node": {
+            "id": "gid://shopify/Order/7000000027",
+            "name": "#ORD-27",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000027",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-28",
+          "node": {
+            "id": "gid://shopify/Order/7000000028",
+            "name": "#ORD-28",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "24.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "6.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000028",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "6.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-29",
+          "node": {
+            "id": "gid://shopify/Order/7000000029",
+            "name": "#ORD-29",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000029",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-30",
+          "node": {
+            "id": "gid://shopify/Order/7000000030",
+            "name": "#ORD-30",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000030",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000005",
+                  "line_item_id": "gid://shopify/LineItem/8000000030",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-31",
+          "node": {
+            "id": "gid://shopify/Order/7000000031",
+            "name": "#ORD-31",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000031",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-32",
+          "node": {
+            "id": "gid://shopify/Order/7000000032",
+            "name": "#ORD-32",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000032",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-33",
+          "node": {
+            "id": "gid://shopify/Order/7000000033",
+            "name": "#ORD-33",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "16.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "5.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000033",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "5.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-34",
+          "node": {
+            "id": "gid://shopify/Order/7000000034",
+            "name": "#ORD-34",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000034",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-35",
+          "node": {
+            "id": "gid://shopify/Order/7000000035",
+            "name": "#ORD-35",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "18.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "3.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000035",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "3.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-36",
+          "node": {
+            "id": "gid://shopify/Order/7000000036",
+            "name": "#ORD-36",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000036",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000006",
+                  "line_item_id": "gid://shopify/LineItem/8000000036",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-37",
+          "node": {
+            "id": "gid://shopify/Order/7000000037",
+            "name": "#ORD-37",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000037",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-38",
+          "node": {
+            "id": "gid://shopify/Order/7000000038",
+            "name": "#ORD-38",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000038",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-39",
+          "node": {
+            "id": "gid://shopify/Order/7000000039",
+            "name": "#ORD-39",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "44.75",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "6.75",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000039",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "6.75",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-40",
+          "node": {
+            "id": "gid://shopify/Order/7000000040",
+            "name": "#ORD-40",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000040",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-41",
+          "node": {
+            "id": "gid://shopify/Order/7000000041",
+            "name": "#ORD-41",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000041",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-42",
+          "node": {
+            "id": "gid://shopify/Order/7000000042",
+            "name": "#ORD-42",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "42.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "9.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000042",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "9.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000007",
+                  "line_item_id": "gid://shopify/LineItem/8000000042",
+                  "quantity": 1,
+                  "subtotal": "12.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-43",
+          "node": {
+            "id": "gid://shopify/Order/7000000043",
+            "name": "#ORD-43",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000043",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-44",
+          "node": {
+            "id": "gid://shopify/Order/7000000044",
+            "name": "#ORD-44",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "25.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "5.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000044",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "5.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-45",
+          "node": {
+            "id": "gid://shopify/Order/7000000045",
+            "name": "#ORD-45",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000045",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-46",
+          "node": {
+            "id": "gid://shopify/Order/7000000046",
+            "name": "#ORD-46",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000046",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-47",
+          "node": {
+            "id": "gid://shopify/Order/7000000047",
+            "name": "#ORD-47",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000047",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-48",
+          "node": {
+            "id": "gid://shopify/Order/7000000048",
+            "name": "#ORD-48",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000048",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000008",
+                  "line_item_id": "gid://shopify/LineItem/8000000048",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-49",
+          "node": {
+            "id": "gid://shopify/Order/7000000049",
+            "name": "#ORD-49",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "42.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "9.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000049",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "9.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-50",
+          "node": {
+            "id": "gid://shopify/Order/7000000050",
+            "name": "#ORD-50",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000050",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-51",
+          "node": {
+            "id": "gid://shopify/Order/7000000051",
+            "name": "#ORD-51",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000051",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-52",
+          "node": {
+            "id": "gid://shopify/Order/7000000052",
+            "name": "#ORD-52",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "25.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "4.50",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000052",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "4.50",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-53",
+          "node": {
+            "id": "gid://shopify/Order/7000000053",
+            "name": "#ORD-53",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000053",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-54",
+          "node": {
+            "id": "gid://shopify/Order/7000000054",
+            "name": "#ORD-54",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000054",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000009",
+                  "line_item_id": "gid://shopify/LineItem/8000000054",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-55",
+          "node": {
+            "id": "gid://shopify/Order/7000000055",
+            "name": "#ORD-55",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "46.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "5.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000055",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "5.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-56",
+          "node": {
+            "id": "gid://shopify/Order/7000000056",
+            "name": "#ORD-56",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "9.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000056",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "9.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-57",
+          "node": {
+            "id": "gid://shopify/Order/7000000057",
+            "name": "#ORD-57",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000057",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-58",
+          "node": {
+            "id": "gid://shopify/Order/7000000058",
+            "name": "#ORD-58",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000058",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-59",
+          "node": {
+            "id": "gid://shopify/Order/7000000059",
+            "name": "#ORD-59",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000059",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-60",
+          "node": {
+            "id": "gid://shopify/Order/7000000060",
+            "name": "#ORD-60",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000060",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000010",
+                  "line_item_id": "gid://shopify/LineItem/8000000060",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-61",
+          "node": {
+            "id": "gid://shopify/Order/7000000061",
+            "name": "#ORD-61",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000061",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-62",
+          "node": {
+            "id": "gid://shopify/Order/7000000062",
+            "name": "#ORD-62",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000062",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-63",
+          "node": {
+            "id": "gid://shopify/Order/7000000063",
+            "name": "#ORD-63",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "6.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000063",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "6.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-64",
+          "node": {
+            "id": "gid://shopify/Order/7000000064",
+            "name": "#ORD-64",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "45.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000064",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-65",
+          "node": {
+            "id": "gid://shopify/Order/7000000065",
+            "name": "#ORD-65",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "32.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "4.50",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000065",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "4.50",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-66",
+          "node": {
+            "id": "gid://shopify/Order/7000000066",
+            "name": "#ORD-66",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "16.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "5.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000066",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "5.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000011",
+                  "line_item_id": "gid://shopify/LineItem/8000000066",
+                  "quantity": 1,
+                  "subtotal": "10.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-67",
+          "node": {
+            "id": "gid://shopify/Order/7000000067",
+            "name": "#ORD-67",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000067",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-68",
+          "node": {
+            "id": "gid://shopify/Order/7000000068",
+            "name": "#ORD-68",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000068",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-69",
+          "node": {
+            "id": "gid://shopify/Order/7000000069",
+            "name": "#ORD-69",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000069",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-70",
+          "node": {
+            "id": "gid://shopify/Order/7000000070",
+            "name": "#ORD-70",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "6.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000070",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "6.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-71",
+          "node": {
+            "id": "gid://shopify/Order/7000000071",
+            "name": "#ORD-71",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000071",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-72",
+          "node": {
+            "id": "gid://shopify/Order/7000000072",
+            "name": "#ORD-72",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000072",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000012",
+                  "line_item_id": "gid://shopify/LineItem/8000000072",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-73",
+          "node": {
+            "id": "gid://shopify/Order/7000000073",
+            "name": "#ORD-73",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000073",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-74",
+          "node": {
+            "id": "gid://shopify/Order/7000000074",
+            "name": "#ORD-74",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000074",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-75",
+          "node": {
+            "id": "gid://shopify/Order/7000000075",
+            "name": "#ORD-75",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000075",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-76",
+          "node": {
+            "id": "gid://shopify/Order/7000000076",
+            "name": "#ORD-76",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000076",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-77",
+          "node": {
+            "id": "gid://shopify/Order/7000000077",
+            "name": "#ORD-77",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "42.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "9.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000077",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "9.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-78",
+          "node": {
+            "id": "gid://shopify/Order/7000000078",
+            "name": "#ORD-78",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "44.75",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "6.75",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000078",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "6.75",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000013",
+                  "line_item_id": "gid://shopify/LineItem/8000000078",
+                  "quantity": 1,
+                  "subtotal": "12.75",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-79",
+          "node": {
+            "id": "gid://shopify/Order/7000000079",
+            "name": "#ORD-79",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000079",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-80",
+          "node": {
+            "id": "gid://shopify/Order/7000000080",
+            "name": "#ORD-80",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000080",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-81",
+          "node": {
+            "id": "gid://shopify/Order/7000000081",
+            "name": "#ORD-81",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000081",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-82",
+          "node": {
+            "id": "gid://shopify/Order/7000000082",
+            "name": "#ORD-82",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000082",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-83",
+          "node": {
+            "id": "gid://shopify/Order/7000000083",
+            "name": "#ORD-83",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000083",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-84",
+          "node": {
+            "id": "gid://shopify/Order/7000000084",
+            "name": "#ORD-84",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "9.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000084",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "9.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000014",
+                  "line_item_id": "gid://shopify/LineItem/8000000084",
+                  "quantity": 1,
+                  "subtotal": "12.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-85",
+          "node": {
+            "id": "gid://shopify/Order/7000000085",
+            "name": "#ORD-85",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000085",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-86",
+          "node": {
+            "id": "gid://shopify/Order/7000000086",
+            "name": "#ORD-86",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "21.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000086",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-87",
+          "node": {
+            "id": "gid://shopify/Order/7000000087",
+            "name": "#ORD-87",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000087",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-88",
+          "node": {
+            "id": "gid://shopify/Order/7000000088",
+            "name": "#ORD-88",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "40.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "5.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000088",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "5.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-89",
+          "node": {
+            "id": "gid://shopify/Order/7000000089",
+            "name": "#ORD-89",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000089",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-90",
+          "node": {
+            "id": "gid://shopify/Order/7000000090",
+            "name": "#ORD-90",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000090",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000015",
+                  "line_item_id": "gid://shopify/LineItem/8000000090",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-91",
+          "node": {
+            "id": "gid://shopify/Order/7000000091",
+            "name": "#ORD-91",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "6.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000091",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "6.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-92",
+          "node": {
+            "id": "gid://shopify/Order/7000000092",
+            "name": "#ORD-92",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "45.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000092",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-93",
+          "node": {
+            "id": "gid://shopify/Order/7000000093",
+            "name": "#ORD-93",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000093",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-94",
+          "node": {
+            "id": "gid://shopify/Order/7000000094",
+            "name": "#ORD-94",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000094",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-95",
+          "node": {
+            "id": "gid://shopify/Order/7000000095",
+            "name": "#ORD-95",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "51.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000095",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-96",
+          "node": {
+            "id": "gid://shopify/Order/7000000096",
+            "name": "#ORD-96",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000096",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 1,
+                  "current_quantity": 1,
+                  "original_total": "15.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/Refund/9000000016",
+                  "line_item_id": "gid://shopify/LineItem/8000000096",
+                  "quantity": 1,
+                  "subtotal": "15.00",
+                  "restock_type": "RESTOCK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "cursor": "cursor-97",
+          "node": {
+            "id": "gid://shopify/Order/7000000097",
+            "name": "#ORD-97",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "36.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000097",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-98",
+          "node": {
+            "id": "gid://shopify/Order/7000000098",
+            "name": "#ORD-98",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "42.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "9.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000098",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 3,
+                  "current_quantity": 3,
+                  "original_total": "45.00",
+                  "discount_allocated": "9.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-99",
+          "node": {
+            "id": "gid://shopify/Order/7000000099",
+            "name": "#ORD-99",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "31.50",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "5.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000099",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "5.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        },
+        {
+          "cursor": "cursor-100",
+          "node": {
+            "id": "gid://shopify/Order/7000000100",
+            "name": "#ORD-100",
+            "createdAt": "2024-09-26T23:59:59+00:00",
+            "processedAt": "2024-09-26T23:59:59+00:00",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "test": false,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "taxesIncluded": false,
+            "currencyCode": "USD",
+            "totalPriceSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/LineItem/8000000100",
+                  "variant_id": "gid://shopify/ProductVariant/100001",
+                  "product_id": "gid://shopify/Product/50001",
+                  "sku": "SKU-APP-100001",
+                  "title": "High-Volume Best Seller Cotton Tee",
+                  "quantity": 2,
+                  "current_quantity": 2,
+                  "original_total": "30.00",
+                  "discount_allocated": "0.00",
+                  "unit_cost": "9.75",
+                  "weight_value": null,
+                  "weight_unit": "KILOGRAMS"
+                }
+              ]
+            },
+            "refunds": {
+              "nodes": []
+            }
+          }
+        }
+      ]
+    }
+  }
+}

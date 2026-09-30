@@ -1,0 +1,11 @@
+{
+  "data": {
+    "lineItem": {
+      "id": "gid://shopify/LineItem/9000000034",
+      "title": "Skincare Bundle Kit",
+      "lineItemGroup": {
+        "id": "gid://shopify/LineItemGroup/1001"
+      }
+    }
+  }
+}

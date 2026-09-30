@@ -1,0 +1,21 @@
+gate_id,name,severity,passed,checked_count,failed_count,quarantined_revenue,offending_ids_sample,description
+DQ-S1,Schema Validation,BLOCK,True,0,0,0.00,[],Payload validates against the pinned 2024-10 schema
+DQ-S2,Enum Validity,QUARANTINE,True,0,0,0.00,[],No unknown enum values (e.g. invalid restockType)
+DQ-U1,Uniqueness,BLOCK,True,92371,0,0.00,[],Line ID and refund ID unique after ingestion
+DQ-U2,Idempotency,BLOCK,True,0,0,0.00,[],Re-ingestion produces zero net changes
+DQ-RI1,Referential Integrity,QUARANTINE,True,0,0,0.00,[],Every refund line references an existing line item
+DQ-RI2,Refund Quantity Bound,QUARANTINE,True,0,0,0.00,[],Refunded quantity does not exceed ordered quantity
+DQ-R1,Order Reconciliation,QUARANTINE,True,0,0,0.00,[],Sum of line nets plus shipping minus discounts reconciles to order total
+DQ-R2,Discount Allocation Sum,QUARANTINE,True,0,0,0.00,[],Sum of line discount allocations equals order total discount
+DQ-R3,Refund Subtotal Reconciliation,QUARANTINE,True,0,0,0.00,[],Sum of refund subtotals reconciles to total refunded
+DQ-C1,Currency Consistency,BLOCK,True,0,0,0.00,[],No mixed-currency sum without shopMoney conversion
+DQ-K1,COGS State Completeness,BLOCK,True,84096,0,0.00,[],COGS state assigned to 100% of lines
+DQ-K2,Unknown Cost Share Reporting,WARN,True,0,0,0.00,[],Cost-unknown share reported per variant
+DQ-A1,Allocation Conservation,BLOCK,True,0,0,0.00,[],Allocated shipping and fees sum exactly to order amounts
+DQ-A2,Positive Allocations,QUARANTINE,True,0,0,0.00,[],No negative allocation unless a refund explains it
+DQ-T1,Deterministic Time,BLOCK,True,1,0,0.00,[],"All windows and maturity use as_of, never system clock"
+DQ-F1,Score Bounds & Margin Rule,BLOCK,True,59,0,0.00,[],"Score in [0,100] or null; margin null exactly when RetainedRev <= 0"
+DQ-F2,Waterfall Conservation,BLOCK,True,59,0,0.00,[],Waterfall sums exactly to NaiveProfit - Contribution
+DQ-F3,Revenue Conservation,BLOCK,True,59,0,0.00,[],Conservation: revenue_scored + revenue_quarantined = revenue_total
+DQ-D1,Sync Freshness,WARN,True,0,0,0.00,[],Last sync within freshness threshold
+DQ-D2,Schema Drift Introspection,WARN,True,0,0,0.00,[],Introspection diff against pinned version

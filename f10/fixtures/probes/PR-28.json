@@ -1,0 +1,17 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000028",
+      "totalPriceSet": {
+        "shopMoney": {
+          "amount": "100.00",
+          "currencyCode": "USD"
+        },
+        "presentmentMoney": {
+          "amount": "8200.00",
+          "currencyCode": "INR"
+        }
+      }
+    }
+  }
+}

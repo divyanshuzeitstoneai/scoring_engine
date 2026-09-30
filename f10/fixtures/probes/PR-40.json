@@ -1,0 +1,34 @@
+{
+  "data": {
+    "__schema": {
+      "queryType": {
+        "name": "QueryRoot"
+      },
+      "mutationType": {
+        "name": "Mutation"
+      },
+      "types": [
+        {
+          "name": "Order",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "LineItem",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Refund",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "Return",
+          "kind": "OBJECT"
+        },
+        {
+          "name": "InventoryItem",
+          "kind": "OBJECT"
+        }
+      ]
+    }
+  }
+}

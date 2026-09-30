@@ -619,11 +619,12 @@ F01_TOP_LEAKS = [
 # ---------------------------------------------------------
 
 st.title("⚡ E-Commerce Margin & Leakage Scoring Engine")
-st.caption("Production QA Audit & Side-by-Side Validation: **Formula F01 (Discount Leakage)** & **Formula F03 (Margin Floor Breach)**")
+st.caption("Production QA Audit & Multi-Formula Engine: **Formula F01**, **Formula F03**, and **Formula F10 (Product Contribution v2)**")
 
-tab_f01, tab_f03, tab_sandbox = st.tabs([
+tab_f01, tab_f03, tab_f10, tab_sandbox = st.tabs([
     "📉 Formula F01 — Promotional Margin Leakage",
     "🎯 Formula F03 — Margin Floor Breach (V1 vs V2)",
+    "📈 Formula F10 — Product Contribution v2",
     "🧪 Live Interactive Order Simulator"
 ])
 
@@ -798,6 +799,15 @@ with tab_f03:
 with tab_f01:
     from f01.code.f01_dashboard import render_f01_tab
     render_f01_tab()
+
+
+# =========================================================
+# TAB 2B: FORMULA F10 (PRODUCT CONTRIBUTION V2 ENGINE)
+# =========================================================
+
+with tab_f10:
+    from f10.code.f10_dashboard import render_f10_tab
+    render_f10_tab()
 
 
 # =========================================================

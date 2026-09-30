@@ -1,0 +1,25 @@
+{
+  "data": {
+    "refund": {
+      "id": "gid://shopify/Refund/3000000005",
+      "refundShippingLines": {
+        "nodes": [
+          {
+            "subtotalAmountSet": {
+              "shopMoney": {
+                "amount": "10.00",
+                "currencyCode": "USD"
+              }
+            },
+            "taxAmountSet": {
+              "shopMoney": {
+                "amount": "0.80",
+                "currencyCode": "USD"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

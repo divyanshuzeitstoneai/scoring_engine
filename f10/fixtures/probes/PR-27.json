@@ -1,0 +1,30 @@
+{
+  "data": {
+    "inventoryItems": [
+      {
+        "id": "gid://shopify/InventoryItem/5000000003",
+        "measurement": {
+          "weight": {
+            "value": 500.0,
+            "unit": "GRAMS"
+          }
+        }
+      },
+      {
+        "id": "gid://shopify/InventoryItem/5000000004",
+        "measurement": {
+          "weight": {
+            "value": 1.5,
+            "unit": "POUNDS"
+          }
+        }
+      },
+      {
+        "id": "gid://shopify/InventoryItem/5000000005",
+        "measurement": {
+          "weight": null
+        }
+      }
+    ]
+  }
+}

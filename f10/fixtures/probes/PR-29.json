@@ -1,0 +1,31 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000029",
+      "taxesIncluded": true,
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000029",
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "120.00",
+                "currencyCode": "EUR"
+              }
+            },
+            "taxLines": [
+              {
+                "priceSet": {
+                  "shopMoney": {
+                    "amount": "20.00",
+                    "currencyCode": "EUR"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

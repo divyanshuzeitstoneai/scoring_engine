@@ -1,0 +1,16 @@
+{
+  "id": "AL-01-fractional-shares-largest-remainder",
+  "category": "allocation",
+  "description": "AL-01: 10.00 across revenues 33.33 / 33.33 / 33.34.",
+  "shares": [
+    "33.33",
+    "33.33",
+    "33.34"
+  ],
+  "total_to_allocate": "10.00",
+  "expected_allocations": [
+    "3.33",
+    "3.33",
+    "3.34"
+  ]
+}

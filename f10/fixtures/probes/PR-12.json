@@ -1,0 +1,25 @@
+{
+  "data": {
+    "refund": {
+      "id": "gid://shopify/Refund/3000000004",
+      "orderAdjustments": {
+        "nodes": [
+          {
+            "id": "gid://shopify/OrderAdjustment/5000000001",
+            "kind": "REFUND_DISCREPANCY",
+            "amountSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "reason": "Customer appeasement goodwill"
+          }
+        ]
+      },
+      "refundLineItems": {
+        "nodes": []
+      }
+    }
+  }
+}

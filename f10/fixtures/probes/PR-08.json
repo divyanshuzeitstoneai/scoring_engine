@@ -1,0 +1,36 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000008",
+      "shippingLines": {
+        "nodes": [
+          {
+            "id": "gid://shopify/ShippingLine/1000000001",
+            "originalPriceSet": {
+              "shopMoney": {
+                "amount": "15.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountedPriceSet": {
+              "shopMoney": {
+                "amount": "0.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": [
+              {
+                "allocatedAmountSet": {
+                  "shopMoney": {
+                    "amount": "15.00",
+                    "currencyCode": "USD"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

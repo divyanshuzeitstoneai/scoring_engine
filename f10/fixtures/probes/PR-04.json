@@ -1,0 +1,75 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000004",
+      "name": "#PR-04",
+      "totalDiscountsSet": {
+        "shopMoney": {
+          "amount": "10.00",
+          "currencyCode": "USD"
+        }
+      },
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000005",
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": [
+              {
+                "allocatedAmountSet": {
+                  "shopMoney": {
+                    "amount": "3.34",
+                    "currencyCode": "USD"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/LineItem/9000000006",
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": [
+              {
+                "allocatedAmountSet": {
+                  "shopMoney": {
+                    "amount": "3.33",
+                    "currencyCode": "USD"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/LineItem/9000000007",
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "30.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": [
+              {
+                "allocatedAmountSet": {
+                  "shopMoney": {
+                    "amount": "3.33",
+                    "currencyCode": "USD"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

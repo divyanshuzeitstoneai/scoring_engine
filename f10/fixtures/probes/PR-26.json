@@ -1,0 +1,11 @@
+{
+  "data": {
+    "inventoryItem": {
+      "id": "gid://shopify/InventoryItem/5000000002",
+      "unitCost": {
+        "amount": "32.00",
+        "currencyCode": "USD"
+      }
+    }
+  }
+}

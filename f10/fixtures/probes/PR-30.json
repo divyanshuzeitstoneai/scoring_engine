@@ -1,0 +1,31 @@
+{
+  "data": {
+    "order": {
+      "transactions": [
+        {
+          "id": "gid://shopify/OrderTransaction/7000000001",
+          "gateway": "shopify_payments",
+          "kind": "SALE",
+          "fees": [
+            {
+              "amount": {
+                "amount": "2.85",
+                "currencyCode": "USD"
+              },
+              "rate": "0.029",
+              "flatFee": {
+                "amount": "0.30"
+              }
+            }
+          ]
+        },
+        {
+          "id": "gid://shopify/OrderTransaction/7000000002",
+          "gateway": "manual",
+          "kind": "SALE",
+          "fees": []
+        }
+      ]
+    }
+  }
+}

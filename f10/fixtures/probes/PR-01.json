@@ -1,0 +1,57 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000001",
+      "name": "#PR-01",
+      "createdAt": "2024-10-01T10:00:00Z",
+      "processedAt": "2024-10-01T10:00:00Z",
+      "currencyCode": "USD",
+      "totalPriceSet": {
+        "shopMoney": {
+          "amount": "80.00",
+          "currencyCode": "USD"
+        }
+      },
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000001",
+            "title": "Cotton T-Shirt",
+            "quantity": 1,
+            "currentQuantity": 1,
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "100.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountedTotalSet": {
+              "shopMoney": {
+                "amount": "80.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": [
+              {
+                "allocatedAmountSet": {
+                  "shopMoney": {
+                    "amount": "20.00",
+                    "currencyCode": "USD"
+                  }
+                },
+                "discountApplication": {
+                  "targetType": "LINE_ITEM",
+                  "targetSelection": "EXPLICIT",
+                  "allocationMethod": "ACROSS",
+                  "value": {
+                    "percentage": 20.0
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

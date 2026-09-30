@@ -1,0 +1,59 @@
+# F10 Product Contribution v2 Example Configuration
+# Target API: Shopify Admin GraphQL API 2024-10
+# All monetary calculations use shopMoney and Decimal precision.
+
+api_version: "2024-10"
+as_of: "2024-10-31"
+shop_currency: "USD"
+currency_minor_units: 2
+rounding_mode: "ROUND_HALF_UP"
+cohort_date_field: "processedAt"
+
+return_window_days: 30
+processing_days: 5
+
+carrier_cost_model: "flat"
+carrier_flat_rate: 6.50
+return_ship_cost: 6.50
+handling_cost: 5.00
+pick_pack_cost: 1.50
+
+fee_fallback:
+  rate: 0.029
+  fixed: 0.30
+
+shipping_alloc_fallback: "net_billed_share"
+no_restock_policy: "lost"
+goodwill_rule: "proportional"
+
+max_unknown_cost_share: 0.15
+min_units_for_confidence: 30
+
+healthy_margin_by_category:
+  "Apparel": 0.52
+  "Electronics": 0.18
+  "Beauty": 0.62
+  "Home Goods": 0.38
+  "Accessories": 0.48
+  "UNMAPPED": 0.35
+
+category_map:
+  "Clothing": "Apparel"
+  "Shoes": "Apparel"
+  "Audio": "Electronics"
+  "Personal Care": "Beauty"
+  "Decor": "Home Goods"
+  "Jewelry": "Accessories"
+
+return_rate_baseline_by_category:
+  "Apparel": 0.22
+  "Electronics": 0.05
+  "Beauty": 0.08
+  "Home Goods": 0.10
+  "Accessories": 0.12
+  "UNMAPPED": 0.15
+
+bundle_policy: "explode"
+cost_snapshot_policy: "current_with_flag"
+exchange_policy: "netting"
+reconcile_tolerance: 0.01

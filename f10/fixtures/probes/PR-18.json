@@ -1,0 +1,29 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000018",
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000020",
+            "quantity": 2,
+            "currentQuantity": 1,
+            "unfulfilledQuantity": 0
+          }
+        ]
+      },
+      "refunds": [
+        {
+          "refundLineItems": {
+            "nodes": [
+              {
+                "quantity": 1,
+                "restockType": "CANCEL"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

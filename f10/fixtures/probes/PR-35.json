@@ -1,0 +1,16 @@
+{
+  "data": {
+    "variants": [
+      {
+        "id": "gid://shopify/ProductVariant/6000000001",
+        "sku": "DUPE-SKU",
+        "title": "Variant A"
+      },
+      {
+        "id": "gid://shopify/ProductVariant/6000000002",
+        "sku": "DUPE-SKU",
+        "title": "Variant B"
+      }
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+# Incremental Cursor Pagination Query for Shopify Admin GraphQL API 2024-10
+# Uses extensions.cost to monitor rate limits and throttle status.
+
+query GetIncrementalOrders($first: Int = 50, $after: String, $query: String) {
+  orders(first: $first, after: $after, query: $query, sortKey: UPDATED_AT, reverse: false) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        createdAt
+        processedAt
+        cancelledAt
+        cancelReason
+        test
+        displayFinancialStatus
+        displayFulfillmentStatus
+        taxesIncluded
+        currencyCode
+        totalPriceSet {
+          shopMoney { amount currencyCode }
+        }
+        totalDiscountsSet {
+          shopMoney { amount currencyCode }
+        }
+        lineItems(first: 100) {
+          edges {
+            node {
+              id
+              title
+              sku
+              quantity
+              currentQuantity
+              originalTotalSet { shopMoney { amount currencyCode } }
+              discountAllocations {
+                allocatedAmountSet { shopMoney { amount currencyCode } }
+              }
+              variant {
+                id
+                inventoryItem {
+                  id
+                  unitCost { amount currencyCode }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

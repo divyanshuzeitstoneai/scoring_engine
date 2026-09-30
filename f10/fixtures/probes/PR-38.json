@@ -1,0 +1,11 @@
+{
+  "headers": {
+    "X-Shopify-Topic": "orders/updated",
+    "X-Shopify-Hmac-Sha256": "4c3...signature...",
+    "X-Shopify-Shop-Domain": "store.myshopify.com"
+  },
+  "body": {
+    "id": 8000000038,
+    "updated_at": "2024-10-03T12:00:00Z"
+  }
+}

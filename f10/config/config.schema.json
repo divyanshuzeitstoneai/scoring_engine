@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "F10ProductContributionConfig",
+  "description": "Validation schema for F10 Product Contribution v2 Configuration",
+  "type": "object",
+  "required": [
+    "api_version",
+    "as_of",
+    "shop_currency",
+    "currency_minor_units",
+    "rounding_mode",
+    "cohort_date_field",
+    "return_window_days",
+    "processing_days",
+    "carrier_cost_model",
+    "return_ship_cost",
+    "handling_cost",
+    "fee_fallback",
+    "shipping_alloc_fallback",
+    "no_restock_policy",
+    "goodwill_rule",
+    "max_unknown_cost_share",
+    "min_units_for_confidence",
+    "healthy_margin_by_category",
+    "category_map",
+    "return_rate_baseline_by_category",
+    "bundle_policy",
+    "cost_snapshot_policy",
+    "exchange_policy",
+    "reconcile_tolerance"
+  ],
+  "properties": {
+    "api_version": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-1][0-9]$",
+      "description": "Pinned Shopify Admin GraphQL API version"
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date",
+      "description": "Explicit evaluation date (YYYY-MM-DD); never uses system clock"
+    },
+    "shop_currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "Shop merchant base currency"
+    },
+    "currency_minor_units": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4,
+      "description": "Minor currency precision (e.g. 2 for USD, 0 for JPY, 3 for BHD)"
+    },
+    "rounding_mode": {
+      "type": "string",
+      "enum": ["ROUND_HALF_UP", "ROUND_HALF_EVEN", "ROUND_FLOOR", "ROUND_CEILING"],
+      "description": "Decimal quantization rounding mode"
+    },
+    "cohort_date_field": {
+      "type": "string",
+      "enum": ["processedAt", "createdAt"],
+      "description": "Timestamp defining the order cohort (PR-39)"
+    },
+    "return_window_days": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Customer return policy window in days"
+    },
+    "processing_days": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Warehouse and carrier processing days required for return inspection"
+    },
+    "carrier_cost_model": {
+      "type": "string",
+      "enum": ["flat", "weight_table", "none"],
+      "description": "Courier outbound shipping cost resolution model"
+    },
+    "carrier_flat_rate": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Flat courier cost per shipment if carrier_cost_model is flat"
+    },
+    "return_ship_cost": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Reverse logistics courier cost per physical return (Tier T2)"
+    },
+    "handling_cost": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Warehouse handling / restocking labor cost per return (Tier T2)"
+    },
+    "pick_pack_cost": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Optional outbound pick and pack fee per fulfilled unit"
+    },
+    "fee_fallback": {
+      "type": "object",
+      "required": ["rate", "fixed"],
+      "properties": {
+        "rate": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "fixed": { "type": "number", "minimum": 0.0 }
+      },
+      "description": "Gateway fee model when transaction fee array is missing"
+    },
+    "shipping_alloc_fallback": {
+      "type": "string",
+      "enum": ["net_billed_share", "equal_split"],
+      "description": "Fallback method when line weight is missing across order lines"
+    },
+    "no_restock_policy": {
+      "type": "string",
+      "enum": ["lost", "kept_by_customer", "unknown"],
+      "description": "Interpretation of non-restocked refunds (Decision D1)"
+    },
+    "goodwill_rule": {
+      "type": "string",
+      "enum": ["proportional", "manual", "unallocated"],
+      "description": "Attribution method for order adjustments without line items (Decision D3)"
+    },
+    "max_unknown_cost_share": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Maximum tolerated share of revenue with unknown COGS before marking UNSCOREABLE"
+    },
+    "min_units_for_confidence": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Minimum sold units required to avoid LOW_CONFIDENCE flag"
+    },
+    "healthy_margin_by_category": {
+      "type": "object",
+      "additionalProperties": { "type": "number" },
+      "description": "Baseline healthy margin threshold per standardized category"
+    },
+    "category_map": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Mapping from productType to standardized category"
+    },
+    "return_rate_baseline_by_category": {
+      "type": "object",
+      "additionalProperties": { "type": "number" },
+      "description": "Expected baseline return rate by category for defect signal detection"
+    },
+    "bundle_policy": {
+      "type": "string",
+      "enum": ["explode", "single"],
+      "description": "Handling of bundled product lines (Decision D5)"
+    },
+    "cost_snapshot_policy": {
+      "type": "string",
+      "enum": ["current_with_flag", "quarantine"],
+      "description": "Handling of historical orders lacking point-in-time cost snapshot (Decision D12)"
+    },
+    "exchange_policy": {
+      "type": "string",
+      "enum": ["netting", "separate_lines"],
+      "description": "Netting behavior on exchanges (Decision D4)"
+    },
+    "reconcile_tolerance": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Allowed numerical drift tolerance in reconciliation gates"
+    }
+  },
+  "additionalProperties": true
+}

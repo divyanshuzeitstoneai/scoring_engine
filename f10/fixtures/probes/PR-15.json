@@ -1,0 +1,46 @@
+{
+  "data": {
+    "order": {
+      "returns": {
+        "nodes": [
+          {
+            "id": "gid://shopify/Return/6000000001",
+            "status": "OPEN",
+            "returnLineItems": {
+              "nodes": [
+                {
+                  "quantity": 1,
+                  "returnReason": "DEFECTIVE"
+                }
+              ]
+            }
+          },
+          {
+            "id": "gid://shopify/Return/6000000002",
+            "status": "CLOSED",
+            "returnLineItems": {
+              "nodes": [
+                {
+                  "quantity": 1,
+                  "returnReason": "SIZE_TOO_SMALL"
+                }
+              ]
+            }
+          },
+          {
+            "id": "gid://shopify/Return/6000000003",
+            "status": "DECLINED",
+            "returnLineItems": {
+              "nodes": [
+                {
+                  "quantity": 1,
+                  "returnReason": "USER_ERROR"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

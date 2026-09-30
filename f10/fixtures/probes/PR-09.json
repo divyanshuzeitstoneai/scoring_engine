@@ -1,0 +1,31 @@
+{
+  "data": {
+    "refund": {
+      "id": "gid://shopify/Refund/3000000001",
+      "refundLineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/RefundLineItem/4000000001",
+            "lineItem": {
+              "id": "gid://shopify/LineItem/9000000012"
+            },
+            "quantity": 1,
+            "subtotalSet": {
+              "shopMoney": {
+                "amount": "40.00",
+                "currencyCode": "USD"
+              }
+            },
+            "totalTaxSet": {
+              "shopMoney": {
+                "amount": "3.20",
+                "currencyCode": "USD"
+              }
+            },
+            "restockType": "RETURN"
+          }
+        ]
+      }
+    }
+  }
+}

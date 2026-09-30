@@ -1,0 +1,80 @@
+{
+  "id": "EXT-002-probe-extraction-case",
+  "category": "extraction_layer",
+  "description": "Extraction Case #2: Probe-verified discount & return basis.",
+  "config": {
+    "api_version": "2024-10",
+    "as_of": "2026-09-30",
+    "shop_currency": "USD",
+    "currency_minor_units": 2,
+    "rounding_mode": "ROUND_HALF_UP",
+    "cohort_date_field": "processedAt",
+    "return_window_days": 30,
+    "processing_days": 5,
+    "carrier_cost_model": "flat",
+    "carrier_flat_rate": 6.5,
+    "return_ship_cost": 6.5,
+    "handling_cost": 5.0,
+    "pick_pack_cost": 0.0,
+    "fee_fallback": {
+      "rate": 0.029,
+      "fixed": 0.3
+    },
+    "shipping_alloc_fallback": "net_billed_share",
+    "no_restock_policy": "lost",
+    "goodwill_rule": "proportional",
+    "max_unknown_cost_share": 0.15,
+    "min_units_for_confidence": 30,
+    "healthy_margin_by_category": {
+      "Apparel": 0.25,
+      "UNMAPPED": 0.25
+    },
+    "category_map": {
+      "Clothing": "Apparel"
+    },
+    "return_rate_baseline_by_category": {
+      "Apparel": 0.22,
+      "UNMAPPED": 0.15
+    },
+    "bundle_policy": "explode",
+    "cost_snapshot_policy": "current_with_flag",
+    "exchange_policy": "netting",
+    "reconcile_tolerance": 0.01
+  },
+  "lines": [
+    {
+      "line_item_id": "line-ext-2",
+      "order_id": "order-ext-2",
+      "variant_id": "var-ext-2",
+      "product_id": "prod-ext-2",
+      "sku": "SKU-EXT-2",
+      "title": "Catalog Variant #2",
+      "category": "Apparel",
+      "cohort_date": "2026-08-01",
+      "is_matured": true,
+      "q_ordered": 3,
+      "q_removed": 0,
+      "q_cancelled": 0,
+      "q_shipped": 3,
+      "q_refunded": 0,
+      "q_restocked": 0,
+      "gross_line": "70",
+      "disc_line": "0.00",
+      "refund_item": "0.00",
+      "goodwill": "0.00",
+      "cost_snapshot": "19",
+      "carrier_cost_allocated": "6.50",
+      "shipping_charged_allocated": "0.00",
+      "pay_fees": "2.33",
+      "pay_fees_tier": "T2"
+    }
+  ],
+  "expected": {
+    "retained_rev": "70.00",
+    "cogs_lost": "57.00",
+    "contribution": "4.17",
+    "margin_pct": "5.96",
+    "score": "5.96",
+    "status": "UNDERPERFORMING"
+  }
+}

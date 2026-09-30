@@ -1,0 +1,31 @@
+{
+  "data": {
+    "order": {
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000023",
+            "title": "$50 Gift Card",
+            "isGiftCard": true,
+            "variant": null,
+            "requiresShipping": false
+          },
+          {
+            "id": "gid://shopify/LineItem/9000000024",
+            "title": "Custom Embroidery Fee",
+            "isGiftCard": false,
+            "variant": null,
+            "requiresShipping": false
+          },
+          {
+            "id": "gid://shopify/LineItem/9000000025",
+            "title": "Tip",
+            "isGiftCard": false,
+            "variant": null,
+            "requiresShipping": false
+          }
+        ]
+      }
+    }
+  }
+}

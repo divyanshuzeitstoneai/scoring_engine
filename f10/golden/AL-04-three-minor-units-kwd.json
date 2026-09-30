@@ -1,0 +1,17 @@
+{
+  "id": "AL-04-three-minor-units-kwd",
+  "category": "allocation",
+  "description": "AL-04: KWD 10.000 across 3 equal lines (3 minor units).",
+  "shares": [
+    "10.000",
+    "10.000",
+    "10.000"
+  ],
+  "total_to_allocate": "10.000",
+  "minor_units": 3,
+  "expected_allocations": [
+    "3.334",
+    "3.333",
+    "3.333"
+  ]
+}

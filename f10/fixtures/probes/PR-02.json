@@ -1,0 +1,39 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000002",
+      "name": "#PR-02",
+      "createdAt": "2024-10-01T10:15:00Z",
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000002",
+            "title": "Denim Jeans",
+            "quantity": 1,
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "120.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": [
+              {
+                "allocatedAmountSet": {
+                  "shopMoney": {
+                    "amount": "15.00",
+                    "currencyCode": "USD"
+                  }
+                },
+                "discountApplication": {
+                  "code": "PROMO15",
+                  "targetType": "LINE_ITEM",
+                  "targetSelection": "EXPLICIT"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

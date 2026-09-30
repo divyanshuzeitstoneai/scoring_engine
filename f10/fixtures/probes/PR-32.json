@@ -1,0 +1,27 @@
+{
+  "data": {
+    "order": {
+      "transactions": [
+        {
+          "id": "gid://shopify/OrderTransaction/7000000004",
+          "kind": "AUTHORIZATION",
+          "status": "SUCCESS",
+          "amount": "100.00"
+        },
+        {
+          "id": "gid://shopify/OrderTransaction/7000000005",
+          "kind": "CAPTURE",
+          "status": "SUCCESS",
+          "amount": "100.00",
+          "fees": [
+            {
+              "amount": {
+                "amount": "3.20"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

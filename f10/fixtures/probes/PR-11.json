@@ -1,0 +1,26 @@
+{
+  "data": {
+    "refundLineItems": [
+      {
+        "id": "gid://shopify/RefundLineItem/4000000011",
+        "restockType": "RESTOCK",
+        "quantity": 1
+      },
+      {
+        "id": "gid://shopify/RefundLineItem/4000000012",
+        "restockType": "CANCEL",
+        "quantity": 1
+      },
+      {
+        "id": "gid://shopify/RefundLineItem/4000000013",
+        "restockType": "RETURN",
+        "quantity": 1
+      },
+      {
+        "id": "gid://shopify/RefundLineItem/4000000014",
+        "restockType": "NO_RESTOCK",
+        "quantity": 1
+      }
+    ]
+  }
+}

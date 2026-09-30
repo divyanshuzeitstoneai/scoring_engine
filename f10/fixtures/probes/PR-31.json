@@ -1,0 +1,14 @@
+{
+  "data": {
+    "refund": {
+      "transactions": [
+        {
+          "id": "gid://shopify/OrderTransaction/7000000003",
+          "kind": "REFUND",
+          "amount": "50.00",
+          "fees": []
+        }
+      ]
+    }
+  }
+}

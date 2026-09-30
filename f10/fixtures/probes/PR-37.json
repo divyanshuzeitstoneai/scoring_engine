@@ -1,0 +1,17 @@
+{
+  "sample_jsonl": [
+    {
+      "id": "gid://shopify/Order/8000000037",
+      "name": "#1037"
+    },
+    {
+      "id": "gid://shopify/LineItem/9000000037",
+      "__parentId": "gid://shopify/Order/8000000037",
+      "quantity": 1
+    },
+    {
+      "id": "gid://shopify/Refund/3000000037",
+      "__parentId": "gid://shopify/Order/8000000037"
+    }
+  ]
+}

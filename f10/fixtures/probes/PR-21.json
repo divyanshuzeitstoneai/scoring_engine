@@ -1,0 +1,9 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000021",
+      "sourceName": "draft_order",
+      "displayFinancialStatus": "PAID"
+    }
+  }
+}

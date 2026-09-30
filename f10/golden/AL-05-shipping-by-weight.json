@@ -1,0 +1,16 @@
+{
+  "id": "AL-05-shipping-by-weight",
+  "category": "allocation",
+  "description": "AL-05: Shipping 12.00 by weight 1.0 / 2.5 / 0.5 kg.",
+  "shares": [
+    "1.0",
+    "2.5",
+    "0.5"
+  ],
+  "total_to_allocate": "12.00",
+  "expected_allocations": [
+    "3.00",
+    "7.50",
+    "1.50"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "data": {
+    "return": {
+      "id": "gid://shopify/Return/6000000004",
+      "status": "CLOSED",
+      "returnLineItems": {
+        "nodes": [
+          {
+            "quantity": 1,
+            "returnReason": "WRONG_SIZE"
+          }
+        ]
+      },
+      "exchangeLineItems": {
+        "nodes": [
+          {
+            "variant": {
+              "id": "gid://shopify/ProductVariant/7000000002"
+            },
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  }
+}

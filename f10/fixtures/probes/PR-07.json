@@ -1,0 +1,31 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000007",
+      "name": "#PR-07",
+      "lineItems": {
+        "nodes": [
+          {
+            "id": "gid://shopify/LineItem/9000000011",
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "45.00",
+                "currencyCode": "USD"
+              }
+            },
+            "discountAllocations": [
+              {
+                "allocatedAmountSet": {
+                  "shopMoney": {
+                    "amount": "45.00",
+                    "currencyCode": "USD"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

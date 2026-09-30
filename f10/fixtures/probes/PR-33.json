@@ -1,0 +1,11 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000033",
+      "sourceName": "pos",
+      "location": {
+        "id": "gid://shopify/Location/1000000001"
+      }
+    }
+  }
+}

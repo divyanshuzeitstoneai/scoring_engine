@@ -1,0 +1,47 @@
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/8000000010",
+      "refunds": [
+        {
+          "id": "gid://shopify/Refund/3000000002",
+          "refundLineItems": {
+            "nodes": [
+              {
+                "lineItem": {
+                  "id": "gid://shopify/LineItem/9000000013"
+                },
+                "quantity": 1,
+                "subtotalSet": {
+                  "shopMoney": {
+                    "amount": "50.00",
+                    "currencyCode": "USD"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "gid://shopify/Refund/3000000003",
+          "refundLineItems": {
+            "nodes": [
+              {
+                "lineItem": {
+                  "id": "gid://shopify/LineItem/9000000013"
+                },
+                "quantity": 1,
+                "subtotalSet": {
+                  "shopMoney": {
+                    "amount": "50.00",
+                    "currencyCode": "USD"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
