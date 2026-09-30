@@ -49,7 +49,7 @@
 | **PR-37** | Bulk operation on orders with nested refunds | `VERIFIED-DOCS` | `2024-10` | Backfill loader must index rows by __parentId in memory or landing tables before... |
 | **PR-38** | Webhooks orders/updated, refunds/create, orders/cancelled, orders/edited | `VERIFIED-DOCS` | `2024-10` | Webhook ingestion requires cryptographic HMAC validation and idempotent upsert k... |
 | **PR-39** | createdAt vs processedAt on imported/backdated orders | `VERIFIED-DOCS` | `2024-10` | Cohort date field is controlled by config.cohort_date_field (options: createdAt ... |
-| **PR-40** | Schema introspection of pinned version 2024-10 | `VERIFIED-DOCS` | `2024-10` | All GraphQL queries in graphql/ must strictly validate against this introspected... |
+| **PR-40** | Schema introspection of pinned version 2024-10 | `VERIFIED-DOCS` | `2024-10` | All GraphQL queries in f10/graphql/ must strictly validate against this introspected... |
 
 ---
 
@@ -372,5 +372,5 @@
 - **API Version:** `2024-10`
 - **Official Docs / Probe Source:** Shopify Admin API GraphQL Introspection Query (version 2024-10)
 - **Observed Shopify Semantic:** Confirmed schema structure for Order, LineItem, ProductVariant, InventoryItem, Refund, Return, Fulfillment, ShippingLine, and Transaction on version 2024-10.
-- **Enforced Pipeline Rule:** All GraphQL queries in graphql/ must strictly validate against this introspected schema specification.
+- **Enforced Pipeline Rule:** All GraphQL queries in f10/graphql/ must strictly validate against this introspected schema specification.
 - **Raw Response Fixture:** [`fixtures/probes/PR-40.json`](file:///d:/Scoring%20engine/f10/fixtures/probes/PR-40.json)

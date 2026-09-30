@@ -871,7 +871,7 @@ PROBE_DEFS = [
         "status": "VERIFIED-DOCS",
         "citation": "Shopify Admin API GraphQL Introspection Query (version 2024-10)",
         "observation": "Confirmed schema structure for Order, LineItem, ProductVariant, InventoryItem, Refund, Return, Fulfillment, ShippingLine, and Transaction on version 2024-10.",
-        "pipeline_rule": "All GraphQL queries in graphql/ must strictly validate against this introspected schema specification.",
+        "pipeline_rule": "All GraphQL queries in f10/graphql/ must strictly validate against this introspected schema specification.",
         "payload": {
             "data": {
                 "__schema": {
@@ -940,13 +940,9 @@ def build_probes():
             f"| **{p_id}** | {probe['title']} | `{probe['status']}` | `{PINNED_API_VERSION}` | {probe['pipeline_rule'][:80]}... |"
         )
 
-    # Write registry YAML
+    # Write registry YAML inside f10/
     registry_yaml_path = os.path.join("f10", "shopify_behavior_registry.yaml")
     with open(registry_yaml_path, "w", encoding="utf-8") as f:
-        yaml.dump(registry, f, sort_keys=False, default_flow_style=False)
-        
-    # Also write registry YAML in workspace root if requested
-    with open("shopify_behavior_registry.yaml", "w", encoding="utf-8") as f:
         yaml.dump(registry, f, sort_keys=False, default_flow_style=False)
 
     report_lines.extend([

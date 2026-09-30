@@ -500,16 +500,12 @@ def generate_master_report():
 
     out_content = "\n".join(lines)
     
-    # Write to both f10/output/F10_TESTING_DATA_RESULTS.md and root F10_TESTING_DATA_RESULTS.md
-    out_path1 = "f10/output/F10_TESTING_DATA_RESULTS.md"
-    out_path2 = "F10_TESTING_DATA_RESULTS.md"
-    
-    with open(out_path1, "w", encoding="utf-8") as f:
-        f.write(out_content)
-    with open(out_path2, "w", encoding="utf-8") as f:
+    # Write to f10/output/F10_TESTING_DATA_RESULTS.md
+    out_path = "f10/output/F10_TESTING_DATA_RESULTS.md"
+    with open(out_path, "w", encoding="utf-8") as f:
         f.write(out_content)
 
-    print(f"Master report successfully written to {out_path1} and {out_path2} ({len(lines)} lines).")
+    print(f"Master report successfully written to {out_path} ({len(lines)} lines).")
 
 if __name__ == "__main__":
     generate_master_report()

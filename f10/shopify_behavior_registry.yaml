@@ -472,5 +472,5 @@ probes:
   observation: Confirmed schema structure for Order, LineItem, ProductVariant, InventoryItem,
     Refund, Return, Fulfillment, ShippingLine, and Transaction on version 2024-10.
   fixture: fixtures/probes/PR-40.json
-  pipeline_rule: All GraphQL queries in graphql/ must strictly validate against this
+  pipeline_rule: All GraphQL queries in f10/graphql/ must strictly validate against this
     introspected schema specification.

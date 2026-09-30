@@ -85,10 +85,15 @@ temp/
 .system_generated/
 
 # =============================================================================
-# Root-level duplicate large datasets (canonical copies preserved in data/)
+# Root-level duplicate large datasets & artifacts (canonical preserved in fXX/)
 # =============================================================================
 /synthetic_orders.json
 /ground_truth_sidecar.json
 /historical_cost_index.json
 /synthetic_catalog.json
+/shopify_behavior_registry.yaml
+/F10_TESTING_DATA_RESULTS.md
+/F10_formula_test_cases.md
+/graphql/
 *.pkl
+
