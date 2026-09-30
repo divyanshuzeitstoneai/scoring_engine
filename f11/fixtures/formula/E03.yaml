@@ -1,0 +1,49 @@
+id: E03
+purpose: 'Cancelled after fulfillment under exclude policy (strict profile): excluded.'
+profile: strict
+spec_ref: '3.3'
+tag: CFG
+arithmetic_derivation: 'cancelledAt set, policy=exclude -> excluded: CANCELLED.'
+input:
+  id: gid://shopify/Order/E03
+  name: '#E03'
+  currencyCode: USD
+  cancelledAt: '2026-08-05T14:00:00Z'
+  displayFulfillmentStatus: FULFILLED
+  lineItems:
+  - id: L1
+    quantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+expected:
+  L: 0
+  D: 0
+  R: 0
+  Sc: 0
+  C: 0
+  COGS: 0
+  S: 0
+  G: 0
+  E: 0
+  O: 0
+  P: 0
+  P_upper: 0
+  margin: null
+  class: excluded
+  classification: excluded
+  band: excluded
+  lane: EXCLUDED
+  exclusion_reason: CANCELLED
+  component_tags:
+    cogs: structural
+    shipping: structural
+    gateway: structural
+    refund: structural
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers: {}
+  top_loss_driver: null
+  delta_profit: null

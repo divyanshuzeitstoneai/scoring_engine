@@ -1,0 +1,74 @@
+id: E11
+purpose: 'Exact breakeven by construction: P = 0, class breakeven, band at_risk.'
+profile: balanced
+spec_ref: '3.4'
+tag: V-DOC
+arithmetic_derivation: C = 1000; COGS = 500; S = 400; G = 100; E = 0; O = 0. P = 1000
+  - 500 - 400 - 100 = 0. Margin = 0.00%. Class = breakeven, band = at_risk.
+input:
+  id: gid://shopify/Order/E11
+  name: '#E11'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '4.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '10.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '5.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '1.00'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 1000
+  D: 0
+  R: 1000
+  Sc: 0
+  C: 1000
+  COGS: 500
+  S: 400
+  G: 100
+  E: 0
+  O: 0
+  P: 0
+  P_upper: 0
+  margin: 0.0
+  class: breakeven
+  classification: breakeven
+  band: at_risk
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 500
+    discount_leak: 0
+    shipping_net: -400
+    fee_leak: -100
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 50

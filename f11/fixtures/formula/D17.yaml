@@ -1,0 +1,91 @@
+id: D17
+purpose: 'Provision by rate group: default 5% provision applies across group.'
+profile: balanced
+spec_ref: '3.2'
+tag: CFG
+arithmetic_derivation: L1 (apparel) R=10000, L2 (accessory) R=5000. Total R=15000
+  * 5% = 750. COGS=6000; S=800; G=450. P = 15000 - 6000 - 800 - 450 - 750 = 7000.
+input:
+  id: gid://shopify/Order/D17
+  name: '#D17'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      product:
+        productType: Apparel
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  - id: L2
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '50.00'
+        currencyCode: USD
+    variant:
+      id: V2
+      product:
+        productType: Accessories
+      inventoryItem:
+        unitCost:
+          amount: '20.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '4.50'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 15000
+  D: 0
+  R: 15000
+  Sc: 0
+  C: 15000
+  COGS: 6000
+  S: 800
+  G: 450
+  E: 750
+  O: 0
+  P: 7000
+  P_upper: 7750
+  margin: 46.6667
+  class: profitable
+  classification: profitable
+  band: high
+  lane: ESTIMATED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: estimated
+    other: structural
+  measured_share: '0.9062'
+  flags: []
+  drivers:
+    product_margin_at_list: 9000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -450
+    refund_leak: -750
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 0

@@ -1,0 +1,86 @@
+id: GOLDEN_03
+purpose: Doc-2 reconciliation case.
+profile: balanced
+spec_ref: '7.0'
+tag: V-DOC
+arithmetic_derivation: C = 8000, COGS = 5000, S = 2200, G = 300, E = 800 -> P = -300
+  (-3.75%). Lane = MEASURED.
+input:
+  id: gid://shopify/Order/DOC2
+  name: '#DOC2'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '22.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '20.00'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '50.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.00'
+        currencyCode: USD
+  refunds:
+  - id: R1
+    createdAt: '2026-08-10T12:00:00Z'
+    totalRefundedSet:
+      shopMoney:
+        amount: '8.00'
+        currencyCode: USD
+    refundLineItems: []
+expected:
+  L: 10000
+  D: 2000
+  R: 8000
+  Sc: 0
+  C: 8000
+  COGS: 5000
+  S: 2200
+  G: 300
+  E: 800
+  O: 0
+  P: -300
+  P_upper: -300
+  margin: -3.75
+  class: unprofitable
+  classification: unprofitable
+  band: cash_drain
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 5000
+    discount_leak: -2000
+    shipping_net: -2200
+    fee_leak: -300
+    refund_leak: -800
+    other_leak: 0
+  top_loss_driver: shipping_subsidy
+  delta_profit: -400

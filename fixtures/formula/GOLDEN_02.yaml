@@ -1,0 +1,80 @@
+id: GOLDEN_02
+purpose: 'Anchor B1: Prior spec Example B. Deep discount, free shipping -> CONFIRMED_LOSS.'
+profile: balanced
+spec_ref: '7.0'
+tag: V-DOC
+arithmetic_derivation: List 3000, disc 500, Sc=0, COGS 1800, S 850, G 103, prov 125.
+  P = 2500 - 1800 - 850 - 103 - 125 = -378. Measured costs = 2753 > 2500 -> P_upper
+  = -253 < 0 -> Lane = CONFIRMED_LOSS. Margin = -15.12%.
+input:
+  id: gid://shopify/Order/B1
+  name: '#B1'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.50'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '30.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '5.00'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '18.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '1.03'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 3000
+  D: 500
+  R: 2500
+  Sc: 0
+  C: 2500
+  COGS: 1800
+  S: 850
+  G: 103
+  E: 125
+  O: 0
+  P: -378
+  P_upper: -253
+  margin: -15.12
+  class: unprofitable
+  classification: unprofitable
+  band: cash_drain
+  lane: CONFIRMED_LOSS
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: estimated
+    other: structural
+  measured_share: '0.9566'
+  flags: []
+  drivers:
+    product_margin_at_list: 1200
+    discount_leak: -500
+    shipping_net: -850
+    fee_leak: -103
+    refund_leak: -125
+    other_leak: 0
+  top_loss_driver: shipping_subsidy
+  delta_profit: 0

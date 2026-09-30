@@ -1,0 +1,80 @@
+id: A12
+purpose: Proration rounding tie under half_even.
+profile: half_even
+spec_ref: 3.1, 3.2
+tag: CFG
+arithmetic_derivation: 'half_even rounding: 501 / 2 = 250.5 -> round to even gives
+  250. L = 5000; D = 250; R = 4750; Sc = 0; C = 4750. COGS = 2000; S = 600; G = 168;
+  E = 0; O = 0. P = 1982. Margin = 41.73% (high).'
+input:
+  id: gid://shopify/Order/A12
+  name: '#A12'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '6.00'
+  lineItems:
+  - id: L1
+    quantity: 2
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '50.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '5.01'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '20.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '1.68'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 5000
+  D: 250
+  R: 4750
+  Sc: 0
+  C: 4750
+  COGS: 2000
+  S: 600
+  G: 168
+  E: 0
+  O: 0
+  P: 1982
+  P_upper: 1982
+  margin: 41.7263
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 3000
+    discount_leak: -250
+    shipping_net: -600
+    fee_leak: -168
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: -1805

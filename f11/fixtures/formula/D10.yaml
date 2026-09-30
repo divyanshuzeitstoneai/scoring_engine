@@ -1,0 +1,91 @@
+id: D10
+purpose: 'Refund of a discounted line: unit price 100, discount 20 -> refund amount
+  80.'
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: V-DOC
+arithmetic_derivation: L = 10000; D = 2000; R = 8000; Sc = 0; C = 8000. COGS = 4000.
+  Refunded 8000 with restock 4000 -> E = 4000. P = 8000 - 4000 - 800 - 260 - 4000
+  = -1060. Margin = -13.25%.
+input:
+  id: gid://shopify/Order/D10
+  name: '#D10'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 0
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '20.00'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '2.60'
+        currencyCode: USD
+  refunds:
+  - id: R1
+    createdAt: '2026-08-10T12:00:00Z'
+    totalRefundedSet:
+      shopMoney:
+        amount: '80.00'
+        currencyCode: USD
+    refundLineItems:
+    - lineItemId: L1
+      quantity: 1
+      restocked: true
+expected:
+  L: 10000
+  D: 2000
+  R: 8000
+  Sc: 0
+  C: 8000
+  COGS: 4000
+  S: 800
+  G: 260
+  E: 4000
+  O: 0
+  P: -1060
+  P_upper: -1060
+  margin: -13.25
+  class: unprofitable
+  classification: unprofitable
+  band: cash_drain
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6000
+    discount_leak: -2000
+    shipping_net: -800
+    fee_leak: -260
+    refund_leak: -4000
+    other_leak: 0
+  top_loss_driver: refund_leak
+  delta_profit: -3600

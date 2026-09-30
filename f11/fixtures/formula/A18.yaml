@@ -1,0 +1,97 @@
+id: A18
+purpose: Multi-line complex discount stacking with automatic discount.
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: V-DOC
+arithmetic_derivation: L = 10000; D = 2000; R = 8000; Sc = 0; C = 8000. COGS = 4000;
+  S = 800; G = 260; E = 0; O = 0. P = 2940. Margin = 36.75% (high).
+input:
+  id: gid://shopify/Order/A18
+  name: '#A18'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '40.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '8.00'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '16.00'
+          currencyCode: USD
+  - id: L2
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '60.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '12.00'
+          currencyCode: USD
+    variant:
+      id: V2
+      inventoryItem:
+        unitCost:
+          amount: '24.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '2.60'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 10000
+  D: 2000
+  R: 8000
+  Sc: 0
+  C: 8000
+  COGS: 4000
+  S: 800
+  G: 260
+  E: 0
+  O: 0
+  P: 2940
+  P_upper: 2940
+  margin: 36.75
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6000
+    discount_leak: -2000
+    shipping_net: -800
+    fee_leak: -260
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 400

@@ -1,0 +1,70 @@
+id: C12
+purpose: 'PayPal without schedule (strict profile): fee missing, lane UNDETERMINED.'
+profile: strict
+spec_ref: '3.2'
+tag: CFG
+arithmetic_derivation: Strict profile has no fee schedule -> G=None (missing). C=10000;
+  COGS=4000; S=800. P=None, P_upper=5200. Lane=UNDETERMINED.
+input:
+  id: gid://shopify/Order/C12
+  name: '#C12'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: paypal
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 4000
+  S: 800
+  G: null
+  E: 0
+  O: 200
+  P: null
+  P_upper: 5000
+  margin: null
+  class: undetermined
+  classification: undetermined
+  band: undetermined
+  lane: UNDETERMINED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: missing
+    refund: measured
+    other: measured
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: unknown
+    refund_leak: 0
+    other_leak: -200
+  top_loss_driver: null
+  delta_profit: null

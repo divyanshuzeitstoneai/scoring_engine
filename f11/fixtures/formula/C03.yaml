@@ -1,0 +1,75 @@
+id: C03
+purpose: 'Carrier cost absent without rate card (strict profile): shipping missing,
+  lane UNDETERMINED.'
+profile: strict
+spec_ref: '3.2'
+tag: CFG
+arithmetic_derivation: Strict profile has no rate card -> S=None (missing). C=11000;
+  COGS=5000; G=350. P=None, P_upper = 11000 - 5000 - 350 = 5650. Lane=UNDETERMINED.
+input:
+  id: gid://shopify/Order/C03
+  name: '#C03'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '10.00'
+      currencyCode: USD
+  actual_carrier_cost: null
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '50.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.50'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 1000
+  C: 11000
+  COGS: 5000
+  S: null
+  G: 350
+  E: 0
+  O: 200
+  P: null
+  P_upper: 5450
+  margin: null
+  class: undetermined
+  classification: undetermined
+  band: undetermined
+  lane: UNDETERMINED
+  component_tags:
+    cogs: measured
+    shipping: missing
+    gateway: measured
+    refund: measured
+    other: measured
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 5000
+    discount_leak: 0
+    shipping_net: unknown
+    fee_leak: -350
+    refund_leak: 0
+    other_leak: -200
+  top_loss_driver: null
+  delta_profit: null

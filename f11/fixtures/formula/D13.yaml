@@ -1,0 +1,85 @@
+id: D13
+purpose: 'Realized refund never coexists with provision: open window with partial
+  refund books realized E only.'
+profile: balanced
+spec_ref: '3.2'
+tag: V-DOC
+arithmetic_derivation: 'Order processed 2026-09-20 (open window). 1 unit refunded
+  with restock: E = 3250. Provision is NOT added. P = 2972.'
+input:
+  id: gid://shopify/Order/D13
+  name: '#D13'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '10.00'
+      currencyCode: USD
+  actual_carrier_cost: '9.00'
+  lineItems:
+  - id: L1
+    quantity: 2
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '55.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '22.50'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.78'
+        currencyCode: USD
+  refunds:
+  - id: R1
+    createdAt: '2026-09-22T12:00:00Z'
+    totalRefundedSet:
+      shopMoney:
+        amount: '55.00'
+        currencyCode: USD
+    refundLineItems:
+    - lineItemId: L1
+      quantity: 1
+      restocked: true
+expected:
+  L: 11000
+  D: 0
+  R: 11000
+  Sc: 1000
+  C: 12000
+  COGS: 4500
+  S: 900
+  G: 378
+  E: 3250
+  O: 0
+  P: 2972
+  P_upper: 2972
+  margin: 24.7667
+  class: profitable
+  classification: profitable
+  band: acceptable
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6500
+    discount_leak: 0
+    shipping_net: 100
+    fee_leak: -378
+    refund_leak: -3250
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: -2700

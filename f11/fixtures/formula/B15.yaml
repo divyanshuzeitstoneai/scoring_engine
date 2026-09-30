@@ -1,0 +1,70 @@
+id: B15
+purpose: 'Custom line item without cost in balanced profile: Lane UNDETERMINED.'
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: CFG
+arithmetic_derivation: Custom line has no variant -> cost missing -> COGS=None, Lane=UNDETERMINED.
+input:
+  id: gid://shopify/Order/B15
+  name: '#B15'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '5.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    title: Bespoke Gift Wrap
+    variant: null
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '15.00'
+        currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '0.50'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 1500
+  D: 0
+  R: 1500
+  Sc: 0
+  C: 1500
+  COGS: null
+  S: 500
+  G: 50
+  E: 0
+  O: 0
+  P: null
+  P_upper: 950
+  margin: null
+  class: undetermined
+  classification: undetermined
+  band: undetermined
+  lane: UNDETERMINED
+  component_tags:
+    cogs: missing
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags:
+  - COGS_MISSING_CUSTOM_LINE
+  drivers:
+    product_margin_at_list: unknown
+    discount_leak: 0
+    shipping_net: -500
+    fee_leak: -50
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: null

@@ -1,0 +1,49 @@
+id: E19
+purpose: 'Shop currency mismatch with config: excluded CURRENCY_MISMATCH.'
+profile: balanced
+spec_ref: '3.0'
+tag: V-DOC
+arithmetic_derivation: 'Order currencyCode = ''EUR'' != config shop_currency ''USD''
+  -> excluded: CURRENCY_MISMATCH.'
+input:
+  id: gid://shopify/Order/E19
+  name: '#E19'
+  currencyCode: EUR
+  lineItems:
+  - id: L1
+    quantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: EUR
+expected:
+  L: 0
+  D: 0
+  R: 0
+  Sc: 0
+  C: 0
+  COGS: 0
+  S: 0
+  G: 0
+  E: 0
+  O: 0
+  P: 0
+  P_upper: 0
+  margin: null
+  class: excluded
+  classification: excluded
+  band: excluded
+  lane: EXCLUDED
+  exclusion_reason: CURRENCY_MISMATCH
+  component_tags:
+    cogs: structural
+    shipping: structural
+    gateway: structural
+    refund: structural
+    other: structural
+  measured_share: '1.0000'
+  flags:
+  - CURRENCY_MISMATCH
+  drivers: {}
+  top_loss_driver: null
+  delta_profit: null

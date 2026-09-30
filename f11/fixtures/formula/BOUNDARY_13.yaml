@@ -1,0 +1,74 @@
+id: BOUNDARY_13
+purpose: 'Breakeven construction under half_even: flips to profit P=+1.'
+profile: half_even
+spec_ref: '9.0'
+tag: CFG
+arithmetic_derivation: C=1010, COGS=500, S=400, G=59, provision 50.5 -> 50 under half_even.
+  P = 1010 - 500 - 400 - 59 - 50 = +1.
+input:
+  id: gid://shopify/Order/BOUNDARY_13
+  name: '#BOUNDARY_13'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '4.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '10.10'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '5.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '0.59'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 1010
+  D: 0
+  R: 1010
+  Sc: 0
+  C: 1010
+  COGS: 500
+  S: 400
+  G: 59
+  E: 50
+  O: 0
+  P: 1
+  P_upper: 51
+  margin: 0.099
+  class: profitable
+  classification: profitable
+  band: at_risk
+  lane: ESTIMATED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: estimated
+    other: structural
+  measured_share: '0.9504'
+  flags: []
+  drivers:
+    product_margin_at_list: 510
+    discount_leak: 0
+    shipping_net: -400
+    fee_leak: -59
+    refund_leak: -50
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 0

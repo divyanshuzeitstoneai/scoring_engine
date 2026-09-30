@@ -1,0 +1,77 @@
+id: C18
+purpose: 'Tax-inclusive fee base: estimated on gross charged including tax.'
+profile: balanced
+spec_ref: '3.2'
+tag: V-DOC
+arithmetic_derivation: 'Gross charged C = 10000 (after tax stripping net=9000). Gateway
+  fee is calculated on gross commercial inflow C=10000: 10000 * 2.9% + 30 = 320. COGS=4000;
+  S=800. P = 10000 - 4000 - 800 - 320 = 4880.'
+input:
+  id: gid://shopify/Order/C18
+  name: '#C18'
+  currencyCode: USD
+  taxesIncluded: true
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    taxLines:
+    - priceSet:
+        shopMoney:
+          amount: '0.00'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: paypal
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 4000
+  S: 800
+  G: 320
+  E: 0
+  O: 0
+  P: 4880
+  P_upper: 5200
+  margin: 48.8
+  class: profitable
+  classification: profitable
+  band: high
+  lane: ESTIMATED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: estimated
+    refund: measured
+    other: structural
+  measured_share: '0.9375'
+  flags: []
+  drivers:
+    product_margin_at_list: 6000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -320
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 500

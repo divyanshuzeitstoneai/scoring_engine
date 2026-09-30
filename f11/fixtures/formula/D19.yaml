@@ -1,0 +1,74 @@
+id: D19
+purpose: 'Order edit adding a line: quantity increases.'
+profile: balanced
+spec_ref: 3.1, 3.6
+tag: UNV
+arithmetic_derivation: L1 original qty 1, current qty 2. qs = 2. L = 20000; COGS =
+  8000. P = 20000 - 8000 - 800 - 580 = 10620.
+input:
+  id: gid://shopify/Order/D19
+  name: '#D19'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 2
+    currentQuantity: 2
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '5.80'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 20000
+  D: 0
+  R: 20000
+  Sc: 0
+  C: 20000
+  COGS: 8000
+  S: 800
+  G: 580
+  E: 0
+  O: 0
+  P: 10620
+  P_upper: 10620
+  margin: 53.1
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 12000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -580
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 1000

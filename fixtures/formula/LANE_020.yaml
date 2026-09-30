@@ -1,0 +1,85 @@
+id: LANE_020
+purpose: 'Lane Truth Table #151: COGS=complete, S=estimated, G=structural, E=provision,
+  P_upper_sign=positive -> Lane=ESTIMATED.'
+profile: balanced
+spec_ref: '8.0'
+tag: CFG
+arithmetic_derivation: C=10000, actual P_upper=7000 (positive). Evaluated strictly
+  per Section 3.3 truth table as ESTIMATED.
+input:
+  id: gid://shopify/Order/LANE_020
+  name: '#LANE_020'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  tags: []
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: null
+  paymentGatewayNames:
+  - manual
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    requiresShipping: true
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '30.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: manual
+  refunds: []
+expected:
+  order_id: gid://shopify/Order/LANE_020
+  order_name: '#LANE_020'
+  as_of: '2026-09-30T23:59:59Z'
+  currency: USD
+  currency_exponent: 2
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 3000
+  S: 650
+  G: 0
+  E: 500
+  O: 0
+  P: 5850
+  P_upper: 7000
+  margin: 58.5
+  is_zero_revenue: false
+  classification: profitable
+  band: high
+  lane: ESTIMATED
+  exclusion_reason: null
+  component_tags:
+    cogs: measured
+    shipping: estimated
+    gateway: structural
+    refund: estimated
+    other: structural
+  measured_share: '0.7229'
+  cogs_basis: snapshot
+  flags: []
+  drivers:
+    product_margin_at_list: 7000
+    discount_leak: 0
+    shipping_net: -650
+    fee_leak: 0
+    refund_leak: -500
+    other_leak: 0
+  top_loss_driver: null
+  P_asold: 5850
+  delta_profit: 0
+  delta_cause: null
+  class: profitable

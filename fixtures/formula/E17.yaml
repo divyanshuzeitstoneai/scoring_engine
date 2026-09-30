@@ -1,0 +1,87 @@
+id: E17
+purpose: 'Two lines with different ids and identical content: both preserved.'
+profile: balanced
+spec_ref: '3.1'
+tag: V-DOC
+arithmetic_derivation: L1 and L2 are distinct lines with identical attributes. L =
+  20000; COGS = 8000. P = 10600. Margin = 53.00% (high).
+input:
+  id: gid://shopify/Order/E17
+  name: '#E17'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  - id: L2
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '6.00'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 20000
+  D: 0
+  R: 20000
+  Sc: 0
+  C: 20000
+  COGS: 8000
+  S: 800
+  G: 600
+  E: 0
+  O: 0
+  P: 10600
+  P_upper: 10600
+  margin: 53.0
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 12000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -600
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 1000

@@ -1,0 +1,87 @@
+id: GOLDEN_15
+purpose: 'Partial COGS: known line costs count in P_upper even when another line is
+  missing.'
+profile: balanced
+spec_ref: '7.0'
+tag: V-DOC
+arithmetic_derivation: L1 cost 1000, L2 cost missing. C=8000; S=600; G=300. Known
+  costs = 1000 + 600 + 300 = 1900. P_upper = 8000 - 1900 = 6100. Lane=UNDETERMINED.
+input:
+  id: gid://shopify/Order/GOLDEN_15
+  name: '#GOLDEN_15'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '6.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '40.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '10.00'
+          currencyCode: USD
+  - id: L2
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '40.00'
+        currencyCode: USD
+    variant:
+      id: V2
+      inventoryItem:
+        unitCost: null
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.00'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 8000
+  D: 0
+  R: 8000
+  Sc: 0
+  C: 8000
+  COGS: null
+  S: 600
+  G: 300
+  E: 0
+  O: 0
+  P: null
+  P_upper: 6100
+  margin: null
+  class: undetermined
+  classification: undetermined
+  band: undetermined
+  lane: UNDETERMINED
+  component_tags:
+    cogs: missing
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags:
+  - COGS_MISSING_LINE
+  drivers:
+    product_margin_at_list: unknown
+    discount_leak: 0
+    shipping_net: -600
+    fee_leak: -300
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: null

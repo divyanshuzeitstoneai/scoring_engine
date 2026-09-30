@@ -1,0 +1,75 @@
+id: B09
+purpose: 'Cost above price: valid negative line margin, unprofitable order.'
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: V-DOC
+arithmetic_derivation: u=2000, cost=3500. L=2000; D=0; R=2000; Sc=0; C=2000. COGS=3500;
+  S=500; G=70; E=0; O=0. P = 2000 - 3500 - 500 - 70 = -2070. Margin = -103.50% (cash
+  drain).
+input:
+  id: gid://shopify/Order/B09
+  name: '#B09'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '5.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '20.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '35.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '0.70'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 2000
+  D: 0
+  R: 2000
+  Sc: 0
+  C: 2000
+  COGS: 3500
+  S: 500
+  G: 70
+  E: 0
+  O: 0
+  P: -2070
+  P_upper: -2070
+  margin: -103.5
+  class: unprofitable
+  classification: unprofitable
+  band: cash_drain
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: -1500
+    discount_leak: 0
+    shipping_net: -500
+    fee_leak: -70
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: shipping_subsidy
+  delta_profit: 100

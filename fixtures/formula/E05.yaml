@@ -1,0 +1,48 @@
+id: E05
+purpose: 'Pending order: financial status PENDING -> excluded.'
+profile: balanced
+spec_ref: '3.3'
+tag: V-DOC
+arithmetic_derivation: 'displayFinancialStatus=''PENDING'' -> excluded: FINANCIAL_STATUS_PENDING.'
+input:
+  id: gid://shopify/Order/E05
+  name: '#E05'
+  currencyCode: USD
+  displayFinancialStatus: PENDING
+  lineItems:
+  - id: L1
+    quantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+expected:
+  L: 0
+  D: 0
+  R: 0
+  Sc: 0
+  C: 0
+  COGS: 0
+  S: 0
+  G: 0
+  E: 0
+  O: 0
+  P: 0
+  P_upper: 0
+  margin: null
+  class: excluded
+  classification: excluded
+  band: excluded
+  lane: EXCLUDED
+  exclusion_reason: FINANCIAL_STATUS_PENDING
+  component_tags:
+    cogs: structural
+    shipping: structural
+    gateway: structural
+    refund: structural
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers: {}
+  top_loss_driver: null
+  delta_profit: null

@@ -1,0 +1,75 @@
+id: D01
+purpose: 'Anchor B0: No refund, window open (age 10d < 30d). Provision = 5% of R =
+  550. Lane ESTIMATED.'
+profile: balanced
+spec_ref: 3.2, 7.0
+tag: V-DOC
+arithmetic_derivation: R=11000; C=12000; COGS=4500; S=900; G=378; E=550; O=0. P =
+  12000 - 4500 - 900 - 378 - 550 = 5672. Margin = 47.2667%.
+input:
+  id: gid://shopify/Order/D01
+  name: '#D01'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '10.00'
+      currencyCode: USD
+  actual_carrier_cost: '9.00'
+  lineItems:
+  - id: L1
+    quantity: 2
+    currentQuantity: 2
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '55.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '22.50'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.78'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 11000
+  D: 0
+  R: 11000
+  Sc: 1000
+  C: 12000
+  COGS: 4500
+  S: 900
+  G: 378
+  E: 550
+  O: 0
+  P: 5672
+  P_upper: 6222
+  margin: 47.2667
+  class: profitable
+  classification: profitable
+  band: high
+  lane: ESTIMATED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: estimated
+    other: structural
+  measured_share: '0.9131'
+  flags: []
+  drivers:
+    product_margin_at_list: 6500
+    discount_leak: 0
+    shipping_net: 100
+    fee_leak: -378
+    refund_leak: -550
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 0

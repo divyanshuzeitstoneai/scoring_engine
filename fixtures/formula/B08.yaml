@@ -1,0 +1,56 @@
+id: B08
+purpose: 'Negative unitCost: invalid input -> order excluded with reason.'
+profile: balanced
+spec_ref: '3.1'
+tag: V-DOC
+arithmetic_derivation: unitCost = -10.00 < 0 -> INVALID_NEGATIVE_COST -> Excluded.
+input:
+  id: gid://shopify/Order/B08
+  name: '#B08'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '50.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '-10.00'
+          currencyCode: USD
+expected:
+  L: 0
+  D: 0
+  R: 0
+  Sc: 0
+  C: 0
+  COGS: 0
+  S: 0
+  G: 0
+  E: 0
+  O: 0
+  P: 0
+  P_upper: 0
+  margin: null
+  class: excluded
+  classification: excluded
+  band: excluded
+  lane: EXCLUDED
+  exclusion_reason: INVALID_COST
+  component_tags:
+    cogs: structural
+    shipping: structural
+    gateway: structural
+    refund: structural
+    other: structural
+  measured_share: '1.0000'
+  flags:
+  - INVALID_COST
+  drivers: {}
+  top_loss_driver: null
+  delta_profit: null

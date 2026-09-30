@@ -1,0 +1,99 @@
+id: D20
+purpose: 'Exchange (return plus new line): tagged PENDING until live GraphQL schema
+  verified.'
+profile: balanced
+spec_ref: 3.6, 6.0
+tag: PENDING
+arithmetic_derivation: L1 original sold (qs=1, gross=6000, cogs=2400), L2 added (qs=1,
+  gross=8000, cogs=3200). L = 14000, COGS = 5600. E = 6000 - 2400 = 3600. P = 14000
+  - 5600 - 800 - 260 - 3600 = 3740. Margin = 26.7143%.
+input:
+  id: gid://shopify/Order/D20
+  name: '#D20'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 0
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '60.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '24.00'
+          currencyCode: USD
+  - id: L2
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '80.00'
+        currencyCode: USD
+    variant:
+      id: V2
+      inventoryItem:
+        unitCost:
+          amount: '32.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '2.60'
+        currencyCode: USD
+  refunds:
+  - id: R1
+    createdAt: '2026-08-10T12:00:00Z'
+    totalRefundedSet:
+      shopMoney:
+        amount: '60.00'
+        currencyCode: USD
+    refundLineItems:
+    - lineItemId: L1
+      quantity: 1
+      restocked: true
+expected:
+  L: 14000
+  D: 0
+  R: 14000
+  Sc: 0
+  C: 14000
+  COGS: 5600
+  S: 800
+  G: 260
+  E: 3600
+  O: 0
+  P: 3740
+  P_upper: 3740
+  margin: 26.7143
+  class: profitable
+  classification: profitable
+  band: acceptable
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 8400
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -260
+    refund_leak: -3600
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: -3600

@@ -1,0 +1,85 @@
+id: D03
+purpose: 'Anchor B0: Full refund (2 units) with restock credit. E = 11000 - 4500 =
+  6500.'
+profile: balanced
+spec_ref: 3.2, 7.0
+tag: V-DOC
+arithmetic_derivation: E = 11000 refunded - 4500 restock COGS = 6500. P = 12000 -
+  4500 - 900 - 378 - 6500 = -278. Margin = -2.3167%. Unprofitable, cash_drain.
+input:
+  id: gid://shopify/Order/D03
+  name: '#D03'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '10.00'
+      currencyCode: USD
+  actual_carrier_cost: '9.00'
+  lineItems:
+  - id: L1
+    quantity: 2
+    currentQuantity: 0
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '55.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '22.50'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.78'
+        currencyCode: USD
+  refunds:
+  - id: R1
+    createdAt: '2026-08-10T12:00:00Z'
+    totalRefundedSet:
+      shopMoney:
+        amount: '110.00'
+        currencyCode: USD
+    refundLineItems:
+    - lineItemId: L1
+      quantity: 2
+      restocked: true
+expected:
+  L: 11000
+  D: 0
+  R: 11000
+  Sc: 1000
+  C: 12000
+  COGS: 4500
+  S: 900
+  G: 378
+  E: 6500
+  O: 0
+  P: -278
+  P_upper: -278
+  margin: -2.3167
+  class: unprofitable
+  classification: unprofitable
+  band: cash_drain
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6500
+    discount_leak: 0
+    shipping_net: 100
+    fee_leak: -378
+    refund_leak: -6500
+    other_leak: 0
+  top_loss_driver: refund_leak
+  delta_profit: -5950

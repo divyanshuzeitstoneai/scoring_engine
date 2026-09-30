@@ -1,0 +1,74 @@
+id: C01
+purpose: Carrier cost measured directly from metafield.
+profile: balanced
+spec_ref: '3.2'
+tag: V-DOC
+arithmetic_derivation: actual_carrier_cost=900 -> S=900, measured. L=10000; R=10000;
+  Sc=1000; C=11000. COGS=5000; G=350; E=0; O=0. P=4750. Margin=43.1818% (high).
+input:
+  id: gid://shopify/Order/C01
+  name: '#C01'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '10.00'
+      currencyCode: USD
+  actual_carrier_cost: '9.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '50.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.50'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 1000
+  C: 11000
+  COGS: 5000
+  S: 900
+  G: 350
+  E: 0
+  O: 0
+  P: 4750
+  P_upper: 4750
+  margin: 43.1818
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 5000
+    discount_leak: 0
+    shipping_net: 100
+    fee_leak: -350
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 500

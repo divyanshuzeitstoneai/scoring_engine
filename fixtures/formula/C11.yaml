@@ -1,0 +1,71 @@
+id: C11
+purpose: "PayPal with fee schedule: 2.9% + 30\xA2 on gross charged."
+profile: balanced
+spec_ref: '3.2'
+tag: CFG
+arithmetic_derivation: Gross charged C = 10000. Fee = round(10000 * 0.029) + 30 =
+  290 + 30 = 320 (estimated). COGS=4000; S=800. P = 10000 - 4000 - 800 - 320 = 4880.
+  Margin=48.80% (high). Lane=ESTIMATED.
+input:
+  id: gid://shopify/Order/C11
+  name: '#C11'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: paypal
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 4000
+  S: 800
+  G: 320
+  E: 0
+  O: 0
+  P: 4880
+  P_upper: 5200
+  margin: 48.8
+  class: profitable
+  classification: profitable
+  band: high
+  lane: ESTIMATED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: estimated
+    refund: measured
+    other: structural
+  measured_share: '0.9375'
+  flags: []
+  drivers:
+    product_margin_at_list: 6000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -320
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 500

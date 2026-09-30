@@ -1,0 +1,73 @@
+id: GOLDEN_12
+purpose: 'P_upper boundary trio: S=2397 -> P_upper=0 -> Lane=UNDETERMINED.'
+profile: balanced
+spec_ref: '7.0'
+tag: V-DOC
+arithmetic_derivation: C=2500, G=103 measured, COGS missing, S=2397. P_upper = 2500
+  - 103 - 2397 = 0 -> Lane=UNDETERMINED.
+input:
+  id: gid://shopify/Order/GOLDEN_12
+  name: '#GOLDEN_12'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '23.97'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '25.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost: null
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '1.03'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 2500
+  D: 0
+  R: 2500
+  Sc: 0
+  C: 2500
+  COGS: null
+  S: 2397
+  G: 103
+  E: 0
+  O: 0
+  P: null
+  P_upper: 0
+  margin: null
+  class: undetermined
+  classification: undetermined
+  band: undetermined
+  lane: UNDETERMINED
+  component_tags:
+    cogs: missing
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags:
+  - COGS_MISSING_LINE
+  drivers:
+    product_margin_at_list: unknown
+    discount_leak: 0
+    shipping_net: -2397
+    fee_leak: -103
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: null

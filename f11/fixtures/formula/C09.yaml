@@ -1,0 +1,77 @@
+id: C09
+purpose: 'Shopify Payments with two fee entries: summed, measured.'
+profile: balanced
+spec_ref: '3.2'
+tag: V-DOC
+arithmetic_derivation: fees = 2.50 + 1.20 = 3.70 -> G=370, measured. C=10000; COGS=4000;
+  S=800; E=0; O=0. P = 10000 - 4000 - 800 - 370 = 4830. Margin=48.30% (high).
+input:
+  id: gid://shopify/Order/C09
+  name: '#C09'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '2.50'
+        currencyCode: USD
+    - amount:
+        amount: '1.20'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 4000
+  S: 800
+  G: 370
+  E: 0
+  O: 0
+  P: 4830
+  P_upper: 4830
+  margin: 48.3
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -370
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 500

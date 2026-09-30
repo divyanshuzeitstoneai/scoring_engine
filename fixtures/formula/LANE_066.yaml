@@ -1,0 +1,88 @@
+id: LANE_066
+purpose: 'Lane Truth Table #197: COGS=complete, S=measured, G=measured, E=provision,
+  P_upper_sign=negative -> Lane=CONFIRMED_LOSS.'
+profile: balanced
+spec_ref: '8.0'
+tag: CFG
+arithmetic_derivation: C=10000, actual P_upper=-2100 (negative). Evaluated strictly
+  per Section 3.3 truth table as CONFIRMED_LOSS.
+input:
+  id: gid://shopify/Order/LANE_066
+  name: '#LANE_066'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  tags: []
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  paymentGatewayNames: []
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    requiresShipping: true
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '110.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.00'
+        currencyCode: USD
+  refunds: []
+expected:
+  order_id: gid://shopify/Order/LANE_066
+  order_name: '#LANE_066'
+  as_of: '2026-09-30T23:59:59Z'
+  currency: USD
+  currency_exponent: 2
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 11000
+  S: 800
+  G: 300
+  E: 500
+  O: 0
+  P: -2600
+  P_upper: -2100
+  margin: -26.0
+  is_zero_revenue: false
+  classification: unprofitable
+  band: cash_drain
+  lane: CONFIRMED_LOSS
+  exclusion_reason: null
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: estimated
+    other: structural
+  measured_share: '0.9603'
+  cogs_basis: snapshot
+  flags: []
+  drivers:
+    product_margin_at_list: -1000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -300
+    refund_leak: -500
+    other_leak: 0
+  top_loss_driver: shipping_subsidy
+  P_asold: -2600
+  delta_profit: 0
+  delta_cause: null
+  class: unprofitable

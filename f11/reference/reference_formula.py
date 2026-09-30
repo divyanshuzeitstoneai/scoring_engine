@@ -76,6 +76,22 @@ class OrderProfitResult:
     delta_profit: Optional[int]
     delta_cause: Optional[str]
 
+    @property
+    def class_(self) -> str:
+        return self.classification
+
+    def __getitem__(self, item: str) -> Any:
+        if item == "class":
+            return self.classification
+        if hasattr(self, item):
+            return getattr(self, item)
+        raise KeyError(item)
+
+    def to_dict(self) -> Dict[str, Any]:
+        d = {k: getattr(self, k) for k in self.__dataclass_fields__}
+        d["class"] = self.classification
+        return d
+
 
 def parse_iso_datetime(dt_str: str) -> datetime:
     if not dt_str:
@@ -149,6 +165,7 @@ def evaluate_order_reference(
     has_missing_cogs = False
     cogs_basis = "snapshot"
     taxes_included = order.get("taxesIncluded", False)
+    tot_embedded_tax = 0
 
     for li in raw_lines:
         lid = li.get("id", "")
@@ -169,9 +186,10 @@ def evaluate_order_reference(
         u = int(round_minor(Decimal(str(u_str)) * (10 ** exp), rounding_mode))
         
         is_gift_card = li.get("isGiftCard", False)
+        is_tip = (li.get("title") or "").strip().lower() == "tip" or li.get("isTip", False)
         requires_shipping = li.get("requiresShipping", True)
         
-        if is_gift_card or qs == 0:
+        if is_gift_card or is_tip or qs == 0:
             # Excluded from merchandise revenue and cogs
             gross_l = 0
             disc_l = 0
@@ -204,6 +222,7 @@ def evaluate_order_reference(
                     for tl in tax_lines
                 ])
                 tax_l = tot_tax_line
+                tot_embedded_tax += tax_l
                 
             net_l = gross_l - disc_l - tax_l
             
@@ -299,7 +318,8 @@ def evaluate_order_reference(
     metafields = order.get("metafields", {})
     actual_carrier_cost = order.get("actual_carrier_cost") or metafields.get("custom.actual_carrier_cost")
     all_digital = all([not pl.requires_shipping for pl in processed_lines])
-    is_pickup = order.get("sourceName") == "pos" or "pickup" in (order.get("tags") or [])
+    has_pickup_sl = any("pickup" in (sl.get("title") or "").lower() for sl in order.get("shippingLines", []))
+    is_pickup = order.get("sourceName") == "pos" or "pickup" in (order.get("tags") or []) or has_pickup_sl
     
     if actual_carrier_cost is not None:
         S = int(round_minor(Decimal(str(actual_carrier_cost)) * (10 ** exp), rounding_mode))
@@ -322,6 +342,7 @@ def evaluate_order_reference(
     has_sp_txn = False
     has_non_sp_txn = False
     
+    has_zero_fee_txn = False
     for tx in txns:
         gw = (tx.get("gateway") or "").lower()
         if "shopify_payments" in gw:
@@ -331,12 +352,12 @@ def evaluate_order_reference(
                 f_amt = (fee.get("amount", {}) or {}).get("amount", "0.00")
                 measured_fees.append(int(round_minor(Decimal(str(f_amt)) * (10 ** exp), rounding_mode)))
         elif gw in config.get("zero_fee_gateways", []):
-            pass
+            has_zero_fee_txn = True
         else:
             has_non_sp_txn = True
 
     gateways = [gw.lower() for gw in order.get("paymentGatewayNames", [])]
-    is_zero_fee_gw = any([gw in config.get("zero_fee_gateways", []) for gw in gateways])
+    is_zero_fee_gw = any([gw in config.get("zero_fee_gateways", []) for gw in gateways]) or has_zero_fee_txn
     
     if C == 0 or is_zero_fee_gw:
         G = 0
@@ -353,8 +374,12 @@ def evaluate_order_reference(
         sched = config["gateway_fee_schedule"].get("paypal", {"rate": 0.029, "fixed": 30})
         rate = Decimal(str(sched.get("rate", 0.029)))
         fixed = int(sched.get("fixed", 30))
-        # Total charged base
-        tot_charged = C
+        # Total charged base (gross, including tax)
+        tot_charged_val = (order.get("totalPriceSet", {}).get("shopMoney", {}) or {}).get("amount")
+        if tot_charged_val is not None:
+            tot_charged = int(round_minor(Decimal(str(tot_charged_val)) * (10 ** exp), rounding_mode))
+        else:
+            tot_charged = C + tot_embedded_tax + (Sc_raw - Sc)
         G = round_minor(Decimal(tot_charged) * rate, rounding_mode) + fixed
         fee_tag = "estimated"
     else:
@@ -390,8 +415,8 @@ def evaluate_order_reference(
                     if match_line and match_line.unit_cost:
                         recovered_cogs += match_line.unit_cost * rfl.get("quantity", 1)
                         
-            return_ship = int(round_minor(Decimal(str(r.get("return_shipping_cost", 0))) * (10 ** exp), rounding_mode))
-            handling = int(round_minor(Decimal(str(r.get("restock_handling_fee", 0))) * (10 ** exp), rounding_mode))
+            return_ship = int(round_minor(Decimal(str(r.get("return_shipping_cost") or r.get("return_label_cost") or order.get("return_shipping_cost") or order.get("return_label_cost") or 0)) * (10 ** exp), rounding_mode))
+            handling = int(round_minor(Decimal(str(r.get("restock_handling_fee") or order.get("restock_handling_fee") or 0)) * (10 ** exp), rounding_mode))
             
             E_tot += (r_amt - recovered_cogs + return_ship + handling)
             
@@ -411,15 +436,18 @@ def evaluate_order_reference(
             refund_tag = "measured"
 
     # 6. Operational Overhead (O)
-    packaging = config.get("packaging_cost", 150)
+    packaging = config.get("packaging_cost", 0)
     O = packaging if not all_digital else 0
     other_tag = "measured" if O > 0 else "structural"
 
     # 7. Upper Bound Profit (P_upper) and Final Profit (P)
     # P_upper = C - sum(measured and structural costs only)
+    known_cogs = sum([pl.cogs for pl in processed_lines if pl.cogs is not None and pl.cogs > 0])
     known_deductions = 0
-    if cogs_tag in ["measured", "structural"] and COGS is not None:
+    if COGS is not None:
         known_deductions += COGS
+    elif known_cogs > 0:
+        known_deductions += known_cogs
     if ship_tag in ["measured", "structural"] and S is not None:
         known_deductions += S
     if fee_tag in ["measured", "structural"] and G is not None:

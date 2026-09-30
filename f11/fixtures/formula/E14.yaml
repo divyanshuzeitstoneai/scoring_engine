@@ -1,0 +1,74 @@
+id: E14
+purpose: 'Smallest loss (-1 minor unit): C=10000, costs=10001 -> P=-1.'
+profile: balanced
+spec_ref: '3.4'
+tag: V-DOC
+arithmetic_derivation: C = 10000, COGS = 5000, S = 4000, G = 1001. P = -1. Margin
+  = -0.01% (cash_drain).
+input:
+  id: gid://shopify/Order/E14
+  name: '#E14'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '40.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '50.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '10.01'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 5000
+  S: 4000
+  G: 1001
+  E: 0
+  O: 0
+  P: -1
+  P_upper: -1
+  margin: -0.01
+  class: unprofitable
+  classification: unprofitable
+  band: cash_drain
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 5000
+    discount_leak: 0
+    shipping_net: -4000
+    fee_leak: -1001
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: shipping_subsidy
+  delta_profit: 500

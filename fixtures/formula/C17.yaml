@@ -1,0 +1,70 @@
+id: C17
+purpose: 'Fee estimate rounding precision: half_up tie.'
+profile: balanced
+spec_ref: '3.2'
+tag: CFG
+arithmetic_derivation: Gross charged 5172. 5172 * 0.029 = 149.988 -> round gives 150.
+  Fee = 150 + 30 = 180 (estimated).
+input:
+  id: gid://shopify/Order/C17
+  name: '#C17'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '5.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '51.72'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '20.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: paypal
+  refunds: []
+expected:
+  L: 5172
+  D: 0
+  R: 5172
+  Sc: 0
+  C: 5172
+  COGS: 2000
+  S: 500
+  G: 180
+  E: 0
+  O: 0
+  P: 2492
+  P_upper: 2672
+  margin: 48.1825
+  class: profitable
+  classification: profitable
+  band: high
+  lane: ESTIMATED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: estimated
+    refund: measured
+    other: structural
+  measured_share: '0.9328'
+  flags: []
+  drivers:
+    product_margin_at_list: 3172
+    discount_leak: 0
+    shipping_net: -500
+    fee_leak: -180
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 259

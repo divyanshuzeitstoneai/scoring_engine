@@ -1,0 +1,76 @@
+id: A09
+purpose: 'Discount larger than line value: clamped net.'
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: V-DOC
+arithmetic_derivation: Gross = 1000, discount = 1200 -> clamped D = 1000, R = 0. C
+  = 0. COGS = 400; S = 500; G = 0; E = 0; O = 0. P = -900. Zero revenue -> margin
+  = None, band = zero_revenue.
+input:
+  id: gid://shopify/Order/A09
+  name: '#A09'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '5.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '10.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '12.00'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '4.00'
+          currencyCode: USD
+  transactions: []
+  refunds: []
+  paymentGatewayNames:
+  - manual
+expected:
+  L: 1000
+  D: 1200
+  R: -200
+  Sc: 0
+  C: -200
+  COGS: 400
+  S: 500
+  G: 0
+  E: 0
+  O: 0
+  P: -1100
+  P_upper: -1100
+  margin: 550.0
+  class: unprofitable
+  classification: unprofitable
+  band: cash_drain
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: structural
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 600
+    discount_leak: -1200
+    shipping_net: -500
+    fee_leak: 0
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: discount_leak
+  delta_profit: -10

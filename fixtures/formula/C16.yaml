@@ -1,0 +1,79 @@
+id: C16
+purpose: 'Authorization plus capture: fee counted once on capture.'
+profile: balanced
+spec_ref: '3.2'
+tag: V-DOC
+arithmetic_derivation: Auth txn has empty fee, capture has 3.00 fee -> G=300 (measured
+  once). C=10000; COGS=4000; S=800. P=4900. Margin=49.00% (high).
+input:
+  id: gid://shopify/Order/C16
+  name: '#C16'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '40.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    kind: AUTHORIZATION
+    gateway: shopify_payments
+    fees: []
+  - id: T2
+    kind: CAPTURE
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.00'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 4000
+  S: 800
+  G: 300
+  E: 0
+  O: 0
+  P: 4900
+  P_upper: 4900
+  margin: 49.0
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6000
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -300
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 500

@@ -36,7 +36,7 @@ class F11Engine:
         self.zero_fee_gateways = set(config.get("zero_fee_gateways", ["manual", "cash_on_delivery", "bank_deposit"]))
         self.ref_window = config.get("refund_window_days", {}).get("Default", 30)
         self.prov_rate = Decimal(str(config.get("refund_provision_rate", {}).get("Default", 0.05)))
-        self.packaging_cost = config.get("packaging_cost", 150)
+        self.packaging_cost = config.get("packaging_cost", 0)
         self.as_of_str = config.get("as_of", "2026-09-30T23:59:59Z")
         self.as_of_ts = pd.to_datetime(self.as_of_str.replace("Z", "+00:00"))
 
@@ -95,6 +95,7 @@ class F11Engine:
         D = 0
         R = 0
         COGS_val = 0
+        total_embedded_tax = 0
         all_digital = True
         
         processed_line_records = []
@@ -114,11 +115,12 @@ class F11Engine:
             u = round_minor_int(Decimal(str(u_str)) * (10 ** self.exp), self.rounding_mode)
             
             is_gift_card = li.get("isGiftCard", False)
+            is_tip = (li.get("title") or "").strip().lower() == "tip" or li.get("isTip", False)
             req_ship = li.get("requiresShipping", True)
             if req_ship:
                 all_digital = False
 
-            if is_gift_card or qs == 0:
+            if is_gift_card or is_tip or qs == 0:
                 cost_val = 0
                 gross_l = 0
                 disc_l = 0
@@ -142,6 +144,7 @@ class F11Engine:
                         round_minor_int(Decimal(str((tl.get("priceSet", {}).get("shopMoney", {}) or {}).get("amount", "0.00"))) * (10 ** self.exp), self.rounding_mode)
                         for tl in tax_lines
                     ])
+                    total_embedded_tax += tax_l
 
                 net_l = gross_l - disc_l - tax_l
                 
@@ -195,7 +198,8 @@ class F11Engine:
 
         metafields = order.get("metafields", {})
         actual_carrier_cost = order.get("actual_carrier_cost") or metafields.get("custom.actual_carrier_cost")
-        is_pickup = order.get("sourceName") == "pos" or "pickup" in (order.get("tags") or [])
+        has_pickup_sl = any("pickup" in (sl.get("title") or "").lower() for sl in order.get("shippingLines", []))
+        is_pickup = order.get("sourceName") == "pos" or "pickup" in (order.get("tags") or []) or has_pickup_sl
 
         if actual_carrier_cost is not None:
             S = round_minor_int(Decimal(str(actual_carrier_cost)) * (10 ** self.exp), self.rounding_mode)
@@ -217,6 +221,7 @@ class F11Engine:
         has_sp_txn = False
         has_non_sp_txn = False
 
+        has_zero_fee_txn = False
         for tx in txns:
             gw = (tx.get("gateway") or "").lower()
             if "shopify_payments" in gw:
@@ -226,12 +231,18 @@ class F11Engine:
                     f_amt = (fee.get("amount", {}) or {}).get("amount", "0.00")
                     measured_fees.append(round_minor_int(Decimal(str(f_amt)) * (10 ** self.exp), self.rounding_mode))
             elif gw in self.zero_fee_gateways:
-                pass
+                has_zero_fee_txn = True
             else:
                 has_non_sp_txn = True
 
         gateways = [gw.lower() for gw in order.get("paymentGatewayNames", [])]
-        is_zero_fee = any([gw in self.zero_fee_gateways for gw in gateways])
+        is_zero_fee = any([gw in self.zero_fee_gateways for gw in gateways]) or has_zero_fee_txn
+
+        tot_charged_val = (order.get("totalPriceSet", {}).get("shopMoney", {}) or {}).get("amount")
+        if tot_charged_val is not None:
+            gross_charged = round_minor_int(Decimal(str(tot_charged_val)) * (10 ** self.exp), self.rounding_mode)
+        else:
+            gross_charged = C + total_embedded_tax + (Sc_raw - Sc)
 
         if C == 0 or is_zero_fee:
             G = 0
@@ -247,7 +258,7 @@ class F11Engine:
             sched = self.config["gateway_fee_schedule"].get("paypal", {"rate": 0.029, "fixed": 30})
             rate = Decimal(str(sched.get("rate", 0.029)))
             fixed = int(sched.get("fixed", 30))
-            G = round_minor_int(Decimal(C) * rate, self.rounding_mode) + fixed
+            G = round_minor_int(Decimal(gross_charged) * rate, self.rounding_mode) + fixed
             fee_tag = "estimated"
         else:
             G = None
@@ -280,8 +291,8 @@ class F11Engine:
                                 recovered_cogs += puc * rfl.get("quantity", 1)
                                 break
                                 
-                ret_ship = round_minor_int(Decimal(str(r.get("return_shipping_cost", 0))) * (10 ** self.exp), self.rounding_mode)
-                handling = round_minor_int(Decimal(str(r.get("restock_handling_fee", 0))) * (10 ** self.exp), self.rounding_mode)
+                ret_ship = round_minor_int(Decimal(str(r.get("return_shipping_cost") or r.get("return_label_cost") or order.get("return_shipping_cost") or order.get("return_label_cost") or 0)) * (10 ** self.exp), self.rounding_mode)
+                handling = round_minor_int(Decimal(str(r.get("restock_handling_fee") or order.get("restock_handling_fee") or 0)) * (10 ** self.exp), self.rounding_mode)
                 E_tot += (r_amt - recovered_cogs + ret_ship + handling)
                 
             E = E_tot
@@ -299,7 +310,10 @@ class F11Engine:
         other_tag = "measured" if O > 0 else "structural"
 
         known_deductions = 0
-        if cogs_tag in ["measured", "structural"] and COGS is not None: known_deductions += COGS
+        if COGS is not None:
+            known_deductions += COGS
+        elif COGS_val > 0:
+            known_deductions += COGS_val
         if ship_tag in ["measured", "structural"] and S is not None: known_deductions += S
         if fee_tag in ["measured", "structural"] and G is not None: known_deductions += G
         if refund_tag in ["measured", "structural"]: known_deductions += E
@@ -409,6 +423,7 @@ class F11Engine:
             "margin": margin,
             "is_zero_revenue": is_zero_revenue,
             "classification": classification,
+            "class": classification,
             "band": band,
             "lane": lane,
             "exclusion_reason": None,
@@ -452,6 +467,7 @@ class F11Engine:
             "margin": None,
             "is_zero_revenue": True,
             "classification": "excluded",
+            "class": "excluded",
             "band": "excluded",
             "lane": "EXCLUDED",
             "exclusion_reason": reason,

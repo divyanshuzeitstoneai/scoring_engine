@@ -1,0 +1,75 @@
+id: A01
+purpose: Single line, no discount. Standard merchandise revenue.
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: V-DOC
+arithmetic_derivation: L = 10000; D = 0; R = 10000; Sc = 0; C = 10000. COGS = 5000;
+  S = 1000; G = 320; E = 0; O = 0. P = 3680. Margin = 36.80% (high).
+input:
+  id: gid://shopify/Order/A01
+  name: '#A01'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '10.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    discountAllocations: []
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '50.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.20'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: 5000
+  S: 1000
+  G: 320
+  E: 0
+  O: 0
+  P: 3680
+  P_upper: 3680
+  margin: 36.8
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 5000
+    discount_leak: 0
+    shipping_net: -1000
+    fee_leak: -320
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 500

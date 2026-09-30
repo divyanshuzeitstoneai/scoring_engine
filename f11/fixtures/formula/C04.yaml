@@ -1,0 +1,75 @@
+id: C04
+purpose: 'Digital-only order: structural zero shipping (measured).'
+profile: balanced
+spec_ref: '3.2'
+tag: V-DOC
+arithmetic_derivation: requiresShipping=False for all lines -> S=0, structural zero
+  (measured). C=5000; COGS=1000; G=175; E=0; O=0. P=3825. Margin=76.50% (high). Lane=MEASURED.
+input:
+  id: gid://shopify/Order/C04
+  name: '#C04'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: null
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    requiresShipping: false
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '50.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '10.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '1.75'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 5000
+  D: 0
+  R: 5000
+  Sc: 0
+  C: 5000
+  COGS: 1000
+  S: 0
+  G: 175
+  E: 0
+  O: 0
+  P: 3825
+  P_upper: 3825
+  margin: 76.5
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: structural
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 4000
+    discount_leak: 0
+    shipping_net: 0
+    fee_leak: -175
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 250

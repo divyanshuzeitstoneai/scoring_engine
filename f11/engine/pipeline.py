@@ -13,6 +13,94 @@ import yaml
 from f11.engine.formula import F11Engine, compute_config_hash, FORMULA_VERSION, PINNED_API_VERSION
 
 
+
+class AggregatedLaneResult:
+    def __init__(self, lane_name: str, order_count: int, total_revenue: int, total_profit: Optional[int], margin: Optional[Decimal], headroom: Optional[int] = None):
+        self.lane_name = lane_name
+        self.order_count = order_count
+        self.total_revenue = total_revenue
+        self.total_profit = total_profit
+        self.margin = margin
+        self.headroom = headroom
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "lane_name": self.lane_name,
+            "order_count": self.order_count,
+            "total_revenue": self.total_revenue,
+            "total_profit": self.total_profit,
+            "margin": float(self.margin) if self.margin is not None else None,
+            "headroom": self.headroom
+        }
+
+
+class PipelineSummary:
+    def __init__(self, lanes: Dict[str, AggregatedLaneResult], total_orders: int, active_orders: int, excluded_orders: int):
+        self.lanes = lanes
+        self.total_orders = total_orders
+        self.active_orders = active_orders
+        self.excluded_orders = excluded_orders
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "total_orders": self.total_orders,
+            "active_orders": self.active_orders,
+            "excluded_orders": self.excluded_orders,
+            "lanes": {k: v.to_dict() for k, v in self.lanes.items()}
+        }
+
+
+def aggregate_orders(results: List[Dict[str, Any]]) -> PipelineSummary:
+    # Separate into lanes
+    lanes_data: Dict[str, List[Dict[str, Any]]] = {
+        "MEASURED": [],
+        "ESTIMATED": [],
+        "UNDETERMINED": [],
+        "CONFIRMED_LOSS": [],
+        "EXCLUDED": []
+    }
+    for r in results:
+        lane = r.get("lane", "UNDETERMINED")
+        if lane in lanes_data:
+            lanes_data[lane].append(r)
+        else:
+            lanes_data.setdefault(lane, []).append(r)
+
+    total_orders = len(results)
+    excluded_orders = len(lanes_data.get("EXCLUDED", []))
+    active_orders = total_orders - excluded_orders
+
+    lane_aggregates = {}
+    for lane_name in ["MEASURED", "ESTIMATED"]:
+        orders = lanes_data.get(lane_name, [])
+        count = len(orders)
+        tot_c = sum(o.get("C", 0) for o in orders)
+        profits = [o.get("P") for o in orders if o.get("P") is not None]
+        tot_p = sum(profits) if profits else 0
+        margin = (Decimal(tot_p) / Decimal(tot_c) * Decimal("100")).quantize(Decimal("0.0001")) if tot_c > 0 and count > 0 and len(profits) == count else None
+        lane_aggregates[lane_name] = AggregatedLaneResult(lane_name, count, tot_c, tot_p if count > 0 else None, margin)
+
+    # UNDETERMINED: strictly NO total_profit or margin
+    u_orders = lanes_data.get("UNDETERMINED", [])
+    u_count = len(u_orders)
+    u_c = sum(o.get("C", 0) for o in u_orders)
+    u_headroom = sum(o.get("P_upper", 0) for o in u_orders if o.get("P_upper") is not None)
+    lane_aggregates["UNDETERMINED"] = AggregatedLaneResult("UNDETERMINED", u_count, u_c, None, None, headroom=u_headroom)
+
+    # CONFIRMED_LOSS: strictly NO total_profit or margin
+    x_orders = lanes_data.get("CONFIRMED_LOSS", [])
+    x_count = len(x_orders)
+    x_c = sum(o.get("C", 0) for o in x_orders)
+    x_headroom = sum(o.get("P_upper", 0) for o in x_orders if o.get("P_upper") is not None)
+    lane_aggregates["CONFIRMED_LOSS"] = AggregatedLaneResult("CONFIRMED_LOSS", x_count, x_c, None, None, headroom=x_headroom)
+
+    # EXCLUDED
+    ex_orders = lanes_data.get("EXCLUDED", [])
+    lane_aggregates["EXCLUDED"] = AggregatedLaneResult("EXCLUDED", len(ex_orders), 0, None, None)
+
+    return PipelineSummary(lane_aggregates, total_orders, active_orders, excluded_orders)
+
+
 def load_config(config_path: str = "f11/config/f11.config.yaml") -> Dict[str, Any]:
     with open(config_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)

@@ -1,0 +1,50 @@
+id: E01
+purpose: 'Cancelled before fulfillment: excluded order.'
+profile: balanced
+spec_ref: '3.3'
+tag: V-DOC
+arithmetic_derivation: 'cancelledAt is set and fulfillment status is unfulfilled ->
+  excluded: CANCELLED.'
+input:
+  id: gid://shopify/Order/E01
+  name: '#E01'
+  currencyCode: USD
+  cancelledAt: '2026-08-01T14:00:00Z'
+  displayFulfillmentStatus: UNFULFILLED
+  lineItems:
+  - id: L1
+    quantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '50.00'
+        currencyCode: USD
+expected:
+  L: 0
+  D: 0
+  R: 0
+  Sc: 0
+  C: 0
+  COGS: 0
+  S: 0
+  G: 0
+  E: 0
+  O: 0
+  P: 0
+  P_upper: 0
+  margin: null
+  class: excluded
+  classification: excluded
+  band: excluded
+  lane: EXCLUDED
+  exclusion_reason: CANCELLED
+  component_tags:
+    cogs: structural
+    shipping: structural
+    gateway: structural
+    refund: structural
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers: {}
+  top_loss_driver: null
+  delta_profit: null

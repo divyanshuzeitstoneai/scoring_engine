@@ -1,0 +1,73 @@
+id: A15
+purpose: 'Custom line item without variant: revenue included, cost missing.'
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: CFG
+arithmetic_derivation: Custom line has no variant -> cost missing. L = 5000; D = 0;
+  R = 5000; Sc = 0; C = 5000. COGS = None; S = 600; G = 160; E = 0; O = 0. P = None;
+  P_upper = 4240. Lane = UNDETERMINED.
+input:
+  id: gid://shopify/Order/A15
+  name: '#A15'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '6.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    title: Custom Engraving
+    variant: null
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '50.00'
+        currencyCode: USD
+    discountAllocations: []
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '1.60'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 5000
+  D: 0
+  R: 5000
+  Sc: 0
+  C: 5000
+  COGS: null
+  S: 600
+  G: 160
+  E: 0
+  O: 0
+  P: null
+  P_upper: 4240
+  margin: null
+  class: undetermined
+  classification: undetermined
+  band: undetermined
+  lane: UNDETERMINED
+  component_tags:
+    cogs: missing
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags:
+  - COGS_MISSING_CUSTOM_LINE
+  drivers:
+    product_margin_at_list: unknown
+    discount_leak: 0
+    shipping_net: -600
+    fee_leak: -160
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: null

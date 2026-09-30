@@ -1,0 +1,82 @@
+id: D06
+purpose: 'Anchor B0: Goodwill refund $25.00 without unit alteration. E = 2500. P =
+  3722.'
+profile: balanced
+spec_ref: 3.2, 7.0
+tag: V-DOC
+arithmetic_derivation: E = 2500 (no restock). P = 12000 - 4500 - 900 - 378 - 2500
+  = 3722. Margin = 31.0167% (high).
+input:
+  id: gid://shopify/Order/D06
+  name: '#D06'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '10.00'
+      currencyCode: USD
+  actual_carrier_cost: '9.00'
+  lineItems:
+  - id: L1
+    quantity: 2
+    currentQuantity: 2
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '55.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '22.50'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.78'
+        currencyCode: USD
+  refunds:
+  - id: R1
+    createdAt: '2026-08-10T12:00:00Z'
+    totalRefundedSet:
+      shopMoney:
+        amount: '25.00'
+        currencyCode: USD
+    refundLineItems: []
+expected:
+  L: 11000
+  D: 0
+  R: 11000
+  Sc: 1000
+  C: 12000
+  COGS: 4500
+  S: 900
+  G: 378
+  E: 2500
+  O: 0
+  P: 3722
+  P_upper: 3722
+  margin: 31.0167
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6500
+    discount_leak: 0
+    shipping_net: 100
+    fee_leak: -378
+    refund_leak: -2500
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: -1950

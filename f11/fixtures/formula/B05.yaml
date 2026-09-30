@@ -1,0 +1,76 @@
+id: B05
+purpose: 'unitCost = 0 under treat_as_missing policy (strict profile): COGS missing.'
+profile: strict
+spec_ref: 3.1, 3.2
+tag: CFG
+arithmetic_derivation: 'Strict profile (treat_as_missing): unitCost=0 is treated as
+  missing. COGS=None. P=None, P_upper=8900. Lane=UNDETERMINED.'
+input:
+  id: gid://shopify/Order/B05
+  name: '#B05'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '0.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.00'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: null
+  S: 800
+  G: 300
+  E: 0
+  O: 200
+  P: null
+  P_upper: 8700
+  margin: null
+  class: undetermined
+  classification: undetermined
+  band: undetermined
+  lane: UNDETERMINED
+  component_tags:
+    cogs: missing
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: measured
+  measured_share: '1.0000'
+  flags:
+  - SUSPECT_ZERO_COST
+  - COGS_MISSING_LINE
+  drivers:
+    product_margin_at_list: unknown
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: -300
+    refund_leak: 0
+    other_leak: -200
+  top_loss_driver: null
+  delta_profit: null

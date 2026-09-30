@@ -1,0 +1,116 @@
+id: A13
+purpose: 'Allocation conservation across 3 lines: parts sum to parent.'
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: V-DOC
+arithmetic_derivation: 3 lines with discounts 333, 333, 334. Total D = 1000. L = 9000;
+  D = 1000; R = 8000; Sc = 0; C = 8000. COGS = 3600; S = 700; G = 260; E = 0; O =
+  0. P = 3440. Margin = 43.00% (high).
+input:
+  id: gid://shopify/Order/A13
+  name: '#A13'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '7.00'
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '30.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '3.33'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '12.00'
+          currencyCode: USD
+  - id: L2
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '30.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '3.33'
+          currencyCode: USD
+    variant:
+      id: V2
+      inventoryItem:
+        unitCost:
+          amount: '12.00'
+          currencyCode: USD
+  - id: L3
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '30.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '3.34'
+          currencyCode: USD
+    variant:
+      id: V3
+      inventoryItem:
+        unitCost:
+          amount: '12.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '2.60'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 9000
+  D: 1000
+  R: 8000
+  Sc: 0
+  C: 8000
+  COGS: 3600
+  S: 700
+  G: 260
+  E: 0
+  O: 0
+  P: 3440
+  P_upper: 3440
+  margin: 43.0
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 5400
+    discount_leak: -1000
+    shipping_net: -700
+    fee_leak: -260
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: 400

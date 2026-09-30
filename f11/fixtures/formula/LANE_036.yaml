@@ -1,0 +1,83 @@
+id: LANE_036
+purpose: 'Lane Truth Table #167: COGS=missing, S=measured, G=structural, E=provision,
+  P_upper_sign=positive -> Lane=UNDETERMINED.'
+profile: balanced
+spec_ref: '8.0'
+tag: CFG
+arithmetic_derivation: C=10000, actual P_upper=9200 (positive). Evaluated strictly
+  per Section 3.3 truth table as UNDETERMINED.
+input:
+  id: gid://shopify/Order/LANE_036
+  name: '#LANE_036'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  tags: []
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.00'
+  paymentGatewayNames:
+  - manual
+  lineItems:
+  - id: L1
+    quantity: 1
+    currentQuantity: 1
+    requiresShipping: true
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost: null
+  transactions:
+  - id: T1
+    gateway: manual
+  refunds: []
+expected:
+  order_id: gid://shopify/Order/LANE_036
+  order_name: '#LANE_036'
+  as_of: '2026-09-30T23:59:59Z'
+  currency: USD
+  currency_exponent: 2
+  L: 10000
+  D: 0
+  R: 10000
+  Sc: 0
+  C: 10000
+  COGS: null
+  S: 800
+  G: 0
+  E: 500
+  O: 0
+  P: null
+  P_upper: 9200
+  margin: null
+  is_zero_revenue: false
+  classification: undetermined
+  band: undetermined
+  lane: UNDETERMINED
+  exclusion_reason: null
+  component_tags:
+    cogs: missing
+    shipping: measured
+    gateway: structural
+    refund: estimated
+    other: structural
+  measured_share: '0.6154'
+  cogs_basis: snapshot
+  flags: []
+  drivers:
+    product_margin_at_list: unknown
+    discount_leak: 0
+    shipping_net: -800
+    fee_leak: 0
+    refund_leak: -500
+    other_leak: 0
+  top_loss_driver: null
+  P_asold: null
+  delta_profit: null
+  delta_cause: null
+  class: undetermined

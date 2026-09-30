@@ -1,0 +1,86 @@
+id: GOLDEN_06
+purpose: 'B0 Refund Variation: Full refund + restock.'
+profile: balanced
+spec_ref: '7.0'
+tag: V-DOC
+arithmetic_derivation: C=12000, COGS=4500, S=900, G=378, E=6500 -> P = -278. Margin
+  = -2.3167%. Lane = MEASURED.
+input:
+  id: gid://shopify/Order/GOLDEN_06
+  name: '#GOLDEN_06'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '10.00'
+      currencyCode: USD
+  actual_carrier_cost: '9.00'
+  lineItems:
+  - id: L1
+    quantity: 2
+    currentQuantity: 0
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '55.00'
+        currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '22.50'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.78'
+        currencyCode: USD
+  refunds:
+  - id: R_GOLDEN_06
+    createdAt: '2026-09-22T12:00:00Z'
+    totalRefundedSet:
+      shopMoney:
+        amount: '110.00'
+        currencyCode: USD
+    return_shipping_cost: 0
+    restock_handling_fee: 0
+    refundLineItems:
+    - lineItemId: L1
+      quantity: 2
+      restockType: RESTOCK
+expected:
+  L: 11000
+  D: 0
+  R: 11000
+  Sc: 1000
+  C: 12000
+  COGS: 4500
+  S: 900
+  G: 378
+  E: 6500
+  O: 0
+  P: -278
+  P_upper: -278
+  margin: -2.3167
+  class: unprofitable
+  classification: unprofitable
+  band: cash_drain
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 6500
+    discount_leak: 0
+    shipping_net: 100
+    fee_leak: -378
+    refund_leak: -6500
+    other_leak: 0
+  top_loss_driver: refund_leak
+  delta_profit: -5950

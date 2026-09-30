@@ -1,0 +1,80 @@
+id: A10
+purpose: 'Discount on a line where units were removed: proration by qs/q0.'
+profile: balanced
+spec_ref: 3.1, 3.2
+tag: V-DOC
+arithmetic_derivation: q0 = 2, qc = 1, ref = 0 -> qe = 1, qs = 1. disc = 1000 * 1/2
+  = 500. L = 5000; D = 500; R = 4500; Sc = 0; C = 4500. COGS = 2000; S = 600; G =
+  160; E = 0; O = 0. P = 1740. Margin = 38.67% (high).
+input:
+  id: gid://shopify/Order/A10
+  name: '#A10'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '6.00'
+  lineItems:
+  - id: L1
+    quantity: 2
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '50.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '10.00'
+          currencyCode: USD
+    variant:
+      id: V1
+      inventoryItem:
+        unitCost:
+          amount: '20.00'
+          currencyCode: USD
+  transactions:
+  - id: T1
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '1.60'
+        currencyCode: USD
+  refunds: []
+expected:
+  L: 5000
+  D: 500
+  R: 4500
+  Sc: 0
+  C: 4500
+  COGS: 2000
+  S: 600
+  G: 160
+  E: 0
+  O: 0
+  P: 1740
+  P_upper: 1740
+  margin: 38.6667
+  class: profitable
+  classification: profitable
+  band: high
+  lane: MEASURED
+  component_tags:
+    cogs: measured
+    shipping: measured
+    gateway: measured
+    refund: measured
+    other: structural
+  measured_share: '1.0000'
+  flags: []
+  drivers:
+    product_margin_at_list: 3000
+    discount_leak: -500
+    shipping_net: -600
+    fee_leak: -160
+    refund_leak: 0
+    other_leak: 0
+  top_loss_driver: null
+  delta_profit: -1540

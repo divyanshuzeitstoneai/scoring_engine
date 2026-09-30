@@ -2809,7 +2809,7 @@ def render_f11_view(data: Dict[str, Any]):
     render_html("""
     <div class="section-header-box">
         <div class="section-title">🎯 Which products and variants need attention?</div>
-        <div class="section-subtitle">Interactive product and variant investigation workspace with formula calculation lineage</div>
+        <div class="section-subtitle">Interactive investigation workspace and multi-stage financial lineage trace</div>
     </div>
     """)
 
@@ -2821,6 +2821,35 @@ def render_f11_view(data: Dict[str, Any]):
             v_gid = str(r.get("variant_id", ""))
             v_short = v_gid.split("/")[-1] if "/" in v_gid else v_gid
 
+            q_ord = int(r.get("ordered_units", 0))
+            q_ship = int(r.get("sold_units", 0))
+            q_ref = int(r.get("refunded_units", 0))
+            ret_rate = (q_ref / q_ord * 100.0) if q_ord > 0 else 0.0
+
+            gross_rev = float(r.get("gross_sales", 0.0))
+            disc_amt = float(r.get("discount_alloc", 0.0))
+            net_sales = float(r.get("net_sales", 0.0))
+            ship_coll = float(r.get("shipping_collected", 0.0))
+            ret_rev = net_sales + ship_coll
+
+            cogs = float(r.get("cogs_incurred", 0.0))
+            outb = float(r.get("outbound_freight", 0.0))
+            fees = float(r.get("gateway_fees", 0.0))
+            ref_amt = float(r.get("refund_deductions", 0.0))
+            hndl = float(r.get("operating_drag", 0.0))
+            tot_c = cogs + outb + fees + ref_amt + hndl
+            contrib = ret_rev - tot_c
+
+            margin = float(r.get("margin_pct", 0.0)) if pd.notna(r.get("margin_pct")) else 0.0
+            st_val = str(r.get("status", "HEALTHY"))
+            naive = net_sales - cogs
+            leak = max(0.0, outb - ship_coll) + fees + ref_amt + hndl
+            driver = str(r.get("top_loss_driver", "None"))
+
+            q_restocked = max(0, q_ref - round(ref_amt / (float(r.get("supplier_unit_cost", 1.0)) or 1.0)))
+            q_lost_units = max(0, q_ship - q_restocked)
+            supplier_unit_cost = float(r.get("supplier_unit_cost", 0.0))
+
             display_rows.append({
                 "Rank": rank_idx + 1,
                 "SKU": str(r.get("sku", "")),
@@ -2828,25 +2857,29 @@ def render_f11_view(data: Dict[str, Any]):
                 "Product Title": str(r.get("title", "")),
                 "Category": str(r.get("category", "")),
                 # Ingested GraphQL Inputs
-                "Ordered Units (GraphQL) [q0]": int(r.get("ordered_units", 0)),
-                "Gross Billed ($) (GraphQL)": f"${float(r.get('gross_sales', 0.0)):,.2f}",
-                "Discounts ($) (GraphQL) [D]": f"${float(r.get('discount_alloc', 0.0)):,.2f}",
-                "Shipping Collected ($) (GraphQL) [Sc]": f"${float(r.get('shipping_collected', 0.0)):,.2f}",
-                "Supplier Unit Cost ($) (GraphQL) [u]": f"${float(r.get('supplier_unit_cost', 0.0)):,.2f}",
-                "Order Count": int(r.get("order_count", 0)),
-                # Derived Formula Calculations
-                "Sold Units [Calc] [qs]": int(r.get("sold_units", 0)),
-                "Refunded Units [Calc] [qe]": int(r.get("refunded_units", 0)),
-                "Net Sales ($) [Calc] [R]": f"${float(r.get('net_sales', 0.0)):,.2f}",
-                "Incurred COGS ($) [Calc] [C]": f"${float(r.get('cogs_incurred', 0.0)):,.2f}",
-                "Allocated Outbound Freight ($) [Calc] [S]": f"${float(r.get('outbound_freight', 0.0)):,.2f}",
-                "Allocated Gateway Fee ($) [Calc] [G]": f"${float(r.get('gateway_fees', 0.0)):,.2f}",
-                "Refund Deductions ($) [Calc] [E]": f"${float(r.get('refund_deductions', 0.0)):,.2f}",
-                "Operating Drag ($) [Calc] [O]": f"${float(r.get('operating_drag', 0.0)):,.2f}",
-                "Net Realized Profit ($) [Calc] [P]": f"${float(r.get('net_profit', 0.0)):,.2f}",
-                "Profit Margin (%) [Calc]": f"{float(r.get('margin_pct', 0.0)):.2f}%",
-                "Product Health Status": str(r.get("status", "HEALTHY")),
-                "Top Loss Driver": str(r.get("top_loss_driver", "None (Healthy Contribution)"))
+                "Ordered Units (GraphQL)": q_ord,
+                "Shipped Units (GraphQL)": q_ship,
+                "Refunded Units (GraphQL)": q_ref,
+                "Gross Billed ($) (GraphQL)": f"${gross_rev:,.2f}",
+                "Customer Refunds ($) (GraphQL)": f"${ref_amt:,.2f}",
+                "Supplier Unit Cost ($) (GraphQL)": f"${supplier_unit_cost:,.2f}",
+                "Allocated Outbound Freight ($) (GraphQL)": f"${outb:,.2f}",
+                "Allocated Gateway Fee ($) (GraphQL)": f"${fees:,.2f}",
+                # Derived Calculation Metrics
+                "Restocked Units [Calc]": q_restocked,
+                "Lost / Damaged Units [Calc]": q_lost_units,
+                "Return Rate % [Calc]": f"{ret_rate:.2f}%",
+                "Retained Cash Revenue ($) [Calc]": f"${ret_rev:,.2f}",
+                "Incurred COGS Lost ($) [Calc]": f"${cogs:,.2f}",
+                "Reverse Shipping Label ($) [Calc]": f"${ref_amt:,.2f}",
+                "Warehouse Handling Fee ($) [Calc]": f"${hndl:,.2f}",
+                "Total Direct Costs ($) [Calc]": f"${tot_c:,.2f}",
+                "Net Contribution ($) [Calc]": f"${contrib:,.2f}",
+                "Contribution Margin (%) [Calc]": f"{margin:.2f}%",
+                "Catalog Health Status": st_val,
+                "Legacy Naive Profit ($)": f"${naive:,.2f}",
+                "Hidden Operational Drag ($) [Calc]": f"${leak:,.2f}",
+                "Top Loss Driver": driver
             })
 
         df_table = pd.DataFrame(display_rows)
@@ -2861,167 +2894,173 @@ def render_f11_view(data: Dict[str, Any]):
         if col_view == "Ingested GraphQL Inputs Only":
             ingested_cols = [
                 "Rank", "SKU", "Variant ID (GraphQL)", "Product Title", "Category",
-                "Ordered Units (GraphQL) [q0]", "Gross Billed ($) (GraphQL)", "Discounts ($) (GraphQL) [D]",
-                "Shipping Collected ($) (GraphQL) [Sc]", "Supplier Unit Cost ($) (GraphQL) [u]", "Order Count"
+                "Ordered Units (GraphQL)", "Shipped Units (GraphQL)", "Refunded Units (GraphQL)",
+                "Gross Billed ($) (GraphQL)", "Customer Refunds ($) (GraphQL)",
+                "Supplier Unit Cost ($) (GraphQL)", "Allocated Outbound Freight ($) (GraphQL)",
+                "Allocated Gateway Fee ($) (GraphQL)"
             ]
             df_display = df_table[[c for c in ingested_cols if c in df_table.columns]]
         elif col_view == "Derived Formula Calculations Only":
             calc_cols = [
-                "Rank", "SKU", "Product Title", "Sold Units [Calc] [qs]", "Refunded Units [Calc] [qe]",
-                "Net Sales ($) [Calc] [R]", "Incurred COGS ($) [Calc] [C]", "Allocated Outbound Freight ($) [Calc] [S]",
-                "Allocated Gateway Fee ($) [Calc] [G]", "Refund Deductions ($) [Calc] [E]", "Operating Drag ($) [Calc] [O]",
-                "Net Realized Profit ($) [Calc] [P]", "Profit Margin (%) [Calc]", "Product Health Status", "Top Loss Driver"
+                "Rank", "SKU", "Product Title", "Restocked Units [Calc]", "Lost / Damaged Units [Calc]",
+                "Return Rate % [Calc]", "Retained Cash Revenue ($) [Calc]", "Incurred COGS Lost ($) [Calc]",
+                "Reverse Shipping Label ($) [Calc]", "Warehouse Handling Fee ($) [Calc]",
+                "Total Direct Costs ($) [Calc]", "Net Contribution ($) [Calc]",
+                "Contribution Margin (%) [Calc]", "Catalog Health Status",
+                "Legacy Naive Profit ($)", "Hidden Operational Drag ($) [Calc]", "Top Loss Driver"
             ]
             df_display = df_table[[c for c in calc_cols if c in df_table.columns]]
         else:
             df_display = df_table
 
-        st.dataframe(df_display.head(15), use_container_width=True, hide_index=True)
+        st.dataframe(df_display.head(12), use_container_width=True, hide_index=True)
 
         st.markdown("<div style='margin-top: 16px; margin-bottom: 6px; font-size: 0.9rem; font-weight: 600; color: #38bdf8;'>🔎 Select SKU to inspect financial calculation lineage:</div>", unsafe_allow_html=True)
 
         sku_options = [
-            f"{r['sku']} • {r['title']} (Profit: ${r['net_profit']:,.2f} | Margin: {r['margin_pct']:.1f}% | {r['status']})"
+            f"{r['sku']} • {r['title']} (Contribution: ${r['net_profit']:,.2f} | Drag: ${(r['outbound_freight'] - r['shipping_collected']) + r['gateway_fees'] + r['refund_deductions'] + r['operating_drag']:,.2f})"
             for _, r in df_sorted.iterrows()
         ]
 
-        selected_sku_opt = st.selectbox(
+        selected_option = st.selectbox(
             "Select SKU for Financial Lineage Trace",
             options=sku_options,
             index=0,
             label_visibility="collapsed",
             key="f11_sku_select"
         )
-        selected_idx = sku_options.index(selected_sku_opt)
-        v_selected = df_sorted.iloc[selected_idx]
 
-        v_sku = str(v_selected.get("sku", ""))
-        v_title = str(v_selected.get("title", ""))
-        v_r = float(v_selected.get("net_sales", 0.0))
-        v_sc = float(v_selected.get("shipping_collected", 0.0))
-        v_c = float(v_selected.get("cogs_incurred", 0.0))
-        v_s = float(v_selected.get("outbound_freight", 0.0))
-        v_g = float(v_selected.get("gateway_fees", 0.0))
-        v_e = float(v_selected.get("refund_deductions", 0.0))
-        v_o = float(v_selected.get("operating_drag", 0.0))
-        v_p = float(v_selected.get("net_profit", 0.0))
-        v_naive = v_r - v_c
-        v_drag = (v_s - v_sc) + v_g + v_e + v_o
-        v_status = str(v_selected.get("status", "HEALTHY"))
-        v_driver = str(v_selected.get("top_loss_driver", "None"))
-        is_val_dest = (v_p < 0)
+        selected_idx = sku_options.index(selected_option)
+        var_match = df_sorted.iloc[selected_idx]
 
-        loss_badge_color = "#ef4444" if is_val_dest else "#4ade80"
-        loss_badge_text = f"-${abs(v_p):,.2f}" if is_val_dest else f"+${v_p:,.2f}"
-        badge_title = "DIRECT CASH LOSS" if is_val_dest else "NET CASH CONTRIBUTION"
+        sku_id = str(var_match.get("sku", ""))
+        v_id = str(var_match.get("variant_id", ""))
+        v_title = str(var_match.get("title", ""))
+        v_cat = str(var_match.get("category", ""))
+        v_status = str(var_match.get("status", "HEALTHY"))
+        v_driver = str(var_match.get("top_loss_driver", "None"))
+
+        v_ordered = int(var_match.get("ordered_units", 0))
+        v_shipped = int(var_match.get("sold_units", 0))
+        v_refunded = int(var_match.get("refunded_units", 0))
+        v_ret_rate = (v_refunded / v_ordered * 100.0) if v_ordered > 0 else 0.0
+
+        v_gross = float(var_match.get("gross_sales", 0.0))
+        v_net_sales = float(var_match.get("net_sales", 0.0))
+        v_ship_coll = float(var_match.get("shipping_collected", 0.0))
+        v_retained = v_net_sales + v_ship_coll
+
+        v_cogs = float(var_match.get("cogs_incurred", 0.0))
+        v_outbound = float(var_match.get("outbound_freight", 0.0))
+        v_fees = float(var_match.get("gateway_fees", 0.0))
+        v_refunds = float(var_match.get("refund_deductions", 0.0))
+        v_handling = float(var_match.get("operating_drag", 0.0))
+        v_ops = v_outbound + v_fees + v_handling
+        v_costs = v_cogs + v_outbound + v_fees + v_refunds + v_handling
+        v_contrib = float(var_match.get("net_profit", 0.0))
+        v_margin = float(var_match.get("margin_pct", 0.0)) if pd.notna(var_match.get("margin_pct")) else 0.0
+        v_naive = v_net_sales - v_cogs
+        v_leakage = max(0.0, v_outbound - v_ship_coll) + v_fees + v_refunds + v_handling
+
+        status_pill_class = "health-healthy" if v_status == "HEALTHY" else ("health-warning" if v_status == "UNDERPERFORMING" else "health-critical")
 
         render_html(f"""
         <div class="workspace-panel">
             <div class="workspace-header">
                 <div>
                     <div class="workspace-sku">
-                        <span>Financial Lineage &mdash; {v_sku} ({v_title})</span>
+                        <span>Product Lineage &mdash; {sku_id}</span>
+                        <span class="health-pill {status_pill_class}">{v_status}</span>
                     </div>
                     <div class="workspace-meta">
-                        Status: <b>{v_status}</b> &bull; Driver: <b>{v_driver}</b> &bull; Category: <b>{v_selected.get('category', '')}</b>
+                        {v_title} &bull; Category: {v_cat} &bull; Top Driver: <b>{v_driver}</b> &bull; Ingested GID: {v_id}
                     </div>
                 </div>
-                <div class="leakage-badge" style="border-color: {'rgba(239, 68, 68, 0.4)' if is_val_dest else 'rgba(34, 197, 94, 0.4)'}; background: {'rgba(239, 68, 68, 0.15)' if is_val_dest else 'rgba(34, 197, 94, 0.15)'};">
-                    <div class="leakage-badge-title" style="color: {loss_badge_color};">{badge_title}</div>
-                    <div class="leakage-badge-val" style="color: {loss_badge_color}; font-size: 1.35rem; font-weight: 800;">{loss_badge_text}</div>
+                <div class="leakage-badge">
+                    <div class="leakage-badge-title">HIDDEN OPERATIONAL DRAG</div>
+                    <div class="leakage-badge-val">-${v_leakage:,.2f}</div>
                 </div>
             </div>
 
             <div class="lineage-grid">
-                <!-- Node 1: Gross Sales -->
-                <div class="lineage-node highlight-target">
-                    <div class="lineage-step" style="color: #38bdf8;">01. Net Sales (R)</div>
-                    <div class="lineage-primary" style="color: #38bdf8;">${v_r:,.2f}</div>
-                    <div class="lineage-sub">Sold items post-discount (qs &times; p_net)</div>
-                </div>
-
-                <!-- Node 2: Shipping Coll -->
                 <div class="lineage-node">
-                    <div class="lineage-step">02. Shipping Coll (Sc)</div>
-                    <div class="lineage-primary">${v_sc:,.2f}</div>
-                    <div class="lineage-sub">Customer-paid shipping fees</div>
+                    <div class="lineage-step">01. Gross Billed Base</div>
+                    <div class="lineage-primary">${v_gross:,.2f}</div>
+                    <div class="lineage-sub">Ordered: <b>{v_ordered:,} units</b></div>
                 </div>
 
-                <!-- Node 3: Inventory COGS -->
                 <div class="lineage-node highlight-loss">
-                    <div class="lineage-step" style="color: #f87171;">03. Inventory COGS (C)</div>
-                    <div class="lineage-primary" style="color: #f87171;">${v_c:,.2f}</div>
+                    <div class="lineage-step" style="color: #f87171;">02. Refunds & Returns</div>
+                    <div class="lineage-primary" style="color: #f87171;">-${v_refunds:,.2f}</div>
+                    <div class="lineage-sub">Refunded: <b>{v_refunded:,} units</b></div>
+                </div>
+
+                <div class="lineage-node highlight-target">
+                    <div class="lineage-step" style="color: #38bdf8;">03. Retained Cash Base</div>
+                    <div class="lineage-primary" style="color: #38bdf8;">${v_retained:,.2f}</div>
+                    <div class="lineage-sub">Sales (${v_net_sales:,.2f}) + Ship (${v_ship_coll:,.2f})</div>
+                </div>
+
+                <div class="lineage-node highlight-loss">
+                    <div class="lineage-step" style="color: #fb923c;">04. Incurred COGS Lost</div>
+                    <div class="lineage-primary" style="color: #fb923c;">-${v_cogs:,.2f}</div>
                     <div class="lineage-sub">Sold-unit basis unitCost</div>
                 </div>
 
-                <!-- Node 4: Courier Outbound -->
-                <div class="lineage-node">
-                    <div class="lineage-step">04. Outbound Freight (S)</div>
-                    <div class="lineage-primary">${v_s:,.2f}</div>
-                    <div class="lineage-sub">Actual 3PL freight label invoice</div>
-                </div>
-
-                <!-- Node 5: Gateway & Ret -->
-                <div class="lineage-node">
-                    <div class="lineage-step">05. Gateway (G) + Ret (E)</div>
-                    <div class="lineage-primary">${v_g + v_e:,.2f}</div>
-                    <div class="lineage-sub">Fees (${v_g:,.2f}) + Refunds (${v_e:,.2f})</div>
-                </div>
-
-                <!-- Node 6: Net Profit -->
                 <div class="lineage-node highlight-loss">
-                    <div class="lineage-step" style="color: {loss_badge_color};">06. Realized Profit (P)</div>
-                    <div class="lineage-primary" style="color: {loss_badge_color};">{loss_badge_text}</div>
-                    <div class="lineage-sub">Net Margin: <b>{v_selected.get('margin_pct', 0.0):.2f}%</b></div>
+                    <div class="lineage-step" style="color: #a855f7;">05. Operational Overhead</div>
+                    <div class="lineage-primary" style="color: #a855f7;">-${v_ops:,.2f}</div>
+                    <div class="lineage-sub">Freight (${v_outbound:,.2f}) + Fees (${v_fees:,.2f}) + Drag (${v_handling:,.2f})</div>
+                </div>
+
+                <div class="lineage-node highlight-target">
+                    <div class="lineage-step" style="color: #4ade80;">06. Net Contribution</div>
+                    <div class="lineage-primary" style="color: #4ade80;">${v_contrib:,.2f}</div>
+                    <div class="lineage-sub">Margin: <b>{v_margin:.2f}%</b> ({v_status})</div>
                 </div>
             </div>
 
             <div class="calc-trace-box">
                 <div class="calc-step">
-                    <div class="calc-step-label">Net Sales (R)</div>
-                    <div class="calc-step-num" style="color: #38bdf8;">${v_r:,.2f}</div>
+                    <div class="calc-step-label">Gross Billed Revenue</div>
+                    <div class="calc-step-num">${v_gross:,.2f}</div>
+                </div>
+                <div class="calc-operator">&minus;</div>
+                <div class="calc-step">
+                    <div class="calc-step-label">Customer Refunds</div>
+                    <div class="calc-step-num" style="color: #f87171;">-${v_refunds:,.2f}</div>
                 </div>
                 <div class="calc-operator">&plus;</div>
                 <div class="calc-step">
-                    <div class="calc-step-label">Shipping Coll (Sc)</div>
-                    <div class="calc-step-num" style="color: #38bdf8;">${v_sc:,.2f}</div>
+                    <div class="calc-step-label">Shipping Collected</div>
+                    <div class="calc-step-num" style="color: #38bdf8;">${v_ship_coll:,.2f}</div>
                 </div>
                 <div class="calc-operator">&minus;</div>
                 <div class="calc-step">
-                    <div class="calc-step-label">COGS (C)</div>
-                    <div class="calc-step-num" style="color: #f87171;">${v_c:,.2f}</div>
-                </div>
-                <div class="calc-operator">&minus;</div>
-                <div class="calc-step">
-                    <div class="calc-step-label">Outbound Freight (S)</div>
-                    <div class="calc-step-num" style="color: #fb923c;">${v_s:,.2f}</div>
-                </div>
-                <div class="calc-operator">&minus;</div>
-                <div class="calc-step">
-                    <div class="calc-step-label">Gateway (G) + Ret (E) + Drag (O)</div>
-                    <div class="calc-step-num" style="color: #94a3b8;">${v_g + v_e + v_o:,.2f}</div>
+                    <div class="calc-step-label">Total Direct Costs</div>
+                    <div class="calc-step-num" style="color: #fb923c;">-${v_costs:,.2f}</div>
                 </div>
                 <div class="calc-operator">&equals;</div>
                 <div class="calc-step">
-                    <div class="calc-step-label">Order Profit (P)</div>
-                    <div class="calc-step-num" style="color: {loss_badge_color};">{loss_badge_text}</div>
+                    <div class="calc-step-label">Net Contribution Profit</div>
+                    <div class="calc-step-num" style="color: #4ade80;">${v_contrib:,.2f}</div>
                 </div>
             </div>
 
             <div class="calc-trace-box" style="margin-top: 10px; background: rgba(15, 23, 42, 0.4);">
                 <div class="calc-step">
                     <div class="calc-step-label">Net Order Contribution</div>
-                    <div class="calc-step-num" style="color: {loss_badge_color};">${v_p:,.2f}</div>
+                    <div class="calc-step-num" style="color: #4ade80;">${v_contrib:,.2f}</div>
                 </div>
                 <div class="calc-operator">&minus;</div>
                 <div class="calc-step">
-                    <div class="calc-step-label">Naive Accounting Profit (R - C)</div>
+                    <div class="calc-step-label">Naive Accounting Profit (R - COGS)</div>
                     <div class="calc-step-num" style="color: #94a3b8;">${v_naive:,.2f}</div>
                 </div>
                 <div class="calc-operator">&equals;</div>
                 <div class="calc-step">
                     <div class="calc-step-label">Hidden Operational Drag</div>
-                    <div class="calc-step-num" style="color: #ef4444;">-${v_drag:,.2f}</div>
+                    <div class="calc-step-num" style="color: #ef4444;">-${v_leakage:,.2f}</div>
                 </div>
             </div>
         </div>
