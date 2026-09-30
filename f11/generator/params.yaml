@@ -1,0 +1,79 @@
+# =============================================================================
+# Generator Parameters (params.yaml)
+# Statistical distributions for Shopify 50,000-Order Synthetic Simulation
+# All parameters labelled [CFG-SYNTHETIC]
+# =============================================================================
+
+random_seed: 42
+as_of_date: "2026-09-30T23:59:59Z"
+start_date: "2025-10-01T00:00:00Z"
+total_orders: 50000
+
+shops:
+  S1:
+    currency: "USD"
+    exponent: 2
+    taxes_included: false
+    quota: 20000
+    gateways:
+      shopify_payments: 0.85
+      paypal: 0.15
+  S2:
+    currency: "GBP"
+    exponent: 2
+    taxes_included: true
+    quota: 12000
+    gateways:
+      shopify_payments: 0.90
+      gift_card: 0.10
+  S3:
+    currency: "CAD"
+    exponent: 2
+    taxes_included: false
+    quota: 8000
+    gateways:
+      shopify_payments: 0.70
+      paypal: 0.20
+      manual: 0.10
+  S4:
+    currency: "INR"
+    exponent: 2
+    taxes_included: true
+    quota: 6000
+    gateways:
+      razorpay: 0.60
+      cash_on_delivery: 0.40
+  S5:
+    currency: "JPY"
+    exponent: 0
+    taxes_included: false
+    quota: 4000
+    gateways:
+      stripe: 0.70
+      bank_deposit: 0.30
+
+product_categories:
+  Apparel:
+    return_rate: 0.25
+    markup: 0.55
+    weight_g: 450
+  Footwear:
+    return_rate: 0.18
+    markup: 0.50
+    weight_g: 1100
+  Electronics:
+    return_rate: 0.08
+    markup: 0.35
+    weight_g: 650
+  Home Goods:
+    return_rate: 0.06
+    markup: 0.60
+    weight_g: 1400
+  Beauty:
+    return_rate: 0.04
+    markup: 0.70
+    weight_g: 250
+  Digital:
+    return_rate: 0.00
+    markup: 0.90
+    weight_g: 0

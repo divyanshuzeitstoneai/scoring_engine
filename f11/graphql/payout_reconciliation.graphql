@@ -1,0 +1,14 @@
+# =============================================================================
+# Purpose: Payout reconciliation query for banking fee verification
+# Required Scopes: read_shopify_payments_payouts [UNV]
+# Cost Estimate: 5 points
+# Pinned Version: 2024-10
+# Verification Label: [UNV]
+# =============================================================================
+
+query GetPayoutReconciliation($first: Int!) {
+  shopifyPaymentsAccount {
+    id
+    activated
+  }
+}

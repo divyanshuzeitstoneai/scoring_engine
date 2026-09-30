@@ -1,0 +1,134 @@
+# =============================================================================
+# Purpose: Extract complete order graph including lines, discounts, refunds, transactions
+# Required Scopes: read_orders, read_all_orders (if >60 days), read_products [V-DOC]
+# Cost Estimate: 15 points
+# Pinned Version: 2024-10
+# Verification Label: [V-DOC]
+# =============================================================================
+
+query GetOrderFull($id: ID!) {
+  order(id: $id) {
+    id
+    name
+    createdAt
+    processedAt
+    updatedAt
+    cancelledAt
+    cancelReason
+    closedAt
+    test
+    sourceName
+    tags
+    taxesIncluded
+    taxExempt
+    currencyCode
+    presentmentCurrencyCode
+    displayFinancialStatus
+    displayFulfillmentStatus
+    paymentGatewayNames
+    discountCodes
+    cartDiscountAmountSet {
+      shopMoney { amount currencyCode }
+    }
+    totalDiscountsSet {
+      shopMoney { amount currencyCode }
+    }
+    subtotalPriceSet {
+      shopMoney { amount currencyCode }
+    }
+    currentSubtotalPriceSet {
+      shopMoney { amount currencyCode }
+    }
+    totalPriceSet {
+      shopMoney { amount currencyCode }
+    }
+    currentTotalPriceSet {
+      shopMoney { amount currencyCode }
+    }
+    totalShippingPriceSet {
+      shopMoney { amount currencyCode }
+    }
+    currentShippingPriceSet {
+      shopMoney { amount currencyCode }
+    }
+    totalTaxSet {
+      shopMoney { amount currencyCode }
+    }
+    totalRefundedSet {
+      shopMoney { amount currencyCode }
+    }
+    totalRefundedShippingSet {
+      shopMoney { amount currencyCode }
+    }
+    netPaymentSet {
+      shopMoney { amount currencyCode }
+    }
+    shippingLines(first: 10) {
+      edges {
+        node {
+          id
+          title
+          priceSet { shopMoney { amount currencyCode } }
+          discountedPriceSet { shopMoney { amount currencyCode } }
+        }
+      }
+    }
+    lineItems(first: 50) {
+      edges {
+        node {
+          id
+          name
+          sku
+          quantity
+          currentQuantity
+          isGiftCard
+          requiresShipping
+          originalUnitPriceSet { shopMoney { amount currencyCode } }
+          discountedUnitPriceSet { shopMoney { amount currencyCode } }
+          discountedUnitPriceAfterAllDiscountsSet { shopMoney { amount currencyCode } }
+          originalTotalSet { shopMoney { amount currencyCode } }
+          discountedTotalSet { shopMoney { amount currencyCode } }
+          discountAllocations {
+            allocatedAmountSet { shopMoney { amount currencyCode } }
+          }
+          variant {
+            id
+            sku
+            price
+            inventoryItem {
+              id
+              unitCost { amount currencyCode }
+              updatedAt
+            }
+          }
+        }
+      }
+    }
+    transactions(first: 20) {
+      id
+      kind
+      status
+      gateway
+      processedAt
+      amountSet { shopMoney { amount currencyCode } }
+      fees {
+        amount { amount currencyCode }
+      }
+    }
+    refunds(first: 20) {
+      id
+      createdAt
+      totalRefundedSet { shopMoney { amount currencyCode } }
+      refundLineItems(first: 50) {
+        edges {
+          node {
+            quantity
+            restockType
+            subtotalSet { shopMoney { amount currencyCode } }
+            lineItem { id }
+          }
+        }
+      }
+    }
+  }
+}

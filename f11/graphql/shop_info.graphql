@@ -1,0 +1,19 @@
+# =============================================================================
+# Purpose: Extract store-level baseline settings (currency, taxesIncluded)
+# Required Scopes: read_orders, read_products [V-DOC]
+# Cost Estimate: 1 point
+# Pinned Version: 2024-10
+# Verification Label: [V-DOC]
+# =============================================================================
+
+query GetShopInfo {
+  shop {
+    id
+    name
+    currencyCode
+    taxesIncluded
+    taxShipping
+    enabledPresentmentCurrencies
+    timezoneAbbreviation
+  }
+}

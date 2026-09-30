@@ -96,4 +96,8 @@ temp/
 /F10_formula_test_cases.md
 /graphql/
 *.pkl
+f11/data/synthetic_orders.jsonl
+f11/output/order_profitability.parquet
+f11/output/order_profitability.csv
+
 

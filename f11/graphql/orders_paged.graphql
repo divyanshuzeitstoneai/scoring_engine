@@ -1,0 +1,27 @@
+# =============================================================================
+# Purpose: Cursor-paginated incremental order synchronization by updatedAt
+# Required Scopes: read_orders, read_all_orders [V-DOC]
+# Cost Estimate: 10 points per page
+# Pinned Version: 2024-10
+# Verification Label: [V-DOC]
+# =============================================================================
+
+query GetOrdersPaged($first: Int!, $after: String, $query: String) {
+  orders(first: $first, after: $after, query: $query, sortKey: UPDATED_AT) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        updatedAt
+        processedAt
+        displayFinancialStatus
+        displayFulfillmentStatus
+      }
+    }
+  }
+}

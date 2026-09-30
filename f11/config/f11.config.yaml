@@ -1,0 +1,100 @@
+# =============================================================================
+# Formula F11 Order Profitability v2.1 Configuration
+# Pinned Shopify Admin API Version: 2024-10 [V-DOC]
+# As-of Date: 2026-09-30 [CFG]
+# All fields required with NO silent defaults.
+# =============================================================================
+
+api_version: "2024-10"
+as_of: "2026-09-30T23:59:59Z"
+shop_currency: "USD"
+currency_exponent: 2
+money_basis: "shopMoney"
+
+# Refund window configuration [CFG]
+refund_window_days:
+  Apparel: 30
+  Footwear: 30
+  Electronics: 14
+  Home Goods: 30
+  Beauty: 14
+  Digital: 0
+  Default: 30
+
+window_start_event: "processedAt"
+
+refund_provision_rate:
+  Apparel: 0.12
+  Footwear: 0.08
+  Electronics: 0.04
+  Home Goods: 0.03
+  Beauty: 0.02
+  Digital: 0.00
+  Default: 0.05
+
+discount_proration_policy: "pro_rata"
+rounding_mode: "half_up"
+
+custom_line_cost_policy: "missing"
+bundle_policy: "component_explosion_or_missing"
+tips_policy: "exclude_from_merchandise_revenue"
+
+carrier_cost_source: "metafield:custom.actual_carrier_cost"
+shipping_rate_card:
+  default_zone:
+    base_cost: 650
+    per_kg: 150
+  domestic:
+    base_cost: 500
+    per_kg: 100
+  international:
+    base_cost: 1450
+    per_kg: 300
+
+structural_zero_shipping_rules:
+  - "no_line_requires_shipping"
+  - "local_pickup"
+  - "pos_in_person"
+  - "digital_fulfillment"
+
+zero_fee_gateways:
+  - "manual"
+  - "cash_on_delivery"
+  - "bank_deposit"
+  - "custom"
+
+gateway_fee_schedule:
+  shopify_payments:
+    rate: 0.00
+    fixed: 0
+  paypal:
+    rate: 0.029
+    fixed: 30
+  stripe:
+    rate: 0.029
+    fixed: 30
+  razorpay:
+    rate: 0.020
+    fixed: 0
+  klarna:
+    rate: 0.0329
+    fixed: 30
+
+gateway_fee_refund_treatment: "retain_fixed_fee"
+packaging_cost: 150
+
+cogs_coverage_gate: 90.0
+suspect_zero_cost_policy: "measured_with_flag"
+
+band_thresholds:
+  high: 30.0
+  acceptable: 10.0
+  at_risk: 0.0
+
+excluded_financial_statuses:
+  - "VOIDED"
+  - "PENDING"
+  - "AUTHORIZED"
+
+cancelled_after_fulfillment_policy: "include_with_refunds"
+test_order_policy: "exclude"

@@ -1,0 +1,30 @@
+# =============================================================================
+# Purpose: Extract current InventoryItem.unitCost for active variants
+# Required Scopes: read_products, read_inventory [V-DOC]
+# Cost Estimate: 5 points
+# Pinned Version: 2024-10
+# Verification Label: [V-DOC]
+# =============================================================================
+
+query GetVariantCosts($first: Int!, $after: String) {
+  productVariants(first: $first, after: $after) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        sku
+        inventoryItem {
+          id
+          unitCost {
+            amount
+            currencyCode
+          }
+          updatedAt
+        }
+      }
+    }
+  }
+}

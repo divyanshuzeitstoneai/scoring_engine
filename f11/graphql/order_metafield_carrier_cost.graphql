@@ -1,0 +1,18 @@
+# =============================================================================
+# Purpose: Extract configured 3PL actual freight invoice cost from order metafield
+# Required Scopes: read_orders [V-DOC]
+# Cost Estimate: 2 points
+# Pinned Version: 2024-10
+# Verification Label: [V-DOC]
+# =============================================================================
+
+query GetOrderCarrierMetafield($orderId: ID!, $namespace: String!, $key: String!) {
+  order(id: $orderId) {
+    id
+    metafield(namespace: $namespace, key: $key) {
+      id
+      value
+      type
+    }
+  }
+}

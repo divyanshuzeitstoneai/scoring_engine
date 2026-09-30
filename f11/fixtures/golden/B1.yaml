@@ -1,0 +1,52 @@
+id: B1
+purpose: Prior spec Example B. Deep discount, free shipping, cash drain.
+input:
+  id: gid://shopify/Order/B1
+  name: '#B1'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '8.50'
+  lineItems:
+  - id: gid://shopify/LineItem/B1_1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '30.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '5.00'
+          currencyCode: USD
+    variant:
+      id: gid://shopify/ProductVariant/B1_V1
+      inventoryItem:
+        unitCost:
+          amount: '18.00'
+          currencyCode: USD
+  transactions:
+  - id: gid://shopify/OrderTransaction/B1_TX
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '1.03'
+        currencyCode: USD
+  refunds: []
+expected:
+  R: 2500
+  Sc: 0
+  C: 2500
+  COGS: 1800
+  S: 850
+  G: 103
+  E: 125
+  P: -528
+  lane: ESTIMATED
+  band: cash_drain
+  classification: unprofitable
+  top_loss_driver: shipping_subsidy

@@ -1,0 +1,49 @@
+id: B0
+purpose: Prior spec Example A restated. High margin healthy order.
+input:
+  id: gid://shopify/Order/B0
+  name: '#B0'
+  currencyCode: USD
+  processedAt: '2026-09-20T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '10.00'
+      currencyCode: USD
+  actual_carrier_cost: '9.00'
+  lineItems:
+  - id: gid://shopify/LineItem/B0_1
+    quantity: 2
+    currentQuantity: 2
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '55.00'
+        currencyCode: USD
+    discountAllocations: []
+    variant:
+      id: gid://shopify/ProductVariant/B0_V1
+      inventoryItem:
+        unitCost:
+          amount: '22.50'
+          currencyCode: USD
+  transactions:
+  - id: gid://shopify/OrderTransaction/B0_TX
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.78'
+        currencyCode: USD
+  refunds: []
+expected:
+  R: 11000
+  Sc: 1000
+  C: 12000
+  COGS: 4500
+  S: 900
+  G: 378
+  E: 550
+  O: 150
+  P: 5522
+  lane: ESTIMATED
+  band: high
+  classification: profitable
+  top_loss_driver: null

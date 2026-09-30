@@ -1,0 +1,57 @@
+id: DOC2
+purpose: Doc-2 reconciliation case.
+input:
+  id: gid://shopify/Order/DOC2
+  name: '#DOC2'
+  currencyCode: USD
+  processedAt: '2026-08-01T12:00:00Z'
+  currentShippingPriceSet:
+    shopMoney:
+      amount: '0.00'
+      currencyCode: USD
+  actual_carrier_cost: '22.00'
+  lineItems:
+  - id: gid://shopify/LineItem/DOC2_1
+    quantity: 1
+    currentQuantity: 1
+    originalUnitPriceSet:
+      shopMoney:
+        amount: '100.00'
+        currencyCode: USD
+    discountAllocations:
+    - allocatedAmountSet:
+        shopMoney:
+          amount: '20.00'
+          currencyCode: USD
+    variant:
+      id: gid://shopify/ProductVariant/DOC2_V1
+      inventoryItem:
+        unitCost:
+          amount: '50.00'
+          currencyCode: USD
+  transactions:
+  - id: gid://shopify/OrderTransaction/DOC2_TX
+    gateway: shopify_payments
+    fees:
+    - amount:
+        amount: '3.00'
+        currencyCode: USD
+  refunds:
+  - id: gid://shopify/Refund/DOC2_R
+    createdAt: '2026-08-10T12:00:00Z'
+    totalRefundedSet:
+      shopMoney:
+        amount: '8.00'
+        currencyCode: USD
+expected:
+  R: 8000
+  Sc: 0
+  C: 8000
+  COGS: 5000
+  S: 2200
+  G: 300
+  E: 800
+  P: -450
+  lane: MEASURED
+  band: cash_drain
+  classification: unprofitable

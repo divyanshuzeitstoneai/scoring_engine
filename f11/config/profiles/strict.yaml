@@ -1,0 +1,70 @@
+# Strict Profile: High evidentiary standards.
+# Missing carrier/gateway data is never estimated; suspect zero cost is treated as missing.
+api_version: "2024-10"
+as_of: "2026-09-30T23:59:59Z"
+shop_currency: "USD"
+currency_exponent: 2
+money_basis: "shopMoney"
+
+refund_window_days:
+  Apparel: 45
+  Footwear: 45
+  Electronics: 30
+  Home Goods: 45
+  Beauty: 30
+  Digital: 0
+  Default: 45
+
+window_start_event: "processedAt"
+
+refund_provision_rate:
+  Apparel: 0.15
+  Footwear: 0.10
+  Electronics: 0.06
+  Home Goods: 0.05
+  Beauty: 0.04
+  Digital: 0.00
+  Default: 0.08
+
+discount_proration_policy: "pro_rata"
+rounding_mode: "half_even"
+
+custom_line_cost_policy: "missing"
+bundle_policy: "component_explosion_or_missing"
+tips_policy: "exclude_from_merchandise_revenue"
+
+carrier_cost_source: "metafield:custom.actual_carrier_cost"
+shipping_rate_card: {} # No estimation allowed in strict profile
+
+structural_zero_shipping_rules:
+  - "no_line_requires_shipping"
+  - "local_pickup"
+  - "pos_in_person"
+  - "digital_fulfillment"
+
+zero_fee_gateways:
+  - "manual"
+  - "cash_on_delivery"
+  - "bank_deposit"
+
+gateway_fee_schedule: {} # No fee estimation allowed in strict mode
+
+gateway_fee_refund_treatment: "retain_all_fees"
+packaging_cost: 200
+
+cogs_coverage_gate: 95.0
+suspect_zero_cost_policy: "treat_as_missing"
+
+band_thresholds:
+  high: 35.0
+  acceptable: 15.0
+  at_risk: 0.0
+
+excluded_financial_statuses:
+  - "VOIDED"
+  - "PENDING"
+  - "AUTHORIZED"
+  - "PARTIALLY_PAID"
+
+cancelled_after_fulfillment_policy: "exclude"
+test_order_policy: "exclude"

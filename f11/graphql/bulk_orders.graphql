@@ -1,0 +1,114 @@
+# =============================================================================
+# Purpose: Bulk Operation Mutation to export orders, lineItems, refunds, transactions
+# Required Scopes: read_orders, read_all_orders, read_products [V-DOC]
+# Cost Estimate: 1 point (Bulk Operations queue mutation)
+# Pinned Version: 2024-10
+# Verification Label: [V-DOC]
+# =============================================================================
+
+mutation RunBulkOrdersExport {
+  bulkOperationRunQuery(
+    query: """
+    {
+      orders {
+        edges {
+          node {
+            id
+            name
+            createdAt
+            processedAt
+            updatedAt
+            cancelledAt
+            cancelReason
+            closedAt
+            test
+            sourceName
+            tags
+            taxesIncluded
+            taxExempt
+            currencyCode
+            presentmentCurrencyCode
+            displayFinancialStatus
+            displayFulfillmentStatus
+            paymentGatewayNames
+            cartDiscountAmountSet { shopMoney { amount currencyCode } }
+            totalDiscountsSet { shopMoney { amount currencyCode } }
+            subtotalPriceSet { shopMoney { amount currencyCode } }
+            currentSubtotalPriceSet { shopMoney { amount currencyCode } }
+            totalPriceSet { shopMoney { amount currencyCode } }
+            currentTotalPriceSet { shopMoney { amount currencyCode } }
+            totalShippingPriceSet { shopMoney { amount currencyCode } }
+            currentShippingPriceSet { shopMoney { amount currencyCode } }
+            totalTaxSet { shopMoney { amount currencyCode } }
+            totalRefundedSet { shopMoney { amount currencyCode } }
+            totalRefundedShippingSet { shopMoney { amount currencyCode } }
+            netPaymentSet { shopMoney { amount currencyCode } }
+            lineItems {
+              edges {
+                node {
+                  id
+                  name
+                  sku
+                  quantity
+                  currentQuantity
+                  isGiftCard
+                  requiresShipping
+                  originalUnitPriceSet { shopMoney { amount currencyCode } }
+                  discountedUnitPriceSet { shopMoney { amount currencyCode } }
+                  discountAllocations {
+                    allocatedAmountSet { shopMoney { amount currencyCode } }
+                  }
+                  variant {
+                    id
+                    sku
+                    inventoryItem {
+                      id
+                      unitCost { amount currencyCode }
+                      updatedAt
+                    }
+                  }
+                }
+              }
+            }
+            transactions {
+              id
+              kind
+              status
+              gateway
+              processedAt
+              amountSet { shopMoney { amount currencyCode } }
+              fees { amount { amount currencyCode } }
+            }
+            refunds {
+              id
+              createdAt
+              totalRefundedSet { shopMoney { amount currencyCode } }
+              refundLineItems {
+                edges {
+                  node {
+                    quantity
+                    restockType
+                    subtotalSet { shopMoney { amount currencyCode } }
+                    lineItem { id }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+  ) {
+    bulkOperation {
+      id
+      status
+      errorCode
+      createdAt
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

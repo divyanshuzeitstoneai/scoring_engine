@@ -1,0 +1,132 @@
+{
+  "__schema": {
+    "queryType": { "name": "QueryRoot" },
+    "mutationType": { "name": "Mutation" },
+    "types": [
+      {
+        "name": "Order",
+        "kind": "OBJECT",
+        "description": "Represents a customer order in Shopify Admin API 2024-10 [V-INTRO]",
+        "fields": [
+          { "name": "id", "type": { "name": "ID", "kind": "SCALAR" } },
+          { "name": "name", "type": { "name": "String", "kind": "SCALAR" } },
+          { "name": "createdAt", "type": { "name": "DateTime", "kind": "SCALAR" } },
+          { "name": "processedAt", "type": { "name": "DateTime", "kind": "SCALAR" } },
+          { "name": "updatedAt", "type": { "name": "DateTime", "kind": "SCALAR" } },
+          { "name": "cancelledAt", "type": { "name": "DateTime", "kind": "SCALAR" } },
+          { "name": "cancelReason", "type": { "name": "OrderCancelReason", "kind": "ENUM" } },
+          { "name": "closedAt", "type": { "name": "DateTime", "kind": "SCALAR" } },
+          { "name": "test", "type": { "name": "Boolean", "kind": "SCALAR" } },
+          { "name": "sourceName", "type": { "name": "String", "kind": "SCALAR" } },
+          { "name": "tags", "type": { "name": "String", "kind": "LIST" } },
+          { "name": "taxesIncluded", "type": { "name": "Boolean", "kind": "SCALAR" } },
+          { "name": "taxExempt", "type": { "name": "Boolean", "kind": "SCALAR" } },
+          { "name": "currencyCode", "type": { "name": "CurrencyCode", "kind": "ENUM" } },
+          { "name": "presentmentCurrencyCode", "type": { "name": "CurrencyCode", "kind": "ENUM" } },
+          { "name": "displayFinancialStatus", "type": { "name": "OrderFinancialStatus", "kind": "ENUM" } },
+          { "name": "displayFulfillmentStatus", "type": { "name": "OrderFulfillmentStatus", "kind": "ENUM" } },
+          { "name": "paymentGatewayNames", "type": { "name": "String", "kind": "LIST" } },
+          { "name": "cartDiscountAmountSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "totalDiscountsSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "subtotalPriceSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "currentSubtotalPriceSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "totalPriceSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "currentTotalPriceSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "totalShippingPriceSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "currentShippingPriceSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "totalTaxSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "totalRefundedSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "totalRefundedShippingSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "netPaymentSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "lineItems", "type": { "name": "LineItemConnection", "kind": "OBJECT" } },
+          { "name": "transactions", "type": { "name": "OrderTransaction", "kind": "LIST" } },
+          { "name": "refunds", "type": { "name": "Refund", "kind": "LIST" } },
+          { "name": "shippingLines", "type": { "name": "ShippingLine", "kind": "LIST" } },
+          { "name": "metafields", "type": { "name": "MetafieldConnection", "kind": "OBJECT" } }
+        ]
+      },
+      {
+        "name": "LineItem",
+        "kind": "OBJECT",
+        "description": "Individual line item in an order [V-INTRO]",
+        "fields": [
+          { "name": "id", "type": { "name": "ID", "kind": "SCALAR" } },
+          { "name": "name", "type": { "name": "String", "kind": "SCALAR" } },
+          { "name": "sku", "type": { "name": "String", "kind": "SCALAR" } },
+          { "name": "quantity", "type": { "name": "Int", "kind": "SCALAR" } },
+          { "name": "currentQuantity", "type": { "name": "Int", "kind": "SCALAR" } },
+          { "name": "isGiftCard", "type": { "name": "Boolean", "kind": "SCALAR" } },
+          { "name": "requiresShipping", "type": { "name": "Boolean", "kind": "SCALAR" } },
+          { "name": "originalUnitPriceSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "discountedUnitPriceSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "discountedUnitPriceAfterAllDiscountsSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "originalTotalSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "discountedTotalSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "discountAllocations", "type": { "name": "DiscountAllocation", "kind": "LIST" } },
+          { "name": "variant", "type": { "name": "ProductVariant", "kind": "OBJECT" } }
+        ]
+      },
+      {
+        "name": "InventoryItem",
+        "kind": "OBJECT",
+        "description": "Inventory cost item [V-DOC]",
+        "fields": [
+          { "name": "id", "type": { "name": "ID", "kind": "SCALAR" } },
+          { "name": "unitCost", "type": { "name": "MoneyV2", "kind": "OBJECT" } },
+          { "name": "updatedAt", "type": { "name": "DateTime", "kind": "SCALAR" } }
+        ]
+      },
+      {
+        "name": "OrderTransaction",
+        "kind": "OBJECT",
+        "description": "Financial transaction on an order [V-DOC]",
+        "fields": [
+          { "name": "id", "type": { "name": "ID", "kind": "SCALAR" } },
+          { "name": "kind", "type": { "name": "OrderTransactionKind", "kind": "ENUM" } },
+          { "name": "status", "type": { "name": "OrderTransactionStatus", "kind": "ENUM" } },
+          { "name": "gateway", "type": { "name": "String", "kind": "SCALAR" } },
+          { "name": "processedAt", "type": { "name": "DateTime", "kind": "SCALAR" } },
+          { "name": "amountSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "fees", "type": { "name": "TransactionFee", "kind": "LIST" } }
+        ]
+      },
+      {
+        "name": "Refund",
+        "kind": "OBJECT",
+        "description": "Order refund record [V-DOC]",
+        "fields": [
+          { "name": "id", "type": { "name": "ID", "kind": "SCALAR" } },
+          { "name": "createdAt", "type": { "name": "DateTime", "kind": "SCALAR" } },
+          { "name": "totalRefundedSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } },
+          { "name": "refundLineItems", "type": { "name": "RefundLineItem", "kind": "LIST" } }
+        ]
+      },
+      {
+        "name": "RefundLineItem",
+        "kind": "OBJECT",
+        "description": "Specific line item returned or refunded [V-DOC]",
+        "fields": [
+          { "name": "quantity", "type": { "name": "Int", "kind": "SCALAR" } },
+          { "name": "restockType", "type": { "name": "RefundLineItemRestockType", "kind": "ENUM" } },
+          { "name": "subtotalSet", "type": { "name": "MoneyBag", "kind": "OBJECT" } }
+        ]
+      },
+      {
+        "name": "MoneyV2",
+        "kind": "OBJECT",
+        "fields": [
+          { "name": "amount", "type": { "name": "Decimal", "kind": "SCALAR" } },
+          { "name": "currencyCode", "type": { "name": "CurrencyCode", "kind": "ENUM" } }
+        ]
+      },
+      {
+        "name": "MoneyBag",
+        "kind": "OBJECT",
+        "fields": [
+          { "name": "shopMoney", "type": { "name": "MoneyV2", "kind": "OBJECT" } },
+          { "name": "presentmentMoney", "type": { "name": "MoneyV2", "kind": "OBJECT" } }
+        ]
+      }
+    ]
+  }
+}

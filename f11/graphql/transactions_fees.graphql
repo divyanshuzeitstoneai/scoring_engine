@@ -1,0 +1,33 @@
+# =============================================================================
+# Purpose: Extract transactions and Shopify Payments processing fees
+# Required Scopes: read_orders [V-DOC]
+# Cost Estimate: 5 points
+# Pinned Version: 2024-10
+# Verification Label: [V-DOC]
+# =============================================================================
+
+query GetTransactionsFees($orderId: ID!) {
+  order(id: $orderId) {
+    id
+    transactions(first: 20) {
+      id
+      kind
+      status
+      gateway
+      formattedGateway
+      processedAt
+      amountSet {
+        shopMoney { amount currencyCode }
+        presentmentMoney { amount currencyCode }
+      }
+      fees {
+        amount {
+          amount
+          currencyCode
+        }
+        rate
+        flatFeeName
+      }
+    }
+  }
+}
